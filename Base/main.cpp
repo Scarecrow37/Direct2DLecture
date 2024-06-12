@@ -16,7 +16,6 @@ int APIENTRY wWinMain(_In_ const HINSTANCE hInstance,
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
-    UNREFERENCED_PARAMETER(nShowCmd);
 
     // Console
     {

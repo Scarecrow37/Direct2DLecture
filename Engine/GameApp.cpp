@@ -1,9 +1,18 @@
 ﻿#include "GameApp.h"
 
-GameApp::GameApp()
+#include "Logger/Logger.h"
+
+GameApp::GameApp(const HINSTANCE instanceHandle, const int showCommand, const wchar_t* gameName):
+    _window(instanceHandle, showCommand, gameName, {1920, 1080})
 {
-    // Logger
-    
+}
+
+void GameApp::Initialize()
+{
+    Logger::Initialize();
+    _window.Register();
+    _window.Create();
+    _window.Show();
 }
 
 void GameApp::Run()
