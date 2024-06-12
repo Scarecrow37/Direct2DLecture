@@ -1,14 +1,17 @@
+#include "../Engine/Window/Window.h"
 
-#include "../Engine/Logger/Logger.h"
-
-int main(int argc, char* argv[])
+int APIENTRY wWinMain(_In_ const HINSTANCE hInstance,
+                      _In_opt_ const HINSTANCE hPrevInstance,
+                      _In_ const LPWSTR lpCmdLine,
+                      _In_ const int nShowCmd)
 {
-    Logger::Initialize();
-    Logger::Log(Logger::Level::Trace, "Trace");
-    Logger::Log(Logger::Level::Debug, "Debug");
-    Logger::Log(Logger::Level::Info, "Information");
-    Logger::Log(Logger::Level::Warning, "Warning");
-    Logger::Log(Logger::Level::Error, "Error");
-    Logger::Log(Logger::Level::Fatal, "Fatal");
-    return 0;
+    UNREFERENCED_PARAMETER(hPrevInstance);
+    UNREFERENCED_PARAMETER(lpCmdLine);
+    Window window(hInstance, nShowCmd, L"Hello, World!", {1920, 1080});
+    window.Register();
+    window.Create();
+    window.Show();
+    while (true)
+    {
+    }
 }
