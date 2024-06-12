@@ -1,7 +1,5 @@
 ﻿#include "LogStream.h"
 
-#include <iomanip>
-
 LogStream::LogStream(const char* path, std::ostream& consoleStream):
     _fileStream(path, std::ios::app),
     _consoleStream(consoleStream),

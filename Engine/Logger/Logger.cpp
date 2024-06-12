@@ -6,7 +6,6 @@
 
 
 Logger::Logger():
-
     _traceStream("../Log/Trace.log", std::cout),
     _infoSteam("../Log/Info.log", std::clog),
     _errorStream("../Log/Error.log", std::cerr),

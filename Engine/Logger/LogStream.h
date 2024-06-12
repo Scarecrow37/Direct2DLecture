@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include <fstream>
-
 #include "ChainStreamBuffer.h"
 
 class LogStream

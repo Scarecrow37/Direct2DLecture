@@ -1,5 +1,4 @@
 ﻿#include "LocalTime.h"
-#include "sysinfoapi.h"
 
 LocalTime::LocalTime() : _time({})
 {

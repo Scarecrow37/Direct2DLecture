@@ -1,11 +1,5 @@
 ﻿#include "Console.h"
 
-#include <consoleapi.h>
-#include <consoleapi2.h>
-#include <cstdio>
-#include <iostream>
-#include <winbase.h>
-
 Console::Console()
 {
     const BOOL _ = AllocConsole(); // Open new Console
