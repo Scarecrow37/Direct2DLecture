@@ -127,13 +127,28 @@ int APIENTRY wWinMain(_In_ const HINSTANCE hInstance,
                 // TODO Game update
                 renderTarget->BeginDraw();
                 renderTarget->Clear(D2D1::ColorF(D2D1::ColorF::CadetBlue));
-                D2D1_SIZE_F size = renderTarget->GetSize();
-                renderTarget->DrawLine(D2D1::Point2F(0.f, 0.f),
-                                       D2D1::Point2F(size.width, size.height),
-                                       brush, 1.f); // brush
-                WCHAR hello[] = L"Hello, World!";
-                renderTarget->DrawText(hello, ARRAYSIZE(hello)-1, format, D2D1::RectF(0,0,size.width, size.height), brush); // Text
+                
+                // D2D1_SIZE_F size = renderTarget->GetSize();
+                // renderTarget->DrawLine(D2D1::Point2F(0.f, 0.f),
+                //                        D2D1::Point2F(size.width, size.height),
+                //                        brush, 1.f); // brush
+                // WCHAR hello[] = L"Hello, World!";
+                // renderTarget->DrawText(hello, ARRAYSIZE(hello)-1, format, D2D1::RectF(0,0,size.width, size.height), brush); // Text
+
+                D2D_MATRIX_3X2_F scale= D2D1::Matrix3x2F::Scale(1.f, 1.f);
+                D2D_MATRIX_3X2_F rotation = D2D1::Matrix3x2F::Rotation(0.f);
+                D2D_MATRIX_3X2_F translate = D2D1::Matrix3x2F::Translation(100.f, 0.f);
+                D2D_MATRIX_3X2_F worldM = scale * rotation * translate;
+                renderTarget->SetTransform(worldM);
                 renderTarget->DrawBitmap(bitmap);
+                
+                scale= D2D1::Matrix3x2F::Scale(1.f, 1.f);
+                rotation = D2D1::Matrix3x2F::Rotation(90.f);
+                translate = D2D1::Matrix3x2F::Translation(200.f, 200.f);
+                worldM = scale * rotation * translate;
+                renderTarget->SetTransform(worldM);
+                renderTarget->DrawBitmap(bitmap);
+                
                 renderTarget->EndDraw();
             }
         }
