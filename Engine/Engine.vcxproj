@@ -21,11 +21,22 @@
   <ItemGroup>
     <ClInclude Include="Framework.h" />
     <ClInclude Include="GameApp.h" />
+    <ClInclude Include="Interfaces\IDeltaUpdate.h" />
+    <ClInclude Include="Interfaces\IFinalize.h" />
+    <ClInclude Include="Interfaces\IInitialize.h" />
+    <ClInclude Include="Interfaces\IRender.h" />
+    <ClInclude Include="Interfaces\IUpdate.h" />
     <ClInclude Include="Logger\ChainStreamBuffer.h" />
     <ClInclude Include="Logger\Logger.h" />
     <ClInclude Include="Logger\LogStream.h" />
     <ClInclude Include="Renderer\D2DRenderer.h" />
     <ClInclude Include="TargetVersion.h" />
+    <ClInclude Include="TimeSystem\Interfaces\ITimeSystem.h" />
+    <ClInclude Include="TimeSystem\MultimediaClock\MultimediaClock.h" />
+    <ClInclude Include="TimeSystem\QueryClock\QueryClock.h" />
+    <ClInclude Include="TimeSystem\SimpleClock\SimpleClock.h" />
+    <ClInclude Include="TimeSystem\TickClock\TickClock.h" />
+    <ClInclude Include="TimeSystem\Time.h" />
     <ClInclude Include="Utilities\Console.h" />
     <ClInclude Include="Utilities\LocalTime.h" />
     <ClInclude Include="Window\Window.h" />
@@ -36,6 +47,11 @@
     <ClCompile Include="Logger\Logger.cpp" />
     <ClCompile Include="Logger\LogStream.cpp" />
     <ClCompile Include="Renderer\D2DRenderer.cpp" />
+    <ClCompile Include="TimeSystem\MultimediaClock\MultimediaClock.cpp" />
+    <ClCompile Include="TimeSystem\QueryClock\QueryClock.cpp" />
+    <ClCompile Include="TimeSystem\SimpleClock\SimpleClock.cpp" />
+    <ClCompile Include="TimeSystem\TickClock\TickClock.cpp" />
+    <ClCompile Include="TimeSystem\Time.cpp" />
     <ClCompile Include="Utilities\Console.cpp" />
     <ClCompile Include="Utilities\LocalTime.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
@@ -209,6 +225,9 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>d2d1.lib;dwrite.lib;</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
