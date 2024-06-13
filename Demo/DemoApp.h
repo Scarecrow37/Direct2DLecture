@@ -1,0 +1,8 @@
+﻿#pragma once
+#include "../Engine/GameApp.h"
+
+class DemoApp final : public GameApp
+{
+public:
+    DemoApp(HINSTANCE instanceHandle, int showCommand, const wchar_t* gameName);
+};
