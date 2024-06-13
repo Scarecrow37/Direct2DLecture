@@ -11,11 +11,15 @@ public:
    virtual ~GameApp();
    virtual void Initialize(bool isRelease = true);
    virtual void Run();
+   virtual void Finalize();
 
 protected:
+   virtual void Update();
+   virtual void Render();
+   
    Window* _window;
    D2DRenderer* _renderer;
 
 private:
-   bool _isInitialized;
+   bool _isRun;
 };
