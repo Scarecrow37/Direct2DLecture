@@ -4,17 +4,20 @@
 class Window
 {
 public:
-    Window(HINSTANCE instanceHandle,int showCommand, LPCWSTR name, SIZE size);
-    void Register() const;
-    void Create();
-    void Show();
+    Window(HINSTANCE instanceHandle, int showCommand, LPCWSTR name, SIZE size);
+    virtual ~Window() = default;
+    virtual void Register() const;
+    virtual void Create();
+    virtual void Show();
+
+protected:
+    HWND _windowHandle;
+    WNDCLASSEX _windowClass;
+    SIZE _size;
 
 private:
     static void PlaceInCenterOfScreen(HWND windowHandle);
     static LRESULT DefaultWindowProcedure(HWND windowHandle, UINT message, WPARAM wParam, LPARAM lParam);
-    
-    HWND _windowHandle;
+
     int _showCommand;
-    WNDCLASSEX _windowClass;
-    SIZE _size;
 };

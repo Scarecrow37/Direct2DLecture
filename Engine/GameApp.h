@@ -1,13 +1,16 @@
 ﻿#pragma once
-#include "Window/Window.h"
+#include "Framework.h"
+
+class Window;
 
 class GameApp
 {
 public:
    GameApp(HINSTANCE instanceHandle, int showCommand, const wchar_t* gameName);
-   virtual ~GameApp() = default;
+   virtual ~GameApp();
    virtual void Initialize();
    virtual void Run();
 
-   Window _window;
+protected:
+   Window* _window;
 };

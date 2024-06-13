@@ -2,14 +2,14 @@
 
 Window::Window(const HINSTANCE instanceHandle, const int showCommand, const LPCWSTR name, const SIZE size):
     _windowHandle(nullptr),
-    _showCommand(showCommand),
     _windowClass{
         sizeof(WNDCLASSEX), CS_HREDRAW | CS_VREDRAW, DefaultWindowProcedure,
         NULL, NULL, instanceHandle, LoadIcon(instanceHandle, IDI_APPLICATION),
         LoadCursor(instanceHandle, IDC_ARROW), static_cast<HBRUSH>(GetStockObject(WHITE_BRUSH)),
         nullptr, name, LoadIcon(instanceHandle, IDI_APPLICATION)
     },
-    _size(size)
+    _size(size),
+    _showCommand(showCommand)
 {
 }
 
