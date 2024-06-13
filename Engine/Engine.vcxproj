@@ -24,6 +24,7 @@
     <ClInclude Include="Logger\ChainStreamBuffer.h" />
     <ClInclude Include="Logger\Logger.h" />
     <ClInclude Include="Logger\LogStream.h" />
+    <ClInclude Include="Renderer\D2DRenderer.h" />
     <ClInclude Include="TargetVersion.h" />
     <ClInclude Include="Utilities\Console.h" />
     <ClInclude Include="Utilities\LocalTime.h" />
@@ -34,6 +35,7 @@
     <ClCompile Include="Logger\ChainStreamBuffer.cpp" />
     <ClCompile Include="Logger\Logger.cpp" />
     <ClCompile Include="Logger\LogStream.cpp" />
+    <ClCompile Include="Renderer\D2DRenderer.cpp" />
     <ClCompile Include="Utilities\Console.cpp" />
     <ClCompile Include="Utilities\LocalTime.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
