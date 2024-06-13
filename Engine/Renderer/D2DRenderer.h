@@ -2,13 +2,19 @@
 
 #include <d2d1.h>
 
-class D2DRenderer
+#include "../Interfaces/IFinalize.h"
+
+class D2DRenderer : public IFinalize
 {
 public:
     D2DRenderer();
-    virtual ~D2DRenderer() = default;
+    ~D2DRenderer() override = default;
+
     virtual void Initialize(HWND windowHandle, unsigned int width, unsigned int height);
-    virtual void Finalize();
+    void Finalize() override;
+
+    virtual void BeginDraw();
+    virtual void EndDraw();
 
 private:
     ID2D1Factory* _factory;

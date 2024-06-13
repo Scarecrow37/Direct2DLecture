@@ -8,7 +8,7 @@ D2DRenderer::D2DRenderer(): _factory(nullptr), _renderTarget(nullptr)
 }
 
 
-void D2DRenderer::Initialize(HWND windowHandle, const unsigned int width, const unsigned int height)
+void D2DRenderer::Initialize(const HWND windowHandle, const unsigned int width, const unsigned int height)
 {
     // Initialize COM library and identify STA in current thread.
     HRESULT resultHandle = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
@@ -38,4 +38,18 @@ void D2DRenderer::Finalize()
     _renderTarget->Release();
     _factory->Release();
     CoUninitialize();
+}
+
+void D2DRenderer::BeginDraw()
+{
+    _renderTarget->BeginDraw();
+    _renderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
+}
+
+void D2DRenderer::EndDraw()
+{
+    const HRESULT resultHandle = _renderTarget->EndDraw();
+    if (resultHandle != S_OK)
+        throw std::exception(
+            std::to_string(resultHandle).append(", End draw is fail.").c_str());
 }
