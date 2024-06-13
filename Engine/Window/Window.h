@@ -1,14 +1,16 @@
 ﻿#pragma once
 #include "../Framework.h"
+#include "../Interfaces/IFinalize.h"
+#include "../Interfaces/IInitialize.h"
 
-class Window
+class Window : public IInitialize, public IFinalize
 {
 public:
     Window(HINSTANCE instanceHandle, int showCommand, LPCWSTR name, SIZE size);
-    virtual ~Window() = default;
+    ~Window() override = default;
 
-    virtual void Initialize();
-    virtual void Finalize();
+    void Initialize() override;
+    void Finalize() override;
 
     HWND GetHandle() const;
     SIZE GetSize() const;
