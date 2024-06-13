@@ -1,5 +1,8 @@
 ﻿#include "Window.h"
 
+#include <exception>
+#include <string>
+
 Window::Window(const HINSTANCE instanceHandle, const int showCommand, const LPCWSTR name, const SIZE size):
     _windowHandle(nullptr),
     _windowClass{
@@ -13,24 +16,61 @@ Window::Window(const HINSTANCE instanceHandle, const int showCommand, const LPCW
 {
 }
 
-void Window::Register() const
+void Window::Initialize()
 {
-    RegisterClassEx(&_windowClass);
+    if (Register() == FALSE)
+        throw std::exception(std::to_string(GetLastError()).append(", Register window class fail.").c_str());
+    RECT rect = {0, 0, _size.cx, _size.cy};
+    if (AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, FALSE) == FALSE)
+        throw std::exception(std::to_string(GetLastError()).append(", Adjust window rect fail.").c_str());
+    _windowHandle = Create(rect);
+    if (_windowHandle == nullptr)
+        throw std::exception(std::to_string(GetLastError()).append(", Create window fail.").c_str());
+    Show();
 }
 
-void Window::Create()
+void Window::Finalize()
 {
-    RECT rect = {0, 0, _size.cx, _size.cy};
-    AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, FALSE);
-    _windowHandle = CreateWindow(_windowClass.lpszClassName, _windowClass.lpszClassName, WS_OVERLAPPEDWINDOW,
-                                 rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr,
-                                 _windowClass.hInstance, nullptr);
+    if (_windowHandle != nullptr) DestroyWindow(_windowHandle);
+}
+
+ATOM Window::Register() const
+{
+    return RegisterClassEx(&_windowClass);
+}
+
+HWND Window::Create(const RECT windowRect)
+{
+    return CreateWindow(_windowClass.lpszClassName, _windowClass.lpszClassName, WS_OVERLAPPEDWINDOW,
+                        windowRect.left, windowRect.top, windowRect.right - windowRect.left,
+                        windowRect.bottom - windowRect.top, nullptr, nullptr,
+                        _windowClass.hInstance, nullptr);
 }
 
 void Window::Show()
 {
     ShowWindow(_windowHandle, _showCommand);
     UpdateWindow(_windowHandle);
+}
+
+HWND Window::GetHandle() const
+{
+    return _windowHandle;
+}
+
+SIZE Window::GetSize() const
+{
+    return _size;
+}
+
+LONG Window::GetWidth() const
+{
+    return _size.cx;
+}
+
+LONG Window::GetHeight() const
+{
+    return _size.cy;
 }
 
 void Window::PlaceInCenterOfScreen(const HWND windowHandle)
