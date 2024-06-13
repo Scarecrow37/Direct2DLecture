@@ -1,3 +1,4 @@
+#include "../Engine/GameApp.h"
 #include "../Engine/Window/Window.h"
 
 int APIENTRY wWinMain(_In_ const HINSTANCE hInstance,
@@ -7,9 +8,8 @@ int APIENTRY wWinMain(_In_ const HINSTANCE hInstance,
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
-    Window window(hInstance, nShowCmd, L"Hello, World!", {1920, 1080});
-    window.Initialize();
-    while (true)
-    {
-    }
+    GameApp gameApp(hInstance, nShowCmd, L"Hello, World!");
+    gameApp.Initialize();
+    gameApp.Run();
+    gameApp.Finalize();
 }
