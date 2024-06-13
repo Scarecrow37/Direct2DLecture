@@ -78,6 +78,7 @@ void GameApp::Update()
     Logger::Log(Logger::Level::Trace, "Time is updated.");
     // TODO Input
     // TODO Content
+    OnUpdate(Time::GetDeltaTime());
     // TODO UI
     Logger::Log(Logger::Level::Debug, "Update end.");
 }
@@ -89,6 +90,7 @@ void GameApp::Render()
     {
         _renderer->BeginDraw();
         // TODO Content
+        OnRender(_renderer);
         _renderer->EndDraw();
         Logger::Log(Logger::Level::Debug, "Render end.");
     }
@@ -98,4 +100,12 @@ void GameApp::Render()
         Logger::Log(Logger::Level::Fatal, "Rendering is fail.");
         _isRun = false;
     }
+}
+
+void GameApp::OnUpdate(float deltaTime)
+{
+}
+
+void GameApp::OnRender(const D2DRenderer* renderer)
+{
 }

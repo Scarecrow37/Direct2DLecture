@@ -16,6 +16,9 @@ public:
 protected:
    virtual void Update();
    virtual void Render();
+
+   virtual void OnUpdate(float deltaTime); // TODO Remove when created content update.
+   virtual void OnRender(const D2DRenderer* renderer); // TODO Remove when created content render.
    
    Window* _window;
    D2DRenderer* _renderer;
