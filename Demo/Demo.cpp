@@ -8,7 +8,7 @@ int APIENTRY wWinMain(_In_ const HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
     DemoApp app(hInstance, nShowCmd, L"Hello, World!");
-    app.Initialize();
+    app.Initialize(false, Logger::Level::Trace);
     app.Run();
     app.Finalize();
 }

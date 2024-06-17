@@ -13,9 +13,9 @@ DemoApp::DemoApp(const HINSTANCE instanceHandle, const int showCommand, const wc
 {
 }
 
-void DemoApp::Initialize(const bool isRelease)
+void DemoApp::Initialize(const bool isRelease, const Logger::Level leastLogable)
 {
-    GameApp::Initialize(isRelease);
+    GameApp::Initialize(isRelease, leastLogable);
     Scale = D2D1::Matrix3x2F::Scale(1.f, 1.f);
     Rotation = D2D1::Matrix3x2F::Rotation(0.f);
     Translate = D2D1::Matrix3x2F::Translation(0.f, 0.f);
