@@ -16,10 +16,10 @@ GameApp::~GameApp()
     delete _window;
 }
 
-void GameApp::Initialize(const bool isRelease)
+void GameApp::Initialize(const bool isRelease, const Logger::Level leastLogable)
 {
     Logger::Initialize(!isRelease);
-    Logger::SetLeastLogable(Logger::Level::Warning);
+    Logger::SetLeastLogable(leastLogable);
     Logger::Log(Logger::Level::Debug, "Initialize start.");
     try
     {
