@@ -29,7 +29,10 @@
     <ClInclude Include="Logger\ChainStreamBuffer.h" />
     <ClInclude Include="Logger\Logger.h" />
     <ClInclude Include="Logger\LogStream.h" />
+    <ClInclude Include="Math\Matrix.h" />
+    <ClInclude Include="Math\Vector.h" />
     <ClInclude Include="Renderer\D2DRenderer.h" />
+    <ClInclude Include="Scene\Scene.h" />
     <ClInclude Include="TargetVersion.h" />
     <ClInclude Include="TimeSystem\Interfaces\ITimeSystem.h" />
     <ClInclude Include="TimeSystem\MultimediaClock\MultimediaClock.h" />
@@ -46,7 +49,10 @@
     <ClCompile Include="Logger\ChainStreamBuffer.cpp" />
     <ClCompile Include="Logger\Logger.cpp" />
     <ClCompile Include="Logger\LogStream.cpp" />
+    <ClCompile Include="Math\Matrix.cpp" />
+    <ClCompile Include="Math\Vector.cpp" />
     <ClCompile Include="Renderer\D2DRenderer.cpp" />
+    <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="TimeSystem\MultimediaClock\MultimediaClock.cpp" />
     <ClCompile Include="TimeSystem\QueryClock\QueryClock.cpp" />
     <ClCompile Include="TimeSystem\SimpleClock\SimpleClock.cpp" />
