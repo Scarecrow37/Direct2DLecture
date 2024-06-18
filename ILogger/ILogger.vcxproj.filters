@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SimpleEngine.cpp">
+    <ClCompile Include="ILogger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
