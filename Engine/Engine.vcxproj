@@ -26,12 +26,16 @@
     <ClInclude Include="Interfaces\IInitialize.h" />
     <ClInclude Include="Interfaces\IRender.h" />
     <ClInclude Include="Interfaces\IUpdate.h" />
+    <ClInclude Include="Loader\BitmapLoader.h" />
+    <ClInclude Include="Loader\ILoader.h" />
     <ClInclude Include="Logger\ChainStreamBuffer.h" />
     <ClInclude Include="Logger\Logger.h" />
     <ClInclude Include="Logger\LogStream.h" />
     <ClInclude Include="Math\Matrix.h" />
     <ClInclude Include="Math\Vector.h" />
+    <ClInclude Include="pch.h" />
     <ClInclude Include="Renderer\D2DRenderer.h" />
+    <ClInclude Include="Scene\BitmapScene.h" />
     <ClInclude Include="Scene\Scene.h" />
     <ClInclude Include="TargetVersion.h" />
     <ClInclude Include="TimeSystem\Interfaces\ITimeSystem.h" />
@@ -46,12 +50,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameApp.cpp" />
+    <ClCompile Include="Loader\BitmapLoader.cpp" />
+    <ClCompile Include="Loader\ILoader.cpp" />
     <ClCompile Include="Logger\ChainStreamBuffer.cpp" />
     <ClCompile Include="Logger\Logger.cpp" />
     <ClCompile Include="Logger\LogStream.cpp" />
     <ClCompile Include="Math\Matrix.cpp" />
     <ClCompile Include="Math\Vector.cpp" />
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="Renderer\D2DRenderer.cpp" />
+    <ClCompile Include="Scene\BitmapScene.cpp" />
     <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="TimeSystem\MultimediaClock\MultimediaClock.cpp" />
     <ClCompile Include="TimeSystem\QueryClock\QueryClock.cpp" />
@@ -219,7 +229,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
