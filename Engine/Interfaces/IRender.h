@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+class D2DRenderer;
+
 class IRender
 {
 public:
@@ -10,5 +12,5 @@ public:
     IRender& operator=(IRender&& other) noexcept = default;
     virtual ~IRender() = default;
 
-    virtual void Render() = 0;
+    virtual void Render(D2DRenderer* renderer) = 0;
 };

@@ -1,4 +1,5 @@
-﻿#include "Logger.h"
+﻿#include "pch.h"
+#include "Logger.h"
 
 #include <iostream>
 #include "../Utilities/LocalTime.h"
@@ -28,7 +29,7 @@ const char* Logger::GetTimeString()
     const LocalTime time;
     int _ = sprintf_s(buffer, bufferSize, "[%04d/%02d/%02d %02d:%02d:%02d.%03d]",
                       time.GetYear(), time.GetMonth(), time.GetDay(), time.GetHour(), time.GetMinute(),
-                      time.GetSecond(), time.GetMinute());
+                      time.GetSecond(), time.GetMillisecond());
     return buffer;
 }
 

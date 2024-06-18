@@ -1,18 +1,23 @@
-﻿#include "GameApp.h"
+﻿#include "pch.h"
+#include "GameApp.h"
 
+#include "Interfaces/IDeltaUpdate.h"
+#include "Interfaces/IRender.h"
 #include "Logger/Logger.h"
 #include "Window/Window.h"
 #include "Renderer/D2DRenderer.h"
+#include "Scene/Scene.h"
 #include "TimeSystem/Time.h"
 
-GameApp::GameApp(const HINSTANCE instanceHandle, const int showCommand, const wchar_t* gameName):
-    _window(new Window(instanceHandle, showCommand, gameName, {1920, 1080})), _renderer(new D2DRenderer),
-    _isRun(false)
+GameApp::GameApp(const HINSTANCE instanceHandle, const int showCommand, const std::wstring& gameName):
+    _window(new Window(instanceHandle, showCommand, gameName.c_str(), {1920, 1080})),
+    _renderer(new D2DRenderer), _isRun(false)
 {
 }
 
 GameApp::~GameApp()
 {
+    delete _renderer;
     delete _window;
 }
 
@@ -27,6 +32,11 @@ void GameApp::Initialize(const bool isRelease, const Logger::Level leastLogable)
         Logger::Log(Logger::Level::Trace, "Window is initialized.");
         _renderer->Initialize(_window->GetHandle(), _window->GetWidth(), _window->GetHeight());
         Logger::Log(Logger::Level::Trace, "Renderer is initialized.");
+        for (const auto& scene : _initializeScenes)
+        {
+            scene->Initialize();
+        }
+        Logger::Log(Logger::Level::Trace, "Scenes are initialized.");
         _isRun = true;
         Logger::Log(Logger::Level::Debug, "Initialize end.");
     }
@@ -77,8 +87,11 @@ void GameApp::Update()
     Time::Update();
     Logger::Log(Logger::Level::Trace, "Time is updated.");
     // TODO Input
-    // TODO Content
-    OnUpdate(Time::GetDeltaTime());
+    for (const auto& scene : _deltaUpdateScene)
+    {
+        scene->Update(Time::GetDeltaTime());
+    }
+    Logger::Log(Logger::Level::Trace, "Scenes are updated.");
     // TODO UI
     Logger::Log(Logger::Level::Debug, "Update end.");
 }
@@ -90,7 +103,11 @@ void GameApp::Render()
     {
         _renderer->BeginDraw();
         // TODO Content
-        OnRender(_renderer);
+        for (const auto& scene : _renderScene)
+        {
+            scene->Render(_renderer);
+        }
+        Logger::Log(Logger::Level::Trace, "Scenes are render.");
         _renderer->EndDraw();
         Logger::Log(Logger::Level::Debug, "Render end.");
     }
@@ -102,10 +119,9 @@ void GameApp::Render()
     }
 }
 
-void GameApp::OnUpdate(float deltaTime)
+void GameApp::AddScene(Scene* scene)
 {
-}
-
-void GameApp::OnRender(const D2DRenderer* renderer)
-{
+    if (dynamic_cast<IInitialize*>(scene)) _initializeScenes.push_back(dynamic_cast<IInitialize*>(scene));
+    if (dynamic_cast<IDeltaUpdate*>(scene)) _deltaUpdateScene.push_back(dynamic_cast<IDeltaUpdate*>(scene));
+    if (dynamic_cast<IRender*>(scene)) _renderScene.push_back(dynamic_cast<IRender*>(scene));
 }

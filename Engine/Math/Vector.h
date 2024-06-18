@@ -3,16 +3,12 @@
 
 struct Vector : D2D1_VECTOR_2F
 {
-    static constexpr Vector Zero = {0.f, 0.f};
+    static Vector Zero();
     Vector(float inX, float inY);
+    explicit Vector(D2D1_SIZE_F size);
 
-    operator D2D1_SIZE_F() const
-    {
-        return D2D1::Size(x, y);
-    }
+    operator D2D1_SIZE_F() const;
+    operator D2D1_POINT_2F() const;
 
-    operator D2D1_POINT_2F() const
-    {
-        return D2D1::Point2F(x, y);
-    }
+    Vector operator/(float rhs) const;
 };

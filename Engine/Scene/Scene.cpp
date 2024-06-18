@@ -1,7 +1,7 @@
 ﻿#include "Scene.h"
 
 Scene::Scene():
-    _parentScene(nullptr), _scale({1.f, 1.f}), _rotation(0.f), _translation({0.f, 0.f}),
+    _parentScene(nullptr), _scale(1.f, 1.f), _rotation(0.f), _translation(0.f, 0.f),
     _transform(D2D1::Matrix3x2F::Identity()), _worldTransform(D2D1::Matrix3x2F::Identity())
 {
 }

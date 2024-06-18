@@ -1,7 +1,7 @@
-﻿#include "Window.h"
+﻿#include "pch.h"
+#include "Window.h"
 
 #include <exception>
-#include <string>
 
 Window::Window(const HINSTANCE instanceHandle, const int showCommand, const LPCWSTR name, const SIZE size):
     _windowHandle(nullptr),

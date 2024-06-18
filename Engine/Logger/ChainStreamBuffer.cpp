@@ -1,4 +1,6 @@
-﻿#include "ChainStreamBuffer.h"
+﻿#include "pch.h"
+#include "ChainStreamBuffer.h"
+
 
 ChainStreamBuffer::ChainStreamBuffer(std::streambuf* buffer1, std::streambuf* buffer2)
     : _buffer1(buffer1), _buffer2(buffer2)

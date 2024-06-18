@@ -1,4 +1,5 @@
-﻿#include "D2DRenderer.h"
+﻿#include "pch.h"
+#include "D2DRenderer.h"
 
 #include <exception>
 #include <string>

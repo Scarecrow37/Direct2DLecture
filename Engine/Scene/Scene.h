@@ -21,7 +21,7 @@ public:
     Matrix GetWorldTransform() const;
 
 protected:
-    void UpdateTransform();
+    virtual void UpdateTransform();
     const Scene* _parentScene;
     Vector _scale;
     float _rotation;
