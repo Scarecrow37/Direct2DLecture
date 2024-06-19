@@ -15,10 +15,20 @@ ConsoleLoggerUnicode::ConsoleLoggerUnicode():
 {
 }
 
-void ConsoleLoggerUnicode::Log(LogLevel level, const char* message)
+void ConsoleLoggerUnicode::Log(const LogLevel level, const wchar_t* message)
 {
+    const auto& levelLogger = _levelLoggers.at(level);
+    if (!levelLogger.IsLogable()) return;
+    const wchar_t* timeString = _clock.GetTimeString();
+    levelLogger.Write(timeString, message);
+    delete timeString;
 }
 
-void ConsoleLoggerUnicode::Log(LogLevel level, const std::string& message)
+void ConsoleLoggerUnicode::Log(const LogLevel level, const std::wstring& message)
 {
+    const auto& levelLogger = _levelLoggers.at(level);
+    if (!levelLogger.IsLogable()) return;
+    const wchar_t* timeString = _clock.GetTimeString();
+    levelLogger.Write(timeString, message.c_str());
+    delete timeString;
 }
