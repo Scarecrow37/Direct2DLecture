@@ -19,11 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ILogger.h" />
+    <ClInclude Include="ILoggerMultibyte.h" />
+    <ClInclude Include="ILoggerUnicode.h" />
     <ClInclude Include="LogLevel.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="ILogger.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
