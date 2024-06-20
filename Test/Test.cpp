@@ -1,5 +1,4 @@
-#include "../Engine/GameApp.h"
-#include "../Engine/Window/Window.h"
+#include "pch.h"
 
 int APIENTRY wWinMain(_In_ const HINSTANCE hInstance,
                       _In_opt_ const HINSTANCE hPrevInstance,
@@ -8,7 +7,8 @@ int APIENTRY wWinMain(_In_ const HINSTANCE hInstance,
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
-    GameApp gameApp(hInstance, nShowCmd, L"Hello, World!");
+    const std::shared_ptr<ILoggerUnicode> logger = std::make_shared<ConsoleLoggerUnicode>();
+    GameApp gameApp(hInstance, nShowCmd, L"Hello, World!", logger);
     gameApp.Initialize();
     gameApp.Run();
     gameApp.Finalize();
