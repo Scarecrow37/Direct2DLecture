@@ -1,6 +1,4 @@
 ﻿#pragma once
-#include <Windows.h>
-#include "../Interfaces/ITimeSystem.h"
 
 class QueryClock final : public ITimeSystem 
 {

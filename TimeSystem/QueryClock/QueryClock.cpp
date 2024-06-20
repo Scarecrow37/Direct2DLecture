@@ -1,9 +1,9 @@
-﻿#include "QueryClock.h"
+﻿#include "pch.h"
+#include "QueryClock.h"
 
 QueryClock::QueryClock(): _frequency({}), _previousTick({}), _currentTick({}), _deltaTime(0.f)
 {
 }
-
 
 float QueryClock::GetDeltaTime() const
 {

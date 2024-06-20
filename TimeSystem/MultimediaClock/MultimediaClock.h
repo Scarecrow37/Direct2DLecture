@@ -1,12 +1,9 @@
 ﻿#pragma once
-#include <Windows.h>
-#include "../Interfaces/ITimeSystem.h"
 
-class MultimediaClock final : public ITimeSystem 
+class MultimediaClock final : public ITimeSystem
 {
 public:
-    MultimediaClock();
-    
+    MultimediaClock() = default;
     float GetDeltaTime() const override;
     void Initialize() override;
     void Update() override;

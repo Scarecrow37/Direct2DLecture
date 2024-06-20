@@ -1,11 +1,9 @@
 ﻿#pragma once
-#include <Windows.h>
-#include "../Interfaces/ITimeSystem.h"
 
 class TickClock final : public ITimeSystem
 {
 public:
-    TickClock();
+    TickClock() = default;
 
     float GetDeltaTime() const override;
     void Initialize() override;

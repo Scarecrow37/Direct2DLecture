@@ -1,4 +1,5 @@
-﻿#include "SimpleClock.h"
+﻿#include "pch.h"
+#include "SimpleClock.h"
 
 SimpleClock::SimpleClock(): _previousClock(0), _currentClock(0), _deltaClock(0)
 {

@@ -1,10 +1,6 @@
-﻿#include "MultimediaClock.h"
-
-#pragma comment (lib, "winmm.lib")
-
-MultimediaClock::MultimediaClock(): _previousTime(0), _currentTime(0), _deltaTime(0)
-{
-}
+﻿#include "pch.h"
+#include "MultimediaClock.h"
+#include <timeapi.h>
 
 float MultimediaClock::GetDeltaTime() const
 {

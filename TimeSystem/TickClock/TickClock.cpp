@@ -1,8 +1,5 @@
-﻿#include "TickClock.h"
-
-TickClock::TickClock(): _previousTime(0), _currentTime(0), _deltaTime(0)
-{
-}
+﻿#include "pch.h"
+#include "TickClock.h"
 
 float TickClock::GetDeltaTime() const
 {

@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include <ctime>
-#include "../Interfaces/ITimeSystem.h"
 
 class SimpleClock final : public ITimeSystem
 {
