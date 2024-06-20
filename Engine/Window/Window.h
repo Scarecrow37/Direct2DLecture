@@ -9,10 +9,9 @@ public:
     Window(Window&& other) noexcept = default;
     Window& operator=(const Window& other) = default;
     Window& operator=(Window&& other) noexcept = default;
-    virtual ~Window() = default;
+    virtual ~Window();
 
     void Initialize();
-    void Finalize() const;
 
     HWND GetHandle() const;
     SIZE GetSize() const;

@@ -1,4 +1,5 @@
-﻿#include "Vector.h"
+﻿#include "pch.h"
+#include "Vector.h"
 
 Vector Vector::Zero()
 {

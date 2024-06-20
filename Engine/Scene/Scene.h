@@ -3,7 +3,6 @@
 #include "../Math/Matrix.h"
 #include "../Math/Vector.h"
 
-
 class Scene
 {
 public:

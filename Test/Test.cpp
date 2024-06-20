@@ -11,5 +11,4 @@ int APIENTRY wWinMain(_In_ const HINSTANCE hInstance,
     GameApp gameApp(hInstance, nShowCmd, L"Hello, World!", logger);
     gameApp.Initialize();
     gameApp.Run();
-    gameApp.Finalize();
 }

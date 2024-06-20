@@ -15,6 +15,8 @@
 #include "../Logger/Interfaces/ILoggerUnicode.h"
 #include "../Exception/Exception.h"
 #include "../TimeSystem/Interfaces/ITimeSystem.h"
+#include "Math/Matrix.h"
+#include "Math/Vector.h"
 
 #include "Time/Time.h"
 

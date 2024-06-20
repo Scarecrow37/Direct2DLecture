@@ -15,6 +15,15 @@ Window::Window(const HINSTANCE instanceHandle, const int showCommand, const LPCW
     _size(size),
     _showCommand(showCommand)
 {
+    _logger->Log(LogLevel::Trace, L"Window constructor start.");
+    _logger->Log(LogLevel::Trace, L"Window constructor end.");
+}
+
+Window::~Window()
+{
+    _logger->Log(LogLevel::Trace, L"Window destructor start.");
+    if (_windowHandle != nullptr) DestroyWindow(_windowHandle);
+    _logger->Log(LogLevel::Trace, L"Window destructor end.");
 }
 
 void Window::Initialize()
@@ -32,13 +41,6 @@ void Window::Initialize()
         _logger->Log(LogLevel::Error, exception.UnicodeWhat());
         throw Exception(L"Window initialize fail.");
     }
-}
-
-void Window::Finalize() const
-{
-    _logger->Log(LogLevel::Trace, L"Window finalize start.");
-    if (_windowHandle != nullptr) DestroyWindow(_windowHandle);
-    _logger->Log(LogLevel::Trace, L"Window finalize end.");
 }
 
 void Window::Register() const

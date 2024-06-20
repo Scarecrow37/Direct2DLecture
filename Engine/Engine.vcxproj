@@ -21,18 +21,34 @@
   <ItemGroup>
     <ClInclude Include="Framework.h" />
     <ClInclude Include="GameApp.h" />
+    <ClInclude Include="Math\Matrix.h" />
+    <ClInclude Include="Math\Vector.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Renderer\Converter.h" />
     <ClInclude Include="Renderer\D2DRenderer.h" />
+    <ClInclude Include="Renderer\Decoder.h" />
+    <ClInclude Include="Renderer\Factory.h" />
+    <ClInclude Include="Renderer\Frame.h" />
+    <ClInclude Include="Renderer\ImagingFactory.h" />
+    <ClInclude Include="Renderer\RenderTarget.h" />
     <ClInclude Include="TargetVersion.h" />
     <ClInclude Include="Time\Time.h" />
     <ClInclude Include="Window\Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameApp.cpp" />
+    <ClCompile Include="Math\Matrix.cpp" />
+    <ClCompile Include="Math\Vector.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Renderer\Converter.cpp" />
     <ClCompile Include="Renderer\D2DRenderer.cpp" />
+    <ClCompile Include="Renderer\Decoder.cpp" />
+    <ClCompile Include="Renderer\Factory.cpp" />
+    <ClCompile Include="Renderer\Frame.cpp" />
+    <ClCompile Include="Renderer\ImagingFactory.cpp" />
+    <ClCompile Include="Renderer\RenderTarget.cpp" />
     <ClCompile Include="Time\Time.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>

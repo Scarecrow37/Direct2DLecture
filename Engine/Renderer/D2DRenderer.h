@@ -1,18 +1,18 @@
 ﻿#pragma once
-
+#include "Factory.h"
+#include "ImagingFactory.h"
 
 class D2DRenderer
 {
 public:
-    D2DRenderer(const std::shared_ptr<ILoggerUnicode>& logger);
+    explicit D2DRenderer(const std::shared_ptr<ILoggerUnicode>& logger);
     D2DRenderer(const D2DRenderer& other) = default;
     D2DRenderer(D2DRenderer&& other) noexcept = default;
     D2DRenderer& operator=(const D2DRenderer& other) = default;
     D2DRenderer& operator=(D2DRenderer&& other) noexcept = default;
-    virtual ~D2DRenderer() = default;
+    virtual ~D2DRenderer();
 
     virtual void Initialize(HWND windowHandle, unsigned int width, unsigned int height);
-    virtual void Finalize() const;
 
     void BeginDraw() const;
     void EndDraw() const;
@@ -23,14 +23,11 @@ public:
 
 protected:
     virtual void InitializeCom();
-    virtual void CreateFactory();
-    virtual void CreateImagingFactory();
-    virtual void CreateRenderTarget(HWND windowHandle, unsigned int width, unsigned int height);
 
     std::shared_ptr<ILoggerUnicode> _logger;
 
 private:
-    ID2D1Factory* _factory;
-    IWICImagingFactory* _imageFactory;
-    ID2D1HwndRenderTarget* _renderTarget;
+    Factory _factory;
+    ImagingFactory _imagingFactory;
+    RenderTarget _renderTarget;
 };
