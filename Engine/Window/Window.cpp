@@ -1,11 +1,12 @@
 ﻿#include "pch.h"
 #include "Window.h"
 
-#include <exception>
-
-Window::Window(const HINSTANCE instanceHandle, const int showCommand, const LPCWSTR name, const SIZE size):
+Window::Window(const HINSTANCE instanceHandle, const int showCommand, const LPCWSTR name, const SIZE size,
+               const std::shared_ptr<ILoggerUnicode>& logger):
+    _logger(logger),
     _windowHandle(nullptr),
-    _windowClass{
+    _windowClass
+    {
         sizeof(WNDCLASSEX), CS_HREDRAW | CS_VREDRAW, DefaultWindowProcedure,
         NULL, NULL, instanceHandle, LoadIcon(instanceHandle, IDI_APPLICATION),
         LoadCursor(instanceHandle, IDC_ARROW), static_cast<HBRUSH>(GetStockObject(WHITE_BRUSH)),
@@ -18,39 +19,63 @@ Window::Window(const HINSTANCE instanceHandle, const int showCommand, const LPCW
 
 void Window::Initialize()
 {
-    if (Register() == FALSE)
-        throw std::exception(std::to_string(GetLastError()).append(", Register window class fail.").c_str());
-    RECT rect = {0, 0, _size.cx, _size.cy};
-    if (AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, FALSE) == FALSE)
-        throw std::exception(std::to_string(GetLastError()).append(", Adjust window rect fail.").c_str());
-    _windowHandle = Create(rect);
-    if (_windowHandle == nullptr)
-        throw std::exception(std::to_string(GetLastError()).append(", Create window fail.").c_str());
-    Show();
+    try
+    {
+        _logger->Log(LogLevel::Trace, L"Window initialize start.");
+        Register();
+        Create(AdjustWindowRect());
+        Show();
+        _logger->Log(LogLevel::Trace, L"Window initialize end.");
+    }
+    catch (const Exception& exception)
+    {
+        _logger->Log(LogLevel::Error, exception.UnicodeWhat());
+        throw Exception(L"Window initialize fail.");
+    }
 }
 
-void Window::Finalize()
+void Window::Finalize() const
 {
     if (_windowHandle != nullptr) DestroyWindow(_windowHandle);
 }
 
-ATOM Window::Register() const
+void Window::Register() const
 {
-    return RegisterClassEx(&_windowClass);
+    _logger->Log(LogLevel::Trace, L"Window register start.");
+    const ATOM result = RegisterClassEx(&_windowClass);
+    if (result == FALSE) throw Exception(std::to_wstring(GetLastError()).append(L", Register window class fail."));
+    _logger->Log(LogLevel::Trace, L"Window register end.");
 }
 
-HWND Window::Create(const RECT windowRect)
+RECT Window::AdjustWindowRect()
 {
-    return CreateWindow(_windowClass.lpszClassName, _windowClass.lpszClassName, WS_OVERLAPPEDWINDOW,
-                        windowRect.left, windowRect.top, windowRect.right - windowRect.left,
-                        windowRect.bottom - windowRect.top, nullptr, nullptr,
-                        _windowClass.hInstance, nullptr);
+    _logger->Log(LogLevel::Trace, L"Window adjust window rect start.");
+    RECT rect = {0, 0, _size.cx, _size.cy};
+    const BOOL result = ::AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, FALSE);
+    if (result == FALSE) throw Exception(std::to_wstring(GetLastError()).append(L", Adjust window rect fail."));
+    _logger->Log(LogLevel::Trace, L"Window adjust window rect end.");
+    return rect;
+}
+
+void Window::Create(const RECT windowRect)
+{
+    _logger->Log(LogLevel::Trace, L"Window create start.");
+    _windowHandle = CreateWindow(_windowClass.lpszClassName, _windowClass.lpszClassName, WS_OVERLAPPEDWINDOW,
+                                 windowRect.left, windowRect.top, windowRect.right - windowRect.left,
+                                 windowRect.bottom - windowRect.top, nullptr, nullptr,
+                                 _windowClass.hInstance, nullptr);
+    if (_windowHandle == nullptr) throw Exception(std::to_wstring(GetLastError()).append(L", Create window fail."));
+    _logger->Log(LogLevel::Trace, L"Window create end.");
 }
 
 void Window::Show()
 {
-    ShowWindow(_windowHandle, _showCommand);
-    UpdateWindow(_windowHandle);
+    _logger->Log(LogLevel::Trace, L"Window show start.");
+    BOOL result = ShowWindow(_windowHandle, _showCommand);
+    if (result == FALSE) throw Exception(std::to_wstring(GetLastError()).append(L", Show window fail."));
+    result = UpdateWindow(_windowHandle);
+    if (result == FALSE) throw Exception(std::to_wstring(GetLastError()).append(L", Update window fail."));
+    _logger->Log(LogLevel::Trace, L"Window show end.");
 }
 
 HWND Window::GetHandle() const
@@ -79,7 +104,7 @@ void Window::PlaceInCenterOfScreen(const HWND windowHandle)
     const int screenHeight = GetSystemMetrics(SM_CYSCREEN);
     RECT rect;
     GetClientRect(windowHandle, &rect);
-    AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, FALSE);
+    ::AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, FALSE);
     const int clientWidth = rect.right - rect.left;
     const int clientHeight = rect.bottom - rect.top;
     SetWindowPos(windowHandle, nullptr, screenWidth / 2 - clientWidth / 2, screenHeight / 2 - clientHeight / 2,

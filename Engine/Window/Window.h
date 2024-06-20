@@ -1,16 +1,18 @@
 ﻿#pragma once
-#include "../Framework.h"
-#include "../Interfaces/IFinalize.h"
-#include "../Interfaces/IInitialize.h"
 
-class Window : public IInitialize, public IFinalize
+class Window
 {
 public:
-    Window(HINSTANCE instanceHandle, int showCommand, LPCWSTR name, SIZE size);
-    ~Window() override = default;
+    Window(HINSTANCE instanceHandle, int showCommand, LPCWSTR name, SIZE size,
+           const std::shared_ptr<ILoggerUnicode>& logger);
+    Window(const Window& other) = default;
+    Window(Window&& other) noexcept = default;
+    Window& operator=(const Window& other) = default;
+    Window& operator=(Window&& other) noexcept = default;
+    virtual ~Window() = default;
 
-    void Initialize() override;
-    void Finalize() override;
+    void Initialize();
+    void Finalize() const;
 
     HWND GetHandle() const;
     SIZE GetSize() const;
@@ -18,8 +20,11 @@ public:
     LONG GetHeight() const;
 
 protected:
-    virtual ATOM Register() const;
-    virtual HWND Create(RECT windowRect);
+    std::shared_ptr<ILoggerUnicode> _logger;
+
+    virtual void Register() const;
+    virtual RECT AdjustWindowRect();
+    virtual void Create(RECT windowRect);
     virtual void Show();
 
     HWND _windowHandle;
