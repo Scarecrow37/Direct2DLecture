@@ -7,7 +7,6 @@ class Time
 public:
     enum class TimeSystems;
 
-public:
     Time(const Time& other) = delete;
     Time(Time&& other) noexcept = delete;
     Time& operator=(const Time& other) = delete;

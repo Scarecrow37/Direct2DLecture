@@ -1,8 +1,9 @@
-﻿#include "Time.h"
-#include "MultimediaClock/MultimediaClock.h"
-#include "QueryClock/QueryClock.h"
-#include "SimpleClock/SimpleClock.h"
-#include "TickClock/TickClock.h"
+﻿#include "pch.h"
+#include "Time.h"
+#include "../../TimeSystem/MultimediaClock/MultimediaClock.h"
+#include "../../TimeSystem/QueryClock/QueryClock.h"
+#include "../../TimeSystem/SimpleClock/SimpleClock.h"
+#include "../../TimeSystem/TickClock/TickClock.h"
 
 Time::~Time()
 {
