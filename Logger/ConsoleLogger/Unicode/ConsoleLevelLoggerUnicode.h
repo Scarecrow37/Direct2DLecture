@@ -6,7 +6,7 @@ class ConsoleLevelLoggerUnicode final : public ConsoleLevelLogger
 public:
     ConsoleLevelLoggerUnicode(const wchar_t* name, std::wostream* stream,
                               WORD foreground = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE,
-                              const wchar_t* format = L"%s %10s\t%s");
+                              const wchar_t* format = L"%ls %10ls\t%ls");
 
     void Write(const wchar_t* timeString, const wchar_t* message) const;
 

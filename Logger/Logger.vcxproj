@@ -19,12 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ILogger\ILogger.vcxproj">
-      <Project>{9765ab05-1cb1-48b2-a175-f453bfc38860}</Project>
-      <Name>ILogger</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Clock\Clock.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -102,6 +96,7 @@
     <ClCompile Include="Clock\MultibyteClock.cpp" />
     <ClCompile Include="Clock\UnicodeClock.cpp" />
     <ClCompile Include="ConsoleLogger\ConsoleLevelLogger.cpp" />
+    <ClCompile Include="ConsoleLogger\ConsoleLogger.cpp" />
     <ClCompile Include="ConsoleLogger\Multibyte\ConsoleLevelLoggerMultibyte.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -336,13 +331,17 @@
     <ClInclude Include="Clock\MultibyteClock.h" />
     <ClInclude Include="Clock\UnicodeClock.h" />
     <ClInclude Include="ConsoleLogger\ConsoleLevelLogger.h" />
+    <ClInclude Include="ConsoleLogger\ConsoleLogger.h" />
     <ClInclude Include="ConsoleLogger\Multibyte\ConsoleLevelLoggerMultibyte.h" />
     <ClInclude Include="ConsoleLogger\Multibyte\ConsoleLoggerMultibyte.h" />
     <ClInclude Include="ConsoleLogger\Unicode\ConsoleLevelLoggerUnicode.h" />
     <ClInclude Include="ConsoleLogger\Unicode\ConsoleLoggerUnicode.h" />
     <ClInclude Include="Framework.h" />
+    <ClInclude Include="Interfaces\ILoggerMultibyte.h" />
+    <ClInclude Include="Interfaces\ILoggerUnicode.h" />
     <ClInclude Include="LevelLogger.h" />
     <ClInclude Include="LoggerBase.h" />
+    <ClInclude Include="LogLevel.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="TargetVersion.h" />
   </ItemGroup>

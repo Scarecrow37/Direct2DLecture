@@ -15,7 +15,7 @@ void ConsoleLevelLoggerUnicode::Write(const wchar_t* timeString, const wchar_t* 
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), _foreground);
     constexpr size_t bufferSize = 1024;
     wchar_t buffer[bufferSize];
-    int _ = wprintf_s(buffer, bufferSize, _format, timeString, _name, message);
+    int _ = swprintf_s(buffer, bufferSize, _format, timeString, _name, message);
     *_stream << buffer << std::endl;
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 }

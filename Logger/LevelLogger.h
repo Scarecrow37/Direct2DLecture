@@ -5,8 +5,8 @@ class LevelLogger
 public:
     LevelLogger();
 
-    inline void SetLogable(bool isLogable);
-    inline bool IsLogable() const;
+    void SetLogable(bool isLogable);
+    bool IsLogable() const;
 
 private:
     bool _logable;

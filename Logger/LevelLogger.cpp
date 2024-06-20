@@ -5,12 +5,12 @@ LevelLogger::LevelLogger(): _logable(true)
 {
 }
 
-inline void LevelLogger::SetLogable(const bool isLogable)
+void LevelLogger::SetLogable(const bool isLogable)
 {
     _logable = isLogable;
 }
 
-inline bool LevelLogger::IsLogable() const
+bool LevelLogger::IsLogable() const
 {
     return _logable;
 }

@@ -9,7 +9,7 @@ public:
     ConsoleLevelLogger(ConsoleLevelLogger&& other) noexcept = default;
     ConsoleLevelLogger& operator=(const ConsoleLevelLogger& other) = default;
     ConsoleLevelLogger& operator=(ConsoleLevelLogger&& other) noexcept = default;
-    virtual ~ConsoleLevelLogger();
+    virtual ~ConsoleLevelLogger() = default;
 
 protected:
     WORD _foreground;

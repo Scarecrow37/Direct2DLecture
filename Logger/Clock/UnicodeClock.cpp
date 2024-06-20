@@ -7,8 +7,9 @@ UnicodeClock::UnicodeClock(const wchar_t* format) : _format(format)
 
 wchar_t* UnicodeClock::GetTimeString() const
 {
-    wchar_t* buffer = new wchar_t[1024];
+    constexpr size_t bufferSize = 1024;
+    wchar_t* buffer = new wchar_t[bufferSize];
     const std::tm timeStruct = GetTimeStruct();
-    auto _ = std::wcsftime(buffer, sizeof(buffer), _format, &timeStruct);
+    auto _ = std::wcsftime(buffer, bufferSize, _format, &timeStruct);
     return buffer;
 }

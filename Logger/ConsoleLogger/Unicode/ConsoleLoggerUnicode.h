@@ -2,10 +2,10 @@
 #include <map>
 
 #include "ConsoleLevelLoggerUnicode.h"
-#include "../../LoggerBase.h"
+#include "../ConsoleLogger.h"
 #include "../../Clock/UnicodeClock.h"
 
-class ConsoleLoggerUnicode final : public LoggerBase, public ILoggerUnicode
+class ConsoleLoggerUnicode final : public ConsoleLogger, public ILoggerUnicode
 {
 public:
     ConsoleLoggerUnicode();

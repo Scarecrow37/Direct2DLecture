@@ -2,10 +2,10 @@
 #include <map>
 
 #include "ConsoleLevelLoggerMultibyte.h"
-#include "../../LoggerBase.h"
+#include "../ConsoleLogger.h"
 #include "../../Clock/MultibyteClock.h"
 
-class ConsoleLoggerMultibyte final : public LoggerBase, public ILoggerMultibyte
+class ConsoleLoggerMultibyte final : public ConsoleLogger, public ILoggerMultibyte
 {
 public:
     ConsoleLoggerMultibyte();

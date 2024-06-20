@@ -3,8 +3,8 @@
 #define PCH_H
 
 #include "Framework.h"
-#include "../ILogger/LogLevel.h"
-#include "../ILogger/ILoggerMultibyte.h"
-#include "../ILogger/ILoggerUnicode.h"
+#include "LogLevel.h"
+#include "Interfaces/ILoggerMultibyte.h"
+#include "Interfaces/ILoggerUnicode.h"
 
 #endif
