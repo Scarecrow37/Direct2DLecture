@@ -1,13 +1,12 @@
 ﻿#pragma once
 
-class Scene;
-class D2DRenderer;
 class Window;
+class D2DRenderer;
 
 class GameApp
 {
 public:
-   GameApp(HINSTANCE instanceHandle, int showCommand, const std::wstring& gameName,
+   GameApp(HINSTANCE instanceHandle, int showCommand, LPCWSTR gameName,
            const std::shared_ptr<ILoggerUnicode>& logger);
    GameApp(const GameApp& other) = default;
    GameApp(GameApp&& other) noexcept = default;
@@ -29,5 +28,6 @@ protected:
    D2DRenderer* _renderer;
 
 private:
+   std::wstring _name;
    bool _isRun;
 };

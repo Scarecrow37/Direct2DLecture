@@ -5,10 +5,10 @@
 #include "Renderer/D2DRenderer.h"
 #include "Scene/Scene.h"
 
-GameApp::GameApp(const HINSTANCE instanceHandle, const int showCommand, const std::wstring& gameName,
+GameApp::GameApp(const HINSTANCE instanceHandle, const int showCommand, const LPCWSTR gameName,
                  const std::shared_ptr<ILoggerUnicode>& logger):
     _logger(logger),
-    _window(new Window(instanceHandle, showCommand, gameName.c_str(), {1920, 1080}, _logger)),
+    _window(new Window(instanceHandle, showCommand, gameName, {1920, 1080}, _logger)),
     _renderer(new D2DRenderer(_logger)),
     _isRun(false)
 {

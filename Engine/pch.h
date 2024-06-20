@@ -3,18 +3,18 @@
 #define PCH_H
 
 #include "Framework.h"
+#include <memory>
+#include <string>
 #include <d2d1_1.h>
 #include <d2d1_1helper.h>
 #include <dwrite.h>
 #include <wincodec.h>
 #include <comdef.h>
 #include <d2d1_1helper.h>
-#include <string>
-#include <memory>
-#include "../ILogger/LogLevel.h"
-#include "../ILogger/ILoggerUnicode.h"
+#include "../Logger/LogLevel.h"
+#include "../Logger/Interfaces/ILoggerUnicode.h"
 #include "../Exception/Exception.h"
-#include "../ITimeSystem/ITimeSystem.h"
+#include "../TimeSystem/Interfaces/ITimeSystem.h"
 
 #include "Time/Time.h"
 
