@@ -1,17 +1,16 @@
 ﻿#include "pch.h"
 #include "GameApp.h"
 
-#include "Interfaces/IDeltaUpdate.h"
-#include "Interfaces/IRender.h"
-#include "Logger/Logger.h"
 #include "Window/Window.h"
 #include "Renderer/D2DRenderer.h"
 #include "Scene/Scene.h"
-#include "TimeSystem/Time.h"
 
-GameApp::GameApp(const HINSTANCE instanceHandle, const int showCommand, const std::wstring& gameName):
-    _window(new Window(instanceHandle, showCommand, gameName.c_str(), {1920, 1080})),
-    _renderer(new D2DRenderer), _isRun(false)
+GameApp::GameApp(const HINSTANCE instanceHandle, const int showCommand, const std::wstring& gameName,
+                 const std::shared_ptr<ILoggerUnicode>& logger):
+    _logger(logger),
+    _window(new Window(instanceHandle, showCommand, gameName.c_str(), {1920, 1080}, _logger)),
+    _renderer(new D2DRenderer(_logger)),
+    _isRun(false)
 {
 }
 
@@ -21,107 +20,111 @@ GameApp::~GameApp()
     delete _window;
 }
 
-void GameApp::Initialize(const bool isRelease, const Logger::Level leastLogable)
+void GameApp::Initialize()
 {
-    Logger::Initialize(!isRelease);
-    Logger::SetLeastLogable(leastLogable);
-    Logger::Log(Logger::Level::Debug, "Initialize start.");
     try
     {
+        _logger->Log(LogLevel::Trace, L"GameApp initialize start.");
         _window->Initialize();
-        Logger::Log(Logger::Level::Trace, "Window is initialized.");
         _renderer->Initialize(_window->GetHandle(), _window->GetWidth(), _window->GetHeight());
-        Logger::Log(Logger::Level::Trace, "Renderer is initialized.");
-        for (const auto& scene : _initializeScenes)
-        {
-            scene->Initialize();
-        }
-        Logger::Log(Logger::Level::Trace, "Scenes are initialized.");
+        Time::Initialize();
+        // for (const auto& scene : _initializeScenes)
+        // {
+        //     scene->Initialize();
+        // }
         _isRun = true;
-        Logger::Log(Logger::Level::Debug, "Initialize end.");
+        _logger->Log(LogLevel::Trace, L"GameApp initialize end.");
     }
-    catch (const std::exception& exception)
+    catch (const Exception& exception)
     {
-        Logger::Log(Logger::Level::Error, exception.what());
-        Logger::Log(Logger::Level::Fatal, "Initialize fail.");
+        _logger->Log(LogLevel::Error, exception.UnicodeWhat());
+        _logger->Log(LogLevel::Fatal, L"GameApp initialize fail.");
         _isRun = false;
     }
 }
 
 void GameApp::Run()
 {
-    MSG message;
-    while (_isRun)
+    try
     {
-        if (PeekMessage(&message, nullptr, 0, 0, PM_REMOVE))
+        _logger->Log(LogLevel::Trace, L"GameApp run start.");
+        MSG message;
+        while (_isRun)
         {
-            if (message.message == WM_QUIT)
+            if (PeekMessage(&message, nullptr, 0, 0, PM_REMOVE))
             {
-                Logger::Log(Logger::Level::Info, "Receive WM_QUIT message.");
-                break;
+                if (message.message == WM_QUIT)
+                {
+                    _logger->Log(LogLevel::Information, L"Receive WM_QUIT message.");
+                    break;
+                }
+                TranslateMessage(&message);
+                DispatchMessage(&message);
             }
-            TranslateMessage(&message);
-            DispatchMessage(&message);
+            else
+            {
+                Update();
+                Render();
+            }
         }
-        else
-        {
-            Update();
-            Render();
-        }
+        _logger->Log(LogLevel::Trace, L"GameApp run end.");
+    }
+    catch (const Exception& exception)
+    {
+        _logger->Log(LogLevel::Error, exception.UnicodeWhat());
+        _logger->Log(LogLevel::Fatal, L"GameApp run fail.");
+        _isRun = false;
     }
 }
 
 void GameApp::Finalize()
 {
-    Logger::Log(Logger::Level::Debug, "Finalize start.");
+    _logger->Log(LogLevel::Trace, L"GameApp finalize start.");
     _renderer->Finalize();
-    Logger::Log(Logger::Level::Trace, "Renderer is finalized.");
     _window->Finalize();
-    Logger::Log(Logger::Level::Trace, "Window is finalized.");
-    Logger::Log(Logger::Level::Debug, "Finalize end.");
+    _logger->Log(LogLevel::Trace, L"GameApp finalize end.");
 }
 
 void GameApp::Update()
 {
-    Logger::Log(Logger::Level::Debug, "Update start.");
-    Time::Update();
-    Logger::Log(Logger::Level::Trace, "Time is updated.");
-    // TODO Input
-    for (const auto& scene : _deltaUpdateScene)
+    try
     {
-        scene->Update(Time::GetDeltaTime());
+        _logger->Log(LogLevel::Trace, L"GameApp update start.");
+        Time::Update();
+        // TODO Input
+        // for (const auto& scene : _deltaUpdateScene)
+        // {
+        //     scene->Update(Time::GetDeltaTime());
+        // }
+        // TODO UI
+        _logger->Log(LogLevel::Trace, L"GameApp update end.");
     }
-    Logger::Log(Logger::Level::Trace, "Scenes are updated.");
-    // TODO UI
-    Logger::Log(Logger::Level::Debug, "Update end.");
+    catch (const Exception& exception)
+    {
+        _logger->Log(LogLevel::Error, exception.UnicodeWhat());
+        _logger->Log(LogLevel::Fatal, L"GameApp update fail.");
+        throw;
+    }
 }
 
 void GameApp::Render()
 {
-    Logger::Log(Logger::Level::Debug, "Render start.");
     try
     {
+        _logger->Log(LogLevel::Trace, L"GameApp render start.");
         _renderer->BeginDraw();
         // TODO Content
-        for (const auto& scene : _renderScene)
-        {
-            scene->Render(_renderer);
-        }
-        Logger::Log(Logger::Level::Trace, "Scenes are render.");
+        // for (const auto& scene : _renderScene)
+        // {
+        //     scene->Render(_renderer);
+        // }
         _renderer->EndDraw();
-        Logger::Log(Logger::Level::Debug, "Render end.");
+        _logger->Log(LogLevel::Trace, L"GameApp render end.");
     }
-    catch (const std::exception& exception)
+    catch (const Exception& exception)
     {
-        Logger::Log(Logger::Level::Error, exception.what());
-        Logger::Log(Logger::Level::Fatal, "Rendering is fail.");
-        _isRun = false;
+        _logger->Log(LogLevel::Error, exception.UnicodeWhat());
+        _logger->Log(LogLevel::Fatal, L"GameApp render fail.");
+        throw;
     }
-}
-
-void GameApp::AddScene(Scene* scene)
-{
-    if (dynamic_cast<IInitialize*>(scene)) _initializeScenes.push_back(dynamic_cast<IInitialize*>(scene));
-    if (dynamic_cast<IDeltaUpdate*>(scene)) _deltaUpdateScene.push_back(dynamic_cast<IDeltaUpdate*>(scene));
-    if (dynamic_cast<IRender*>(scene)) _renderScene.push_back(dynamic_cast<IRender*>(scene));
 }

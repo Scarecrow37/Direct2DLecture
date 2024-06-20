@@ -1,36 +1,32 @@
 ﻿#pragma once
-#include <vector>
-
-#include "Framework.h"
-#include "Logger/Logger.h"
 
 class Scene;
-class IRender;
-class IDeltaUpdate;
-class IInitialize;
 class D2DRenderer;
 class Window;
 
 class GameApp
 {
 public:
-   GameApp(HINSTANCE instanceHandle, int showCommand, const std::wstring& gameName);
+   GameApp(HINSTANCE instanceHandle, int showCommand, const std::wstring& gameName,
+           const std::shared_ptr<ILoggerUnicode>& logger);
+   GameApp(const GameApp& other) = default;
+   GameApp(GameApp&& other) noexcept = default;
+   GameApp& operator=(const GameApp& other) = default;
+   GameApp& operator=(GameApp&& other) noexcept = default;
    virtual ~GameApp();
-   virtual void Initialize(bool isRelease = true, Logger::Level leastLogable = Logger::Level::Warning);
+
+   virtual void Initialize();
    virtual void Run();
    virtual void Finalize();
 
 protected:
    virtual void Update();
    virtual void Render();
-   virtual void AddScene(Scene* scene);
+
+   std::shared_ptr<ILoggerUnicode> _logger;
 
    Window* _window;
    D2DRenderer* _renderer;
-
-   std::vector<IInitialize*> _initializeScenes;
-   std::vector<IDeltaUpdate*> _deltaUpdateScene;
-   std::vector<IRender*> _renderScene;
 
 private:
    bool _isRun;

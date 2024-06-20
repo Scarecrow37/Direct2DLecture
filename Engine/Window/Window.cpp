@@ -36,7 +36,9 @@ void Window::Initialize()
 
 void Window::Finalize() const
 {
+    _logger->Log(LogLevel::Trace, L"Window finalize start.");
     if (_windowHandle != nullptr) DestroyWindow(_windowHandle);
+    _logger->Log(LogLevel::Trace, L"Window finalize end.");
 }
 
 void Window::Register() const
@@ -71,6 +73,7 @@ void Window::Create(const RECT windowRect)
 void Window::Show()
 {
     _logger->Log(LogLevel::Trace, L"Window show start.");
+    if (_windowHandle == nullptr) throw Exception(L" No window handle exist. Window show fail.");
     BOOL result = ShowWindow(_windowHandle, _showCommand);
     if (result == FALSE) throw Exception(std::to_wstring(GetLastError()).append(L", Show window fail."));
     result = UpdateWindow(_windowHandle);

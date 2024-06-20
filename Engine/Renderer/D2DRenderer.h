@@ -1,26 +1,33 @@
 ﻿#pragma once
 
-#include <d2d1.h>
-#include <wincodec.h>
 
-#include "../Interfaces/IFinalize.h"
-
-class D2DRenderer : public IFinalize
+class D2DRenderer
 {
 public:
-    D2DRenderer();
-    ~D2DRenderer() override = default;
+    D2DRenderer(const std::shared_ptr<ILoggerUnicode>& logger);
+    D2DRenderer(const D2DRenderer& other) = default;
+    D2DRenderer(D2DRenderer&& other) noexcept = default;
+    D2DRenderer& operator=(const D2DRenderer& other) = default;
+    D2DRenderer& operator=(D2DRenderer&& other) noexcept = default;
+    virtual ~D2DRenderer() = default;
 
     virtual void Initialize(HWND windowHandle, unsigned int width, unsigned int height);
-    void Finalize() override;
+    virtual void Finalize() const;
 
     void BeginDraw() const;
     void EndDraw() const;
     void SetTransform(const D2D1_MATRIX_3X2_F& transform) const;
 
-    
     void DrawBitmap(ID2D1Bitmap* bitmap) const;
     void BitmapFromFile(const wchar_t* path, ID2D1Bitmap** bitmap) const;
+
+protected:
+    virtual void InitializeCom();
+    virtual void CreateFactory();
+    virtual void CreateImagingFactory();
+    virtual void CreateRenderTarget(HWND windowHandle, unsigned int width, unsigned int height);
+
+    std::shared_ptr<ILoggerUnicode> _logger;
 
 private:
     ID2D1Factory* _factory;
