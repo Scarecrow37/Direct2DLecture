@@ -21,16 +21,8 @@
   <ItemGroup>
     <ClInclude Include="Framework.h" />
     <ClInclude Include="GameApp.h" />
-    <ClInclude Include="Interfaces\IDeltaUpdate.h" />
-    <ClInclude Include="Interfaces\IFinalize.h" />
-    <ClInclude Include="Interfaces\IInitialize.h" />
-    <ClInclude Include="Interfaces\IRender.h" />
-    <ClInclude Include="Interfaces\IUpdate.h" />
     <ClInclude Include="Loader\BitmapLoader.h" />
     <ClInclude Include="Loader\ILoader.h" />
-    <ClInclude Include="Logger\ChainStreamBuffer.h" />
-    <ClInclude Include="Logger\Logger.h" />
-    <ClInclude Include="Logger\LogStream.h" />
     <ClInclude Include="Math\Matrix.h" />
     <ClInclude Include="Math\Vector.h" />
     <ClInclude Include="pch.h" />
@@ -38,12 +30,7 @@
     <ClInclude Include="Scene\BitmapScene.h" />
     <ClInclude Include="Scene\Scene.h" />
     <ClInclude Include="TargetVersion.h" />
-    <ClInclude Include="TimeSystem\Interfaces\ITimeSystem.h" />
-    <ClInclude Include="TimeSystem\MultimediaClock\MultimediaClock.h" />
-    <ClInclude Include="TimeSystem\QueryClock\QueryClock.h" />
-    <ClInclude Include="TimeSystem\SimpleClock\SimpleClock.h" />
-    <ClInclude Include="TimeSystem\TickClock\TickClock.h" />
-    <ClInclude Include="TimeSystem\Time.h" />
+    <ClInclude Include="Time\Time.h" />
     <ClInclude Include="Utilities\Console.h" />
     <ClInclude Include="Utilities\LocalTime.h" />
     <ClInclude Include="Window\Window.h" />
@@ -52,9 +39,6 @@
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="Loader\BitmapLoader.cpp" />
     <ClCompile Include="Loader\ILoader.cpp" />
-    <ClCompile Include="Logger\ChainStreamBuffer.cpp" />
-    <ClCompile Include="Logger\Logger.cpp" />
-    <ClCompile Include="Logger\LogStream.cpp" />
     <ClCompile Include="Math\Matrix.cpp" />
     <ClCompile Include="Math\Vector.cpp" />
     <ClCompile Include="pch.cpp">
@@ -63,11 +47,80 @@
     <ClCompile Include="Renderer\D2DRenderer.cpp" />
     <ClCompile Include="Scene\BitmapScene.cpp" />
     <ClCompile Include="Scene\Scene.cpp" />
-    <ClCompile Include="TimeSystem\MultimediaClock\MultimediaClock.cpp" />
-    <ClCompile Include="TimeSystem\QueryClock\QueryClock.cpp" />
-    <ClCompile Include="TimeSystem\SimpleClock\SimpleClock.cpp" />
-    <ClCompile Include="TimeSystem\TickClock\TickClock.cpp" />
-    <ClCompile Include="TimeSystem\Time.cpp" />
+    <ClCompile Include="Time\Time.cpp">
+      <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <Optimization>Disabled</Optimization>
+      <SupportJustMyCode>true</SupportJustMyCode>
+      <AssemblerOutput>NoListing</AssemblerOutput>
+      <AssemblerListingLocation>x64\Debug\</AssemblerListingLocation>
+      <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
+      <BrowseInformation>false</BrowseInformation>
+      <BrowseInformationFile>x64\Debug\</BrowseInformationFile>
+      <CompileAs>Default</CompileAs>
+      <ConformanceMode>true</ConformanceMode>
+      <DiagnosticsFormat>Column</DiagnosticsFormat>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <ErrorReporting>Prompt</ErrorReporting>
+      <ExpandAttributedSource>false</ExpandAttributedSource>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <EnableASAN>false</EnableASAN>
+      <EnableFuzzer>false</EnableFuzzer>
+      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <GenerateModuleDependencies>false</GenerateModuleDependencies>
+      <GenerateSourceDependencies>false</GenerateSourceDependencies>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard_C>Default</LanguageStandard_C>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ModuleDependenciesFile>x64\Debug\</ModuleDependenciesFile>
+      <ModuleOutputFile>x64\Debug\</ModuleOutputFile>
+      <OmitDefaultLibName>false</OmitDefaultLibName>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <ObjectFileName>x64\Debug\</ObjectFileName>
+      <CallingConvention>Cdecl</CallingConvention>
+      <ProgramDataBaseFileName>D:\Dosuha\CPP\Direct2DLecture\x64\Debug\Engine.pdb</ProgramDataBaseFileName>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>x64\Debug\Engine.pch</PrecompiledHeaderOutputFile>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessKeepComments>false</PreprocessKeepComments>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+      <ShowIncludes>false</ShowIncludes>
+      <SourceDependenciesFile>x64\Debug\</SourceDependenciesFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
+      <SpectreMitigation>false</SpectreMitigation>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <TrackerLogDirectory>x64\Debug\Engine.tlog\</TrackerLogDirectory>
+      <TranslateIncludes>false</TranslateIncludes>
+      <MinimalRebuildFromTracking>true</MinimalRebuildFromTracking>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <UseFullPaths>true</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <XMLDocumentationFileName>x64\Debug\</XMLDocumentationFileName>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <IntelJCCErratum>false</IntelJCCErratum>
+      <BuildStlModules>false</BuildStlModules>
+      <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
+      <ExternalWarningLevel>InheritWarningLevel</ExternalWarningLevel>
+      <TreatExternalTemplatesAsInternal>true</TreatExternalTemplatesAsInternal>
+      <DisableAnalyzeExternal>false</DisableAnalyzeExternal>
+      <PreprocessorDefinitions>_DEBUG;_LIB;_UNICODE;UNICODE;</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <LibCompiled>true</LibCompiled>
+    </ClCompile>
     <ClCompile Include="Utilities\Console.cpp" />
     <ClCompile Include="Utilities\LocalTime.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
@@ -144,6 +197,28 @@
       <LibCompiled>true</LibCompiled>
     </ClCompile>
     <ClCompile Include="Window\Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Exception\Exception.vcxproj">
+      <Project>{5497a7e3-19fe-4d08-9c6b-b9e98170dcb8}</Project>
+      <Name>Exception</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ILogger\ILogger.vcxproj">
+      <Project>{9765ab05-1cb1-48b2-a175-f453bfc38860}</Project>
+      <Name>ILogger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ITimeSystem\ITimeSystem.vcxproj">
+      <Project>{e90bd8e9-be58-4c89-b793-d8a267eca347}</Project>
+      <Name>ITimeSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Logger\Logger.vcxproj">
+      <Project>{74134bd0-decb-4163-b5dd-e542dacfa1eb}</Project>
+      <Name>Logger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TimeSystem\TimeSystem.vcxproj">
+      <Project>{5fdd9b02-0020-4afc-8d49-5da479a6d4d5}</Project>
+      <Name>TimeSystem</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
