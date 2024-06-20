@@ -19,13 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ITimeSystem\ITimeSystem.vcxproj">
-      <Project>{e90bd8e9-be58-4c89-b793-d8a267eca347}</Project>
-      <Name>ITimeSystem</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Framework.h" />
+    <ClInclude Include="Interfaces\ITimeSystem.h" />
     <ClInclude Include="MultimediaClock\MultimediaClock.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="QueryClock\QueryClock.h" />

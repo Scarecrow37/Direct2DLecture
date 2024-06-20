@@ -3,6 +3,6 @@
 #define PCH_H
 
 #include "Framework.h"
-#include "../ITimeSystem/ITimeSystem.h"
+#include "Interfaces/ITimeSystem.h"
 
 #endif
