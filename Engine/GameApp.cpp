@@ -58,8 +58,10 @@ void GameApp::Run()
             }
             else
             {
-                Update();
-                Render();
+                Time::Update();
+                // TODO Input
+                Update(Time::GetDeltaTime());
+                Render(_renderer);
             }
         }
         _logger->Log(LogLevel::Trace, L"GameApp run end.");
@@ -72,17 +74,12 @@ void GameApp::Run()
     }
 }
 
-void GameApp::Update()
+void GameApp::Update(float deltaTime)
 {
     try
     {
         _logger->Log(LogLevel::Trace, L"GameApp update start.");
-        Time::Update();
-        // TODO Input
-        // for (const auto& scene : _deltaUpdateScene)
-        // {
-        //     scene->Update(Time::GetDeltaTime());
-        // }
+        // TODO Content
         // TODO UI
         _logger->Log(LogLevel::Trace, L"GameApp update end.");
     }
@@ -94,18 +91,15 @@ void GameApp::Update()
     }
 }
 
-void GameApp::Render()
+void GameApp::Render(const D2DRenderer& renderer)
 {
     try
     {
         _logger->Log(LogLevel::Trace, L"GameApp render start.");
-        _renderer.BeginDraw();
+        renderer.BeginDraw();
         // TODO Content
-        // for (const auto& scene : _renderScene)
-        // {
-        //     scene->Render(_renderer);
-        // }
-        _renderer.EndDraw();
+        // TODO UI
+        renderer.EndDraw();
         _logger->Log(LogLevel::Trace, L"GameApp render end.");
     }
     catch (const Exception& exception)

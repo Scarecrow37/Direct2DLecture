@@ -11,7 +11,7 @@ BitmapScene::BitmapScene(const std::shared_ptr<ILoggerUnicode>& logger)
 }
 
 BitmapScene::BitmapScene(const std::shared_ptr<ILoggerUnicode>& logger, const Scene* parent)
-    : Scene(logger, parent), _center(0.f, 0.f), _bitmap(nullptr)
+    : Scene(logger, parent), _center(0.f, 0.f), _centerMatrix(D2D1::Matrix3x2F::Identity()), _bitmap(nullptr)
 {
     _logger->Log(LogLevel::Trace, L"BitmapScene constructor start.");
     _logger->Log(LogLevel::Trace, L"BitmapScene constructor end.");
@@ -56,12 +56,11 @@ Vector BitmapScene::GetCenter() const
 void BitmapScene::UpdateTransform()
 {
     _logger->Log(LogLevel::Trace, L"BitmapScene update transform start.");
-    const Matrix centerMatrix = Matrix::Translation(_center);
-    const Matrix inverseCenterMatrix = centerMatrix.Inverse();
+    const Matrix beforeInvertCenterMatrix = Matrix::Translation({
+        _bitmap->GetSize().width * _center.x, _bitmap->GetSize().height * _center.y
+    });
+    _centerMatrix = beforeInvertCenterMatrix.Inverse();
     Scene::UpdateTransform();
-    _transform = inverseCenterMatrix * _transform;
-    if (_parentScene) _worldTransform = _parentScene->GetWorldTransform() * _transform;
-    else _worldTransform = _transform;
     _logger->Log(LogLevel::Trace, L"BitmapScene update transform end.");
 }
 
@@ -76,7 +75,7 @@ void BitmapScene::Render(const D2DRenderer& renderer) const
 {
     _logger->Log(LogLevel::Trace, L"BitmapScene render start.");
     if (_bitmap == nullptr) throw Exception(L"No bitmap exist, BitmapScene render fail.");
-    renderer.SetTransform(_worldTransform);
+    renderer.SetTransform(_centerMatrix * _worldTransform);
     renderer.DrawBitmap(_bitmap);
     _logger->Log(LogLevel::Trace, L"BitmapScene render end.");
 }

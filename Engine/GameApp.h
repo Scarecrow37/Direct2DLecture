@@ -17,8 +17,8 @@ public:
    virtual void Run();
 
 protected:
-   virtual void Update();
-   virtual void Render();
+   virtual void Update(float deltaTime);
+   virtual void Render(const D2DRenderer& renderer);
 
    std::shared_ptr<ILoggerUnicode> _logger;
 

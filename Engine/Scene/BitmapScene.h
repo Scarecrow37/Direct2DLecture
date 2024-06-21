@@ -27,8 +27,8 @@ protected:
     void UpdateTransform() override;
 
     Vector _center;
+    Matrix _centerMatrix;
 
     std::wstring _path;
-
     ID2D1Bitmap* _bitmap;
 };
