@@ -18,7 +18,7 @@ ConsoleLoggerUnicode::ConsoleLoggerUnicode():
 void ConsoleLoggerUnicode::Log(const LogLevel level, const wchar_t* message)
 {
     const auto& levelLogger = _levelLoggers.at(level);
-    if (!levelLogger.IsLogable()) return;
+    if (!levelLogger.IsLogable() || level < _leastLevel) return;
     const wchar_t* timeString = _clock.GetTimeString();
     levelLogger.Write(timeString, message);
     delete timeString;
@@ -27,8 +27,19 @@ void ConsoleLoggerUnicode::Log(const LogLevel level, const wchar_t* message)
 void ConsoleLoggerUnicode::Log(const LogLevel level, const std::wstring& message)
 {
     const auto& levelLogger = _levelLoggers.at(level);
-    if (!levelLogger.IsLogable()) return;
+    if (!levelLogger.IsLogable() || level < _leastLevel) return;
     const wchar_t* timeString = _clock.GetTimeString();
     levelLogger.Write(timeString, message.c_str());
     delete timeString;
+}
+
+void ConsoleLoggerUnicode::SetLogable(const LogLevel level, const bool logable)
+{
+    auto& levelLogger = _levelLoggers.at(level);
+    levelLogger.SetLogable(logable);
+}
+
+void ConsoleLoggerUnicode::SetLeastLoglevel(const LogLevel level)
+{
+    _leastLevel = level;
 }
