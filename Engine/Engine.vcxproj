@@ -31,6 +31,8 @@
     <ClInclude Include="Renderer\Frame.h" />
     <ClInclude Include="Renderer\ImagingFactory.h" />
     <ClInclude Include="Renderer\RenderTarget.h" />
+    <ClInclude Include="Scene\BitmapScene.h" />
+    <ClInclude Include="Scene\Scene.h" />
     <ClInclude Include="TargetVersion.h" />
     <ClInclude Include="Time\Time.h" />
     <ClInclude Include="Window\Window.h" />
@@ -49,6 +51,8 @@
     <ClCompile Include="Renderer\Frame.cpp" />
     <ClCompile Include="Renderer\ImagingFactory.cpp" />
     <ClCompile Include="Renderer\RenderTarget.cpp" />
+    <ClCompile Include="Scene\BitmapScene.cpp" />
+    <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="Time\Time.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>

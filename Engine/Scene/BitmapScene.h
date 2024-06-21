@@ -1,24 +1,24 @@
 ﻿#pragma once
 
 #include "Scene.h"
-#include "../Interfaces/IDeltaUpdate.h"
-#include "../Interfaces/IInitialize.h"
-#include "../Interfaces/IRender.h"
 
 class D2DRenderer;
-class ILoader;
 
-class BitmapScene : public Scene, public IInitialize, public IDeltaUpdate, public IRender
+class BitmapScene : public Scene
 {
 public:
-    BitmapScene(const wchar_t* path, const ILoader* loader);
+    BitmapScene(const std::shared_ptr<ILoggerUnicode>& logger);
+    BitmapScene(const std::shared_ptr<ILoggerUnicode>& logger, const Scene* parent);
+    BitmapScene(const BitmapScene& other) = default;
+    BitmapScene(BitmapScene&& other) noexcept = default;
+    BitmapScene& operator=(const BitmapScene& other) = default;
+    BitmapScene& operator=(BitmapScene&& other) noexcept = default;
     ~BitmapScene() override;
-    
-    void Initialize() override;
-    void Update(float deltaTime) override;
-    void Render(D2DRenderer* renderer) override;
 
-    void Load();
+    void Update(float deltaTime);
+    void Render(const D2DRenderer& renderer) const;
+
+    void Load(const D2DRenderer& renderer, const std::wstring& path);
 
     void SetCenter(const Vector& center);
     Vector GetCenter() const;
@@ -26,9 +26,9 @@ public:
 protected:
     void UpdateTransform() override;
 
-private:
     Vector _center;
-    const wchar_t* _path;
-    const ILoader* _loader;
+
+    std::wstring _path;
+
     ID2D1Bitmap* _bitmap;
 };

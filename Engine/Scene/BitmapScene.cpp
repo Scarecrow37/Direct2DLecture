@@ -1,44 +1,50 @@
-﻿#include "BitmapScene.h"
+﻿#include "pch.h"
+#include "BitmapScene.h"
 
-#include "../Loader/ILoader.h"
 #include "../Renderer/D2DRenderer.h"
 
-BitmapScene::BitmapScene(const wchar_t* path, const ILoader* loader)
-    : _center(0.f, 0.f), _path(path), _loader(loader), _bitmap(nullptr)
+BitmapScene::BitmapScene(const std::shared_ptr<ILoggerUnicode>& logger)
+    : BitmapScene(logger, nullptr)
 {
+    _logger->Log(LogLevel::Trace, L"BitmapScene constructor start.");
+    _logger->Log(LogLevel::Trace, L"BitmapScene constructor end.");
+}
+
+BitmapScene::BitmapScene(const std::shared_ptr<ILoggerUnicode>& logger, const Scene* parent)
+    : Scene(logger, parent), _center(0.f, 0.f), _bitmap(nullptr)
+{
+    _logger->Log(LogLevel::Trace, L"BitmapScene constructor start.");
+    _logger->Log(LogLevel::Trace, L"BitmapScene constructor end.");
 }
 
 BitmapScene::~BitmapScene()
 {
-    if (_bitmap != nullptr)
-    {
-        _bitmap->Release();
-        _bitmap = nullptr;
-    }
+    _logger->Log(LogLevel::Trace, L"BitmapScene destructor start.");
+    if (_bitmap != nullptr) _bitmap->Release();
+    _logger->Log(LogLevel::Trace, L"BitmapScene destructor end.");
 }
 
-void BitmapScene::Initialize()
-{
-    Load();
-}
-
-void BitmapScene::Load()
+void BitmapScene::Load(const D2DRenderer& renderer, const std::wstring& path)
 {
     try
     {
-        _loader->Load(_path, &_bitmap);
-        const Vector size(_bitmap->GetSize());
-        _center = size / 2.f;
+        _logger->Log(LogLevel::Trace, L"BitmapScene load start.");
+        _path = path;
+        renderer.BitmapFromFile(_path.c_str(), &_bitmap);
+        _logger->Log(LogLevel::Trace, L"BitmapScene load end.");
     }
-    catch (...)
+    catch (const Exception& exception)
     {
-        throw;
+        _logger->Log(LogLevel::Error, exception.UnicodeWhat());
+        throw Exception(L"BitmapScene load fail.");
     }
 }
 
 void BitmapScene::SetCenter(const Vector& center)
 {
+    _logger->Log(LogLevel::Trace, L"BitmapScene set center start.");
     _center = center;
+    _logger->Log(LogLevel::Trace, L"BitmapScene set center end.");
 }
 
 Vector BitmapScene::GetCenter() const
@@ -49,21 +55,28 @@ Vector BitmapScene::GetCenter() const
 
 void BitmapScene::UpdateTransform()
 {
+    _logger->Log(LogLevel::Trace, L"BitmapScene update transform start.");
     const Matrix centerMatrix = Matrix::Translation(_center);
     const Matrix inverseCenterMatrix = centerMatrix.Inverse();
     Scene::UpdateTransform();
     _transform = inverseCenterMatrix * _transform;
     if (_parentScene) _worldTransform = _parentScene->GetWorldTransform() * _transform;
     else _worldTransform = _transform;
+    _logger->Log(LogLevel::Trace, L"BitmapScene update transform end.");
 }
 
 void BitmapScene::Update(const float deltaTime)
 {
+    _logger->Log(LogLevel::Trace, L"BitmapScene update start.");
     UpdateTransform();
+    _logger->Log(LogLevel::Trace, L"BitmapScene update end.");
 }
 
-void BitmapScene::Render(D2DRenderer* renderer)
+void BitmapScene::Render(const D2DRenderer& renderer) const
 {
-    renderer->SetTransform(_worldTransform);
-    renderer->DrawBitmap(_bitmap);
+    _logger->Log(LogLevel::Trace, L"BitmapScene render start.");
+    if (_bitmap == nullptr) throw Exception(L"No bitmap exist, BitmapScene render fail.");
+    renderer.SetTransform(_worldTransform);
+    renderer.DrawBitmap(_bitmap);
+    _logger->Log(LogLevel::Trace, L"BitmapScene render end.");
 }
