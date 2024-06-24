@@ -1,8 +1,6 @@
 ﻿#include "pch.h"
 #include "ConsoleLoggerUnicode.h"
 
-#include <iostream>
-
 ConsoleLoggerUnicode::ConsoleLoggerUnicode():
     _levelLoggers{
         {LogLevel::Trace, ConsoleLevelLoggerUnicode(L"[TRACE]", &std::wcout)},

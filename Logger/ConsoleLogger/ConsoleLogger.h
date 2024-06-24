@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "../LoggerBase.h"
 
-class ConsoleLogger : public LoggerBase
+class ConsoleLogger abstract : public LoggerBase
 {
 public:
     ConsoleLogger();

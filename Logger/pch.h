@@ -4,6 +4,7 @@
 
 #include "Framework.h"
 #include <string>
+#include <iostream>
 #include "LogLevel.h"
 #include "Interfaces/ILogger.h"
 #include "Interfaces/ILoggerMultibyte.h"

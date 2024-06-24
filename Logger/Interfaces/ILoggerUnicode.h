@@ -1,9 +1,7 @@
 ﻿#pragma once
 #include <string>
 
-enum class LogLevel;
-
-class ILoggerUnicode : public ILogger
+class ILoggerUnicode abstract : public ILogger
 {
 public:
     virtual void Log(LogLevel level, const wchar_t* message) = 0;

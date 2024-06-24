@@ -1,9 +1,6 @@
 ﻿#include "pch.h"
 #include "ConsoleLevelLoggerUnicode.h"
 
-#include <ostream>
-
-
 ConsoleLevelLoggerUnicode::ConsoleLevelLoggerUnicode(const wchar_t* name, std::wostream* stream, const WORD foreground,
                                                      const wchar_t* format):
     ::ConsoleLevelLogger(foreground), _name(name), _format(format), _stream(stream)

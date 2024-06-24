@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-class ILogger
+class ILogger abstract
 {
 public:
     ILogger() = default;

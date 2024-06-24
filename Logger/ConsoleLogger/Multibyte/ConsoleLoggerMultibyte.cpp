@@ -1,8 +1,6 @@
 ﻿#include "pch.h"
 #include "ConsoleLoggerMultibyte.h"
 
-#include <iostream>
-
 ConsoleLoggerMultibyte::ConsoleLoggerMultibyte():
     _levelLoggers{
         {LogLevel::Trace, ConsoleLevelLoggerMultibyte("[TRACE]", &std::cout)},

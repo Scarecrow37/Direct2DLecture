@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-class LevelLogger
+class LevelLogger abstract
 {
 public:
     LevelLogger();

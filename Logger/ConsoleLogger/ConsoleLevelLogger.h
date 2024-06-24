@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "../LevelLogger.h"
 
-class ConsoleLevelLogger : public LevelLogger
+class ConsoleLevelLogger abstract : public LevelLogger
 {
 public:
     explicit ConsoleLevelLogger(WORD foreground);

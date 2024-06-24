@@ -1,8 +1,6 @@
 ﻿#include "pch.h"
 #include "ConsoleLevelLoggerMultibyte.h"
 
-#include <ostream>
-
 ConsoleLevelLoggerMultibyte::ConsoleLevelLoggerMultibyte(const char* name, std::ostream* stream, const WORD foreground,
                                                          const char* format):
     ConsoleLevelLogger(foreground), _name(name), _format(format), _stream(stream)
