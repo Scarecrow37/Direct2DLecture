@@ -1,8 +1,7 @@
 ﻿#pragma once
 
-class ITimeSystem
+struct ITimeSystem abstract
 {
-public:
     ITimeSystem() = default;
     ITimeSystem(const ITimeSystem& other) = default;
     ITimeSystem(ITimeSystem&& other) noexcept = default;
