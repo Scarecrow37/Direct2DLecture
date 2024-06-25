@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="COM\D2D1Animation.h" />
     <ClInclude Include="COM\ID2D1Animation.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="Logger\Logger.h" />
+    <ClInclude Include="Manager\ResourceManager.h" />
     <ClInclude Include="Math\Math.h" />
     <ClInclude Include="Math\Matrix.h" />
     <ClInclude Include="Math\Vector.h" />
@@ -41,9 +43,10 @@
     <ClInclude Include="Window\Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="COM\ID2D1Animation.cpp" />
+    <ClCompile Include="COM\D2D1Animation.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="Logger\Logger.cpp" />
+    <ClCompile Include="Manager\ResourceManager.cpp" />
     <ClCompile Include="Math\Matrix.cpp" />
     <ClCompile Include="Math\Vector.cpp" />
     <ClCompile Include="pch.cpp">
