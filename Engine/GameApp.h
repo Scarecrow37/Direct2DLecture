@@ -5,8 +5,7 @@
 class GameApp
 {
 public:
-   GameApp(HINSTANCE instanceHandle, int showCommand, LPCWSTR gameName,
-           const std::shared_ptr<ILoggerUnicode>& logger);
+   GameApp(HINSTANCE instanceHandle, int showCommand, LPCWSTR gameName);
    GameApp(const GameApp& other) = default;
    GameApp(GameApp&& other) noexcept = default;
    GameApp& operator=(const GameApp& other) = default;
@@ -18,12 +17,14 @@ public:
 
 protected:
    virtual void Update(float deltaTime);
-   virtual void Render(const D2DRenderer& renderer);
+   virtual void Render(const D2DRenderer* renderer);
 
-   std::shared_ptr<ILoggerUnicode> _logger;
+   virtual void OnInitialize();
+   virtual void OnUpdate(float deltaTime);
+   virtual void OnRender(const D2DRenderer* renderer);
 
-   Window _window;
-   D2DRenderer _renderer;
+   Window* _window;
+   D2DRenderer* _renderer;
 
 private:
    std::wstring _name;

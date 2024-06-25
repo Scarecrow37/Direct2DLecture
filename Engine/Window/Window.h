@@ -3,8 +3,7 @@
 class Window
 {
 public:
-    Window(HINSTANCE instanceHandle, int showCommand, LPCWSTR name, SIZE size,
-           const std::shared_ptr<ILoggerUnicode>& logger);
+    Window(HINSTANCE instanceHandle, int showCommand, LPCWSTR name, SIZE size);
     Window(const Window& other) = default;
     Window(Window&& other) noexcept = default;
     Window& operator=(const Window& other) = default;
@@ -19,8 +18,6 @@ public:
     LONG GetHeight() const;
 
 protected:
-    std::shared_ptr<ILoggerUnicode> _logger;
-
     virtual void Register() const;
     virtual RECT AdjustWindowRect();
     virtual void Create(RECT windowRect);

@@ -7,7 +7,7 @@ class RenderTarget
     friend class Factory;
 
 public:
-    explicit RenderTarget(const std::shared_ptr<ILoggerUnicode>& logger);
+    explicit RenderTarget();
     RenderTarget(const RenderTarget& other) = default;
     RenderTarget(RenderTarget&& other) noexcept = default;
     RenderTarget& operator=(const RenderTarget& other) = default;
@@ -24,7 +24,5 @@ public:
     void CreateBitmapFromWicBitmap(const Converter& converter, ID2D1Bitmap** bitmap) const;
 
 private:
-    std::shared_ptr<ILoggerUnicode> _logger;
-
     ID2D1HwndRenderTarget* _renderTarget;
 };

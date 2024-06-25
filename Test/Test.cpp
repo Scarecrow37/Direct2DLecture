@@ -7,8 +7,7 @@ int APIENTRY wWinMain(_In_ const HINSTANCE hInstance,
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
-    const std::shared_ptr<ILoggerUnicode> logger = std::make_shared<ConsoleLoggerUnicode>();
-    GameApp gameApp(hInstance, nShowCmd, L"Hello, World!", logger);
+    GameApp gameApp(hInstance, nShowCmd, L"Hello, World!");
     gameApp.Initialize();
     gameApp.Run();
 }

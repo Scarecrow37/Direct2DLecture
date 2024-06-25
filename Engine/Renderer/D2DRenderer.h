@@ -5,7 +5,7 @@
 class D2DRenderer
 {
 public:
-    explicit D2DRenderer(const std::shared_ptr<ILoggerUnicode>& logger);
+    explicit D2DRenderer();
     D2DRenderer(const D2DRenderer& other) = default;
     D2DRenderer(D2DRenderer&& other) noexcept = default;
     D2DRenderer& operator=(const D2DRenderer& other) = default;
@@ -24,10 +24,8 @@ public:
 protected:
     virtual void InitializeCom();
 
-    std::shared_ptr<ILoggerUnicode> _logger;
-
 private:
-    Factory _factory;
-    ImagingFactory _imagingFactory;
-    RenderTarget _renderTarget;
+    Factory* _factory;
+    ImagingFactory* _imagingFactory;
+    RenderTarget* _renderTarget;
 };

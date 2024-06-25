@@ -1,5 +1,6 @@
 ﻿#include "pch.h"
 #include "Time.h"
+#include "../../TimeSystem/Interfaces/ITimeSystem.h"
 #include "../../TimeSystem/MultimediaClock/MultimediaClock.h"
 #include "../../TimeSystem/QueryClock/QueryClock.h"
 #include "../../TimeSystem/SimpleClock/SimpleClock.h"

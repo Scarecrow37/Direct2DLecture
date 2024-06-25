@@ -1,11 +1,10 @@
 ﻿#pragma once
 #include "Converter.h"
-#include "Decoder.h"
 
 class ImagingFactory
 {
 public:
-    explicit ImagingFactory(const std::shared_ptr<ILoggerUnicode>& logger);
+    explicit ImagingFactory();
     ImagingFactory(const ImagingFactory& other) = default;
     ImagingFactory(ImagingFactory&& other) noexcept = default;
     ImagingFactory& operator=(const ImagingFactory& other) = default;
@@ -18,7 +17,5 @@ public:
     void CreateFormatConverter(Converter& converter) const;
 
 private:
-    std::shared_ptr<ILoggerUnicode> _logger;
-
     IWICImagingFactory* _imagingFactory;
 };

@@ -4,36 +4,31 @@
 #include "Window/Window.h"
 #include "Renderer/D2DRenderer.h"
 
-GameApp::GameApp(const HINSTANCE instanceHandle, const int showCommand, const LPCWSTR gameName,
-                 const std::shared_ptr<ILoggerUnicode>& logger):
-    _logger(logger),
-    _window(instanceHandle, showCommand, gameName, {1920, 1080}, _logger),
-    _renderer(_logger),
+GameApp::GameApp(const HINSTANCE instanceHandle, const int showCommand, const LPCWSTR gameName):
+    _window(new Window(instanceHandle, showCommand, gameName, {1920, 1080})),
+    _renderer(new D2DRenderer),
     _isRun(false)
 {
-    _logger->Log(LogLevel::Trace, L"GameApp constructor start.");
-    _logger->Log(LogLevel::Trace, L"GameApp constructor end.");
+    Logger::Log(LogLevel::Trace, L"GameApp constructor start.");
+    Logger::Log(LogLevel::Trace, L"GameApp constructor end.");
 }
 
 void GameApp::Initialize()
 {
     try
     {
-        _logger->Log(LogLevel::Trace, L"GameApp initialize start.");
-        _window.Initialize();
-        _renderer.Initialize(_window.GetHandle(), _window.GetWidth(), _window.GetHeight());
+        Logger::Log(LogLevel::Trace, L"GameApp initialize start.");
+        _window->Initialize();
+        _renderer->Initialize(_window->GetHandle(), _window->GetWidth(), _window->GetHeight());
         Time::Initialize();
-        // for (const auto& scene : _initializeScenes)
-        // {
-        //     scene->Initialize();
-        // }
+        OnInitialize();
         _isRun = true;
-        _logger->Log(LogLevel::Trace, L"GameApp initialize end.");
+        Logger::Log(LogLevel::Trace, L"GameApp initialize end.");
     }
     catch (const Exception& exception)
     {
-        _logger->Log(LogLevel::Error, exception.UnicodeWhat());
-        _logger->Log(LogLevel::Fatal, L"GameApp initialize fail.");
+        Logger::Log(LogLevel::Error, exception.UnicodeWhat());
+        Logger::Log(LogLevel::Fatal, L"GameApp initialize fail.");
         _isRun = false;
     }
 }
@@ -42,7 +37,7 @@ void GameApp::Run()
 {
     try
     {
-        _logger->Log(LogLevel::Trace, L"GameApp run start.");
+        Logger::Log(LogLevel::Trace, L"GameApp run start.");
         MSG message;
         while (_isRun)
         {
@@ -50,7 +45,7 @@ void GameApp::Run()
             {
                 if (message.message == WM_QUIT)
                 {
-                    _logger->Log(LogLevel::Information, L"Receive WM_QUIT message.");
+                    Logger::Log(LogLevel::Information, L"Receive WM_QUIT message.");
                     break;
                 }
                 TranslateMessage(&message);
@@ -64,48 +59,60 @@ void GameApp::Run()
                 Render(_renderer);
             }
         }
-        _logger->Log(LogLevel::Trace, L"GameApp run end.");
+        Logger::Log(LogLevel::Trace, L"GameApp run end.");
     }
     catch (const Exception& exception)
     {
-        _logger->Log(LogLevel::Error, exception.UnicodeWhat());
-        _logger->Log(LogLevel::Fatal, L"GameApp run fail.");
+        Logger::Log(LogLevel::Error, exception.UnicodeWhat());
+        Logger::Log(LogLevel::Fatal, L"GameApp run fail.");
         _isRun = false;
     }
 }
 
-void GameApp::Update(float deltaTime)
+void GameApp::Update(const float deltaTime)
 {
     try
     {
-        _logger->Log(LogLevel::Trace, L"GameApp update start.");
-        // TODO Content
+        Logger::Log(LogLevel::Trace, L"GameApp update start.");
+        OnUpdate(deltaTime);
         // TODO UI
-        _logger->Log(LogLevel::Trace, L"GameApp update end.");
+        Logger::Log(LogLevel::Trace, L"GameApp update end.");
     }
     catch (const Exception& exception)
     {
-        _logger->Log(LogLevel::Error, exception.UnicodeWhat());
-        _logger->Log(LogLevel::Fatal, L"GameApp update fail.");
+        Logger::Log(LogLevel::Error, exception.UnicodeWhat());
+        Logger::Log(LogLevel::Fatal, L"GameApp update fail.");
         throw;
     }
 }
 
-void GameApp::Render(const D2DRenderer& renderer)
+void GameApp::Render(const D2DRenderer* renderer)
 {
     try
     {
-        _logger->Log(LogLevel::Trace, L"GameApp render start.");
-        renderer.BeginDraw();
-        // TODO Content
+        Logger::Log(LogLevel::Trace, L"GameApp render start.");
+        renderer->BeginDraw();
+        OnRender(renderer);
         // TODO UI
-        renderer.EndDraw();
-        _logger->Log(LogLevel::Trace, L"GameApp render end.");
+        renderer->EndDraw();
+        Logger::Log(LogLevel::Trace, L"GameApp render end.");
     }
     catch (const Exception& exception)
     {
-        _logger->Log(LogLevel::Error, exception.UnicodeWhat());
-        _logger->Log(LogLevel::Fatal, L"GameApp render fail.");
+        Logger::Log(LogLevel::Error, exception.UnicodeWhat());
+        Logger::Log(LogLevel::Fatal, L"GameApp render fail.");
         throw;
     }
+}
+
+void GameApp::OnInitialize()
+{
+}
+
+void GameApp::OnUpdate(float deltaTime)
+{
+}
+
+void GameApp::OnRender(const D2DRenderer* renderer)
+{
 }

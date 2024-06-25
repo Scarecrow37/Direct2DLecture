@@ -11,7 +11,9 @@
 #include <wincodec.h>
 #include <comdef.h>
 #include <d2d1_1helper.h>
+#include "../Logger/LogLevel.h"
 #include "../Logger/LevelLogger.h"
+#include "../Logger/Interfaces/ILogger.h"
 #include "../Logger/Interfaces/ILoggerUnicode.h"
 #include "../Logger/ConsoleLogger/Unicode/ConsoleLoggerUnicode.h"
 #include "../Engine/GameApp.h"

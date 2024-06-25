@@ -6,8 +6,8 @@
 class Scene
 {
 public:
-    Scene(const std::shared_ptr<ILoggerUnicode>& logger);
-    explicit Scene(const std::shared_ptr<ILoggerUnicode>& logger, const Scene* parent);
+    Scene();
+    explicit Scene(const Scene* parent);
     Scene(const Scene& other) = default;
     Scene(Scene&& other) noexcept = default;
     Scene& operator=(const Scene& other) = default;
@@ -31,8 +31,6 @@ public:
 
 protected:
     virtual void UpdateTransform();
-
-    std::shared_ptr<ILoggerUnicode> _logger;
 
     const Scene* _parentScene;
 

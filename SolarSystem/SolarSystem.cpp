@@ -8,9 +8,7 @@ int APIENTRY wWinMain(_In_ const HINSTANCE hInstance,
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
-    const std::shared_ptr<ILoggerUnicode> logger = std::make_shared<ConsoleLoggerUnicode>();
-    logger->SetLeastLoglevel(LogLevel::Warning);
-    SolarSystemApp app(hInstance, nShowCmd, L"Solar System", logger);
+    SolarSystemApp app(hInstance, nShowCmd, L"Solar System");
     app.Initialize();
     app.Run();
 }

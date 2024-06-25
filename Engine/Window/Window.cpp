@@ -1,9 +1,7 @@
 ﻿#include "pch.h"
 #include "Window.h"
 
-Window::Window(const HINSTANCE instanceHandle, const int showCommand, const LPCWSTR name, const SIZE size,
-               const std::shared_ptr<ILoggerUnicode>& logger):
-    _logger(logger),
+Window::Window(const HINSTANCE instanceHandle, const int showCommand, const LPCWSTR name, const SIZE size):
     _windowHandle(nullptr),
     _windowClass
     {
@@ -15,70 +13,70 @@ Window::Window(const HINSTANCE instanceHandle, const int showCommand, const LPCW
     _size(size),
     _showCommand(showCommand)
 {
-    _logger->Log(LogLevel::Trace, L"Window constructor start.");
-    _logger->Log(LogLevel::Trace, L"Window constructor end.");
+    Logger::Log(LogLevel::Trace, L"Window constructor start.");
+    Logger::Log(LogLevel::Trace, L"Window constructor end.");
 }
 
 Window::~Window()
 {
-    _logger->Log(LogLevel::Trace, L"Window destructor start.");
+    Logger::Log(LogLevel::Trace, L"Window destructor start.");
     if (_windowHandle != nullptr) DestroyWindow(_windowHandle);
-    _logger->Log(LogLevel::Trace, L"Window destructor end.");
+    Logger::Log(LogLevel::Trace, L"Window destructor end.");
 }
 
 void Window::Initialize()
 {
     try
     {
-        _logger->Log(LogLevel::Trace, L"Window initialize start.");
+        Logger::Log(LogLevel::Trace, L"Window initialize start.");
         Register();
         Create(AdjustWindowRect());
         Show();
-        _logger->Log(LogLevel::Trace, L"Window initialize end.");
+        Logger::Log(LogLevel::Trace, L"Window initialize end.");
     }
     catch (const Exception& exception)
     {
-        _logger->Log(LogLevel::Error, exception.UnicodeWhat());
+        Logger::Log(LogLevel::Error, exception.UnicodeWhat());
         throw Exception(L"Window initialize fail.");
     }
 }
 
 void Window::Register() const
 {
-    _logger->Log(LogLevel::Trace, L"Window register start.");
+    Logger::Log(LogLevel::Trace, L"Window register start.");
     const ATOM result = RegisterClassEx(&_windowClass);
     if (result == FALSE) throw Exception(std::to_wstring(GetLastError()).append(L", Register window class fail."));
-    _logger->Log(LogLevel::Trace, L"Window register end.");
+    Logger::Log(LogLevel::Trace, L"Window register end.");
 }
 
 RECT Window::AdjustWindowRect()
 {
-    _logger->Log(LogLevel::Trace, L"Window adjust window rect start.");
+    Logger::Log(LogLevel::Trace, L"Window adjust window rect start.");
     RECT rect = {0, 0, _size.cx, _size.cy};
     const BOOL result = ::AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, FALSE);
     if (result == FALSE) throw Exception(std::to_wstring(GetLastError()).append(L", Adjust window rect fail."));
-    _logger->Log(LogLevel::Trace, L"Window adjust window rect end.");
+    Logger::Log(LogLevel::Trace, L"Window adjust window rect end.");
     return rect;
 }
 
 void Window::Create(const RECT windowRect)
 {
-    _logger->Log(LogLevel::Trace, L"Window create start.");
+    Logger::Log(LogLevel::Trace, L"Window create start.");
     _windowHandle = CreateWindow(_windowClass.lpszClassName, _windowClass.lpszClassName, WS_OVERLAPPEDWINDOW,
                                  windowRect.left, windowRect.top, windowRect.right - windowRect.left,
                                  windowRect.bottom - windowRect.top, nullptr, nullptr,
                                  _windowClass.hInstance, nullptr);
     if (_windowHandle == nullptr) throw Exception(std::to_wstring(GetLastError()).append(L", Create window fail."));
-    _logger->Log(LogLevel::Trace, L"Window create end.");
+    Logger::Log(LogLevel::Trace, L"Window create end.");
 }
 
 void Window::Show()
 {
-    _logger->Log(LogLevel::Trace, L"Window show start.");
+    Logger::Log(LogLevel::Trace, L"Window show start.");
     if (_windowHandle == nullptr) throw Exception(L" No window handle exist. Window show fail.");
     ShowWindow(_windowHandle, _showCommand);
     UpdateWindow(_windowHandle);
-    _logger->Log(LogLevel::Trace, L"Window show end.");
+    Logger::Log(LogLevel::Trace, L"Window show end.");
 }
 
 HWND Window::GetHandle() const

@@ -6,7 +6,7 @@ class Frame
     friend class Converter;
 
 public:
-    Frame(const std::shared_ptr<ILoggerUnicode>& logger);
+    Frame();
     Frame(const Frame& other) = default;
     Frame(Frame&& other) noexcept = default;
     Frame& operator=(const Frame& other) = default;
@@ -14,7 +14,5 @@ public:
     ~Frame();
 
 private:
-    std::shared_ptr<ILoggerUnicode> _logger;
-    
     IWICBitmapFrameDecode* _frame;
 };

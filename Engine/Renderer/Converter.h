@@ -7,7 +7,7 @@ class Converter
     friend class RenderTarget;
 
 public:
-    Converter(const std::shared_ptr<ILoggerUnicode>& logger);
+    Converter();
     Converter(const Converter& other) = default;
     Converter(Converter&& other) noexcept = default;
     Converter& operator=(const Converter& other) = default;
@@ -17,7 +17,5 @@ public:
     void Initialize(const Frame& frame) const;
 
 private:
-    std::shared_ptr<ILoggerUnicode> _logger;
-
     IWICFormatConverter* _converter;
 };

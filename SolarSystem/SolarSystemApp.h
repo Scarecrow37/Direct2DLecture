@@ -4,12 +4,11 @@
 class SolarSystemApp final : public GameApp
 {
 public:
-    SolarSystemApp(HINSTANCE instanceHandle, int showCommand, LPCWSTR gameName,
-                   const std::shared_ptr<ILoggerUnicode>& logger);
+    SolarSystemApp(HINSTANCE instanceHandle, int showCommand, LPCWSTR gameName);
 
-    void Initialize() override;
-    void Update(float deltaTime) override;
-    void Render(const D2DRenderer& renderer) override;
+    void OnInitialize() override;
+    void OnUpdate(float deltaTime) override;
+    void OnRender(const D2DRenderer* renderer) override;
 
 private:
     BitmapScene _sun;
