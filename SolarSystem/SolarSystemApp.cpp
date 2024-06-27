@@ -12,17 +12,17 @@ SolarSystemApp::SolarSystemApp(const HINSTANCE instanceHandle, const int showCom
 
 void SolarSystemApp::OnInitialize()
 {
-    _sun.Load(_renderer, L"../Resources/Images/Solar.png");
+    _sun.LoadBitmapFromFilename(L"../Resources/Images/Solar.png");
     _sun.SetCenter({0.5f, 0.5f});
     _sun.SetScale({0.2f, 0.2f});
     _sun.SetTranslation(Vector(_window->GetSize()) / 2);
 
-    _earth.Load(_renderer, L"../Resources/Images/Earth.png");
+    _earth.LoadBitmapFromFilename(L"../Resources/Images/Earth.png");
     _earth.SetCenter({0.5f, 0.5f});
     _earth.SetScale({0.4f, 0.4f});
     _earth.SetTranslation(Vector(_window->GetSize()));
 
-    _moon.Load(_renderer, L"../Resources/Images/Moon.png");
+    _moon.LoadBitmapFromFilename(L"../Resources/Images/Moon.png");
     _moon.SetCenter({0.5f, 0.5f});
     _moon.SetScale({0.1f, 0.1f});
     _moon.SetTranslation(Vector(_window->GetSize()));

@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../Engine/Scene/BitmapScene.h"
+#include "../Engine/Scenes/BitmapScene.h"
 
 class SolarSystemApp final : public GameApp
 {
