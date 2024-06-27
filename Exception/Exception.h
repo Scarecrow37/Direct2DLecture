@@ -5,6 +5,7 @@
 class Exception final : public std::exception
 {
 public:
+    Exception() = default;
     explicit Exception(std::wstring message);
     explicit Exception(const wchar_t* message);
 
