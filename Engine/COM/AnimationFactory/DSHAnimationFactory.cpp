@@ -34,7 +34,7 @@ ULONG DSHAnimationFactory::Release()
 
 HRESULT DSHAnimationFactory::CreateAnimationFromFile(const std::wstring path, IDSHAnimationAsset** animation)
 {
-    std::map<std::wstring, AnimationInfo> animationInfos;
+    std::vector<AnimationInfo> animationInfos;
     std::wifstream file(path);
     if (!file.is_open()) return E_INVALIDARG;
     std::wstring line;
@@ -44,24 +44,32 @@ HRESULT DSHAnimationFactory::CreateAnimationFromFile(const std::wstring path, ID
         std::wstringstream wss(line);
         wss >> animationCount;
     }
+    animationInfos.reserve(animationCount);
     for (size_t i = 0; i < animationCount; ++i)
     {
+        AnimationInfo animationInfo;
         std::getline(file, line);
         std::wstringstream wss(line);
         {
-            std::wstring animationFile;
             std::wstring animationName;
+            std::wstring animationLoop;
+            std::wstring animationFile;
             std::getline(wss, animationName, L',');
+            animationInfo.name = animationName;
+            std::getline(wss, animationLoop, L',');
+            animationInfo.isLoop = static_cast<bool>(std::stoi(animationLoop));
             std::getline(wss, animationFile, L',');
-            HRESULT result = LoadAnimationInfo(animationFile, &animationInfos[animationName]);
+            HRESULT result = LoadFrameFromFile( path.substr(0, path.find_last_of(L"/\\") + 1).append(animationFile), &animationInfo);
             if (result != S_OK) return result;
         }
+        animationInfos.push_back(animationInfo);
     }
     *animation = new DSHAnimationAsset(animationInfos);
+    file.close();
     return S_OK;
 }
 
-HRESULT DSHAnimationFactory::LoadAnimationInfo(std::wstring path, AnimationInfo* animationInfo)
+HRESULT DSHAnimationFactory::LoadFrameFromFile(std::wstring path, AnimationInfo* animationInfo)
 {
     std::wifstream file(path);
     if (!file.is_open()) return E_INVALIDARG;
@@ -75,25 +83,28 @@ HRESULT DSHAnimationFactory::LoadAnimationInfo(std::wstring path, AnimationInfo*
     animationInfo->frames.reserve(frameCount);
     for (size_t i = 0; i < frameCount; ++i)
     {
+        FrameInfo frameInfo;
         std::getline(file, line);
         std::wstringstream wss(line);
         std::wstring token;
         {
             std::getline(wss, token, L',');
-            animationInfo->frames[i].source.left = static_cast<float>(_wtoi(token.c_str()));
+            frameInfo.source.left = std::stof(token);
             std::getline(wss, token, L',');
-            animationInfo->frames[i].source.top = static_cast<float>(_wtoi(token.c_str()));
+            frameInfo.source.top = std::stof(token);
             std::getline(wss, token, L',');
-            animationInfo->frames[i].source.right = static_cast<float>(_wtoi(token.c_str()));
+            frameInfo.source.right = std::stof(token);
             std::getline(wss, token, L',');
-            animationInfo->frames[i].source.bottom = static_cast<float>(_wtoi(token.c_str()));
+            frameInfo.source.bottom = std::stof(token);
             std::getline(wss, token, L',');
-            animationInfo->frames[i].center.x = static_cast<float>(_wtoi(token.c_str()));
+            frameInfo.center.x = std::stof(token);
             std::getline(wss, token, L',');
-            animationInfo->frames[i].center.y = static_cast<float>(_wtoi(token.c_str()));
+            frameInfo.center.y = std::stof(token);
             std::getline(wss, token, L',');
-            animationInfo->frames[i].duration = static_cast<float>(_wtoi(token.c_str()));
+            frameInfo.duration = std::stof(token);
         }
+        animationInfo->frames.push_back(frameInfo);
     }
+    file.close();
     return S_OK;
 }

@@ -13,6 +13,7 @@ public:
     ~AnimationScene() override;
 
     void LoadAnimationAssetFromFilename(const std::wstring& path);
+    void SetAnimation(size_t index, bool mirror = false);
     void SetAnimation(const std::wstring& animationName, bool mirror = false);
 
     void Update(float deltaTime) override;
@@ -29,8 +30,6 @@ private:
     AnimationInfo* _currentAnimationInfo;
     float _frameElapsedTime;
     size_t _currentFrameIndex;
-    size_t _previousFrameIndex;
-    std::wstring _animationName;
     Rect _sourceRect;
     Rect _destinationRect;
 

@@ -38,32 +38,33 @@ void ResourceManager::CreateD2D1Bitmap(const std::wstring& filePath, ID2D1Bitmap
     auto& bitmaps = resourceManager._sharingBitmapAssets;
     if (bitmaps.find(filePath) == bitmaps.end())
     {
+        std::wstring errorMessage{};
         IWICBitmapDecoder* decoder = nullptr;
         IWICBitmapFrameDecode* frame = nullptr;
         IWICFormatConverter* converter = nullptr;
         HRESULT resultHandle = resourceManager._imagingFactory->CreateDecoderFromFilename(
             filePath.c_str(), nullptr, GENERIC_READ, WICDecodeMetadataCacheOnLoad, &decoder);
-        if (resultHandle != S_OK)
-            throw Exception(std::to_wstring(resultHandle).append(L", Create decoder from filename fail."));
-        resultHandle = decoder->GetFrame(0, &frame);
-        if (resultHandle != S_OK)
-            throw Exception(std::to_wstring(resultHandle).append(L", Get frame fail."));
-        resultHandle = resourceManager._imagingFactory->CreateFormatConverter(&converter);
-        if (resultHandle != S_OK)
-            throw Exception(std::to_wstring(resultHandle).append(L", Create format converter fail."));
-        resultHandle = converter->Initialize(frame, GUID_WICPixelFormat32bppPBGRA, WICBitmapDitherTypeNone, nullptr,
-                                             0.0f, WICBitmapPaletteTypeMedianCut);
-        if (resultHandle != S_OK)
-            throw Exception(std::to_wstring(resultHandle).append(L", Initialize converter fail."));
-        resultHandle = resourceManager._renderTarget->CreateBitmapFromWicBitmap(converter, &bitmaps[filePath]);
-        if (resultHandle != S_OK)
-            throw Exception(std::to_wstring(resultHandle).append(L", Create bitmap from WIC bitmap fail."));
-        converter->Release();
-        frame->Release();
-        decoder->Release();
+        if (resultHandle == S_OK) resultHandle = decoder->GetFrame(0, &frame);
+        else if (errorMessage.empty()) errorMessage = std::to_wstring(resultHandle).append(
+            L", Create decoder from filename fail.");
+        if (resultHandle == S_OK) resultHandle = resourceManager._imagingFactory->CreateFormatConverter(&converter);
+        else if (errorMessage.empty()) errorMessage = std::to_wstring(resultHandle).append(L", Get frame fail.");
+        if (resultHandle == S_OK) resultHandle = converter->Initialize(frame, GUID_WICPixelFormat32bppPBGRA,
+                                                                       WICBitmapDitherTypeNone, nullptr, 0.0f,
+                                                                       WICBitmapPaletteTypeMedianCut);
+        else if (errorMessage.empty()) errorMessage = std::to_wstring(resultHandle).append(
+            L", Create format converter fail.");
+        if (resultHandle == S_OK) resultHandle = resourceManager._renderTarget->CreateBitmapFromWicBitmap(
+            converter, bitmap);
+        else if (errorMessage.empty()) errorMessage = std::to_wstring(resultHandle).append(
+            L", Initialize converter fail.");
+        if (converter != nullptr) converter->Release();
+        if (frame != nullptr) frame->Release();
+        if (decoder != nullptr) decoder->Release();
+        if (resultHandle != S_OK) throw Exception(std::to_wstring(resultHandle).append(errorMessage));
+        bitmaps[filePath] = *bitmap;
     }
     else bitmaps[filePath]->AddRef();
-    *bitmap = bitmaps[filePath];
     Logger::Log(LogLevel::Trace, L"ResourceManager create sharing bitmap asset end.");
 }
 
@@ -83,13 +84,11 @@ void ResourceManager::CreateDSHAnimationAsset(const std::wstring& filePath, IDSH
     auto& animations = resourceManager._sharingAnimationAssets;
     if (animations.find(filePath) == animations.end())
     {
-        const HRESULT resultHandle = resourceManager._animationFactory->CreateAnimationFromFile(
-            filePath.c_str(), &animations[filePath]);
-        if (resultHandle != S_OK)
-            throw Exception(std::to_wstring(resultHandle).append(L", Create animation from file fail."));
+        const HRESULT resultHandle = resourceManager._animationFactory->CreateAnimationFromFile( filePath.c_str(), animation);
+        if (resultHandle != S_OK) throw Exception(std::to_wstring(resultHandle).append(L", Create animation from file fail."));
+        animations[filePath] = *animation;
     }
     else animations[filePath]->AddRef();
-    *animation = animations[filePath];
     Logger::Log(LogLevel::Trace, L"ResourceManager create sharing animation asset end.");
 }
 

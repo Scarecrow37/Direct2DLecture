@@ -10,5 +10,6 @@ struct FrameInfo
 struct AnimationInfo
 {
     bool isLoop;
+    std::wstring name;
     std::vector<FrameInfo> frames;
 };

@@ -5,7 +5,7 @@ DSHAnimationAsset::DSHAnimationAsset(): _refCount(1)
 {
 }
 
-DSHAnimationAsset::DSHAnimationAsset(const std::map<std::wstring, AnimationInfo>& animations)
+DSHAnimationAsset::DSHAnimationAsset(const std::vector<AnimationInfo>& animations)
     : _refCount(1), _animationInfos(std::move(animations))
 {
 }
@@ -35,8 +35,17 @@ ULONG DSHAnimationAsset::Release()
     return newRefCount;
 }
 
+AnimationInfo* DSHAnimationAsset::GetAnimationInfo(const size_t index)
+{
+    if (index >= _animationInfos.size()) return nullptr;
+    return &_animationInfos[index];
+}
+
 AnimationInfo* DSHAnimationAsset::GetAnimationInfo(const std::wstring& animationName)
 {
-    if (_animationInfos.find(animationName) == _animationInfos.end()) return nullptr;
-    return &_animationInfos[animationName];
+    for (auto& animationInfo : _animationInfos)
+    {
+        if (animationInfo.name == animationName) return &animationInfo;
+    }
+    return nullptr;
 }

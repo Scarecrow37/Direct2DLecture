@@ -26,6 +26,11 @@ BitmapScene::~BitmapScene()
 
 void BitmapScene::LoadBitmapFromFilename(const std::wstring& path)
 {
+    if (_bitmap != nullptr)
+    {
+        Logger::Log(LogLevel::Warning, L"Bitmap is already loaded.");
+        return;
+    }
     try
     {
         Logger::Log(LogLevel::Trace, L"BitmapScene load start.");
@@ -33,10 +38,11 @@ void BitmapScene::LoadBitmapFromFilename(const std::wstring& path)
         ResourceManager::CreateD2D1Bitmap(_path, &_bitmap);
         Logger::Log(LogLevel::Trace, L"BitmapScene load end.");
     }
-    catch (const Exception& exception)
+    catch (const Exception& exception) // NOLINT(bugprone-empty-catch)
     {
         Logger::Log(LogLevel::Error, exception.UnicodeWhat());
-        throw Exception(L"BitmapScene load fail.");
+        _bitmap = nullptr;
+        _path.clear();
     }
 }
 
@@ -56,11 +62,9 @@ Vector BitmapScene::GetCenter() const
 void BitmapScene::UpdateTransform()
 {
     Logger::Log(LogLevel::Trace, L"BitmapScene update transform start.");
-    const Matrix beforeInvertCenterMatrix = Matrix::Translation({
-        _bitmap->GetSize().width * _center.x, _bitmap->GetSize().height * _center.y
-    });
-    _centerMatrix = beforeInvertCenterMatrix.Inverse();
     Scene::UpdateTransform();
+    _centerMatrix = Matrix::Translation(
+        {_bitmap->GetSize().width * -_center.x, _bitmap->GetSize().height * -_center.y});
     Logger::Log(LogLevel::Trace, L"BitmapScene update transform end.");
 }
 
@@ -74,7 +78,11 @@ void BitmapScene::Update(const float deltaTime)
 void BitmapScene::Render(const D2DRenderer* renderer) const
 {
     Logger::Log(LogLevel::Trace, L"BitmapScene render start.");
-    if (_bitmap == nullptr) throw Exception(L"No bitmap exist, BitmapScene render fail.");
+    if (_bitmap == nullptr)
+    {
+        Logger::Log(LogLevel::Information, L"Bitmap is not loaded.");
+        return;
+    }
     renderer->SetTransform(_centerMatrix * _worldTransform * renderer->GetCameraMatrix());
     renderer->DrawBitmap(_bitmap);
     Logger::Log(LogLevel::Trace, L"BitmapScene render end.");

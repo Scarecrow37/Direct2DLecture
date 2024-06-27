@@ -14,7 +14,7 @@ public:
     HRESULT CreateAnimationFromFile(std::wstring path, IDSHAnimationAsset** animation) override;
 
 private:
-    static HRESULT LoadAnimationInfo(std::wstring path, AnimationInfo* animationInfo);
+    static HRESULT LoadFrameFromFile(std::wstring path, AnimationInfo* animationInfo);
     
     ULONG _refCount;
 };
