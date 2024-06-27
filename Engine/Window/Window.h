@@ -11,6 +11,7 @@ public:
     virtual ~Window();
 
     void Initialize();
+    void Finalize();
 
     HWND GetHandle() const;
     SIZE GetSize() const;

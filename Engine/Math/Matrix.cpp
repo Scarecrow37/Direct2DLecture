@@ -12,17 +12,22 @@ Matrix Matrix::Inverse() const
     return inverse;
 }
 
+Matrix Matrix::Identity()
+{
+    return {D2D1::Matrix3x2F::Identity()};
+}
+
 Matrix Matrix::Scale(const Vector& size, const Vector& center)
 {
-    return D2D1::Matrix3x2F::Scale(size, center);
+    return {D2D1::Matrix3x2F::Scale(size, center)};
 }
 
 Matrix Matrix::Rotation(const float angle, const Vector& center)
 {
-    return D2D1::Matrix3x2F::Rotation(angle, center);
+    return {D2D1::Matrix3x2F::Rotation(angle, center)};
 }
 
 Matrix Matrix::Translation(const Vector& size)
 {
-    return D2D1::Matrix3x2F::Translation(size);
+    return {D2D1::Matrix3x2F::Translation(size)};
 }

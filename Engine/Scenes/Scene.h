@@ -1,7 +1,6 @@
 ﻿#pragma once
 
-#include "../Math/Matrix.h"
-#include "../Math/Vector.h"
+class D2DRenderer;
 
 class Scene
 {
@@ -13,6 +12,9 @@ public:
     Scene& operator=(const Scene& other) = default;
     Scene& operator=(Scene&& other) noexcept = default;
     virtual ~Scene() = default;
+
+    virtual void Update(float deltaTime) abstract;
+    virtual void Render(const D2DRenderer* renderer) const abstract;
 
     void SetParentScene(const Scene* parentScene);
 

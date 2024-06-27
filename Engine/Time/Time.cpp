@@ -16,6 +16,10 @@ void Time::Initialize()
     GetInstance()._timeSystem->Initialize();
 }
 
+void Time::Finalize()
+{
+}
+
 void Time::Update()
 {
     GetInstance()._timeSystem->Update();

@@ -20,17 +20,17 @@ BitmapScene::BitmapScene(const Scene* parent)
 BitmapScene::~BitmapScene()
 {
     Logger::Log(LogLevel::Trace, L"BitmapScene destructor start.");
-    if (_bitmap != nullptr) _bitmap->Release();
+    ResourceManager::ReleaseD2D1Bitmap(_path);
     Logger::Log(LogLevel::Trace, L"BitmapScene destructor end.");
 }
 
-void BitmapScene::Load(const D2DRenderer* renderer, const std::wstring& path)
+void BitmapScene::LoadBitmapFromFilename(const std::wstring& path)
 {
     try
     {
         Logger::Log(LogLevel::Trace, L"BitmapScene load start.");
         _path = path;
-        renderer->BitmapFromFile(_path.c_str(), &_bitmap);
+        ResourceManager::CreateD2D1Bitmap(_path, &_bitmap);
         Logger::Log(LogLevel::Trace, L"BitmapScene load end.");
     }
     catch (const Exception& exception)
@@ -75,7 +75,7 @@ void BitmapScene::Render(const D2DRenderer* renderer) const
 {
     Logger::Log(LogLevel::Trace, L"BitmapScene render start.");
     if (_bitmap == nullptr) throw Exception(L"No bitmap exist, BitmapScene render fail.");
-    renderer->SetTransform(_centerMatrix * _worldTransform);
+    renderer->SetTransform(_centerMatrix * _worldTransform * renderer->GetCameraMatrix());
     renderer->DrawBitmap(_bitmap);
     Logger::Log(LogLevel::Trace, L"BitmapScene render end.");
 }

@@ -9,6 +9,14 @@ Logger::~Logger()
     delete _logSystem;
 }
 
+void Logger::Initialize()
+{
+}
+
+void Logger::Finalize()
+{
+}
+
 void Logger::Log(const LogLevel level, const wchar_t* message)
 {
     GetInstance()._logSystem->Log(level, message);

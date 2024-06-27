@@ -15,10 +15,10 @@ public:
     BitmapScene& operator=(BitmapScene&& other) noexcept = default;
     ~BitmapScene() override;
 
-    void Update(float deltaTime);
-    void Render(const D2DRenderer* renderer) const;
+    void Update(float deltaTime) override;
+    void Render(const D2DRenderer* renderer) const override;
 
-    void Load(const D2DRenderer* renderer, const std::wstring& path);
+    void LoadBitmapFromFilename(const std::wstring& path);
 
     void SetCenter(const Vector& center);
     Vector GetCenter() const;

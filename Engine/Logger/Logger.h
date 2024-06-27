@@ -11,6 +11,9 @@ public:
     Logger& operator=(const Logger& other) = delete;
     Logger& operator=(Logger&& other) noexcept = delete;
     ~Logger();
+    
+    static void Initialize();
+    static void Finalize();
 
     static void Log(LogLevel level, const wchar_t* message);
     static void Log(LogLevel level, const std::wstring& message);

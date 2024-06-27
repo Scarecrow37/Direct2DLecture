@@ -14,6 +14,8 @@ public:
     virtual ~Time();
 
     static void Initialize();
+    static void Finalize();
+    
     static void Update();
     static void SetTimeSystem(TimeSystems timeSystem);
     static float GetDeltaTime();

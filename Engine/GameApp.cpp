@@ -1,6 +1,8 @@
 ﻿#include "pch.h"
 #include "GameApp.h"
 
+#include "Managers/COMManager.h"
+#include "Managers/ResourceManager.h"
 #include "Window/Window.h"
 #include "Renderer/D2DRenderer.h"
 
@@ -13,13 +15,22 @@ GameApp::GameApp(const HINSTANCE instanceHandle, const int showCommand, const LP
     Logger::Log(LogLevel::Trace, L"GameApp constructor end.");
 }
 
+GameApp::~GameApp()
+{
+    delete _renderer;
+    delete _window;
+}
+
 void GameApp::Initialize()
 {
     try
     {
         Logger::Log(LogLevel::Trace, L"GameApp initialize start.");
+        Logger::Initialize();
         _window->Initialize();
-        _renderer->Initialize(_window->GetHandle(), _window->GetWidth(), _window->GetHeight());
+        COMManager::Initialize(_window->GetHandle(), _window->GetWidth(), _window->GetHeight());
+        _renderer->Initialize();
+        ResourceManager::Initialize();
         Time::Initialize();
         OnInitialize();
         _isRun = true;
@@ -31,6 +42,16 @@ void GameApp::Initialize()
         Logger::Log(LogLevel::Fatal, L"GameApp initialize fail.");
         _isRun = false;
     }
+}
+
+void GameApp::Finalize()
+{
+    Time::Finalize();
+    ResourceManager::Finalize();
+    _renderer->Finalize();
+    COMManager::Finalize();
+    _window->Finalize();
+    Logger::Finalize();
 }
 
 void GameApp::Run()

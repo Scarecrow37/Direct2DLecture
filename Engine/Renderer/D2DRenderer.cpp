@@ -1,11 +1,10 @@
 ﻿#include "pch.h"
 #include "D2DRenderer.h"
 
-#include "Decoder.h"
-#include "Frame.h"
+#include "../Managers/COMManager.h"
 
-D2DRenderer::D2DRenderer():
-    _factory(new Factory), _imagingFactory(new ImagingFactory), _renderTarget(new RenderTarget)
+D2DRenderer::D2DRenderer()
+    : _renderTarget(nullptr), _cameraMatrix(Matrix::Identity())
 {
     Logger::Log(LogLevel::Trace, L"D2DRenderer constructor start.");
     Logger::Log(LogLevel::Trace, L"D2DRenderer constructor end.");
@@ -14,46 +13,37 @@ D2DRenderer::D2DRenderer():
 D2DRenderer::~D2DRenderer()
 {
     Logger::Log(LogLevel::Trace, L"D2DRenderer destructor start.");
-    delete _renderTarget;
-    _renderTarget = nullptr;
-    delete _imagingFactory;
-    _imagingFactory = nullptr;
-    delete _factory;
-    _factory = nullptr;
-    CoUninitialize();
     Logger::Log(LogLevel::Trace, L"D2DRenderer destructor end.");
 }
 
-void D2DRenderer::Initialize(const HWND windowHandle, const unsigned int width, const unsigned int height)
+void D2DRenderer::Initialize()
 {
-    try
-    {
-        Logger::Log(LogLevel::Trace, L"D2DRenderer initialize start.");
-        InitializeCom();
-        _factory->Initialize();
-        _imagingFactory->Initialize();
-        _factory->CreateHwndRenderTarget(_renderTarget, windowHandle, width, height);
-        Logger::Log(LogLevel::Trace, L"D2DRenderer initialize end.");
-    }
-    catch (const Exception& exception)
-    {
-        Logger::Log(LogLevel::Error, exception.UnicodeWhat());
-        throw Exception(L"D2DRenderer initialize fail.");
-    }
+    Logger::Log(LogLevel::Trace, L"D2DRenderer initialize start.");
+    COMManager::CreateD2DHwndRenderTarget(&_renderTarget);
+    Logger::Log(LogLevel::Trace, L"D2DRenderer initialize end.");
+}
+
+void D2DRenderer::Finalize()
+{
+    Logger::Log(LogLevel::Trace, L"D2DRenderer finalize start.");
+    COMManager::ReleaseD2DHwndRenderTarget();
+    Logger::Log(LogLevel::Trace, L"D2DRenderer finalize end.");
 }
 
 void D2DRenderer::BeginDraw() const
 {
     Logger::Log(LogLevel::Trace, L"D2DRenderer begin draw start.");
     _renderTarget->BeginDraw();
-    _renderTarget->ClearWhite();
+    _renderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
     Logger::Log(LogLevel::Trace, L"D2DRenderer begin draw end.");
 }
 
 void D2DRenderer::EndDraw() const
 {
     Logger::Log(LogLevel::Trace, L"D2DRenderer end draw start.");
-    _renderTarget->EndDraw();
+    const HRESULT resultHandle = _renderTarget->EndDraw();
+    if (resultHandle != S_OK)
+        throw Exception(std::to_wstring(resultHandle).append(L", D2DRenderer end draw fail.")); // TODO Change Exception
     Logger::Log(LogLevel::Trace, L"D2DRenderer end draw end.");
 }
 
@@ -71,31 +61,14 @@ void D2DRenderer::DrawBitmap(ID2D1Bitmap* bitmap) const
     Logger::Log(LogLevel::Trace, L"D2DRenderer draw bitmap end.");
 }
 
-void D2DRenderer::BitmapFromFile(const wchar_t* path, ID2D1Bitmap** bitmap) const
+void D2DRenderer::DrawBitmap(ID2D1Bitmap* bitmap, const Rect& destinationRect, const Rect& sourceRect) const
 {
-    // Create new IWICBitmapDecoder instance from path.
-    Decoder decoder;
-    _imagingFactory->CreateDecoderFromFilename(decoder, path);
-
-    // Get frame of image.
-    Frame frame;
-    decoder.GetFrame(0, frame);
-
-    // Create new IWICFormatConverter instance
-    Converter converter;
-    _imagingFactory->CreateFormatConverter(converter);
-
-    converter.Initialize(frame);
-    _renderTarget->CreateBitmapFromWicBitmap(converter, bitmap);
+    Logger::Log(LogLevel::Trace, L"D2DRenderer draw bitmap start.");
+    _renderTarget->DrawBitmap(bitmap, destinationRect, 1.f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, sourceRect);
+    Logger::Log(LogLevel::Trace, L"D2DRenderer draw bitmap end.");
 }
 
-void D2DRenderer::InitializeCom()
+const Matrix& D2DRenderer::GetCameraMatrix() const
 {
-    Logger::Log(LogLevel::Trace, L"D2DRenderer COM initialize start.");
-    // Initialize COM library and identify STA in current thread.
-    const HRESULT resultHandle = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
-    if (resultHandle != S_OK)
-        throw Exception(
-            std::to_wstring(resultHandle).append(L", D2DRenderer COM initialize fail."));
-    Logger::Log(LogLevel::Trace, L"D2DRenderer COM initialize end.");
+    return _cameraMatrix;
 }

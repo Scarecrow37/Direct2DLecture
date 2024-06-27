@@ -10,9 +10,10 @@ public:
    GameApp(GameApp&& other) noexcept = default;
    GameApp& operator=(const GameApp& other) = default;
    GameApp& operator=(GameApp&& other) noexcept = default;
-   virtual ~GameApp() = default;
+   virtual ~GameApp();
 
    virtual void Initialize();
+   virtual void Finalize();
    virtual void Run();
 
 protected:
