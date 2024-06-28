@@ -23,12 +23,14 @@ public:
     void SetCenter(const Vector& center);
     Vector GetCenter() const;
 
+    Vector GetBitmapSize() const;
+
 protected:
     void UpdateTransform() override;
 
     Vector _center;
     Matrix _centerMatrix;
 
-    std::wstring _path;
+    std::wstring _bitmapPath;
     ID2D1Bitmap* _bitmap;
 };

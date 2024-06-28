@@ -20,7 +20,7 @@ BitmapScene::BitmapScene(const Scene* parent)
 BitmapScene::~BitmapScene()
 {
     Logger::Log(LogLevel::Trace, L"BitmapScene destructor start.");
-    ResourceManager::ReleaseD2D1Bitmap(_path);
+    ResourceManager::ReleaseD2D1Bitmap(_bitmapPath);
     Logger::Log(LogLevel::Trace, L"BitmapScene destructor end.");
 }
 
@@ -34,15 +34,15 @@ void BitmapScene::LoadBitmapFromFilename(const std::wstring& path)
     try
     {
         Logger::Log(LogLevel::Trace, L"BitmapScene load start.");
-        _path = path;
-        ResourceManager::CreateD2D1Bitmap(_path, &_bitmap);
+        _bitmapPath = path;
+        ResourceManager::CreateD2D1Bitmap(_bitmapPath, &_bitmap);
         Logger::Log(LogLevel::Trace, L"BitmapScene load end.");
     }
     catch (const Exception& exception) // NOLINT(bugprone-empty-catch)
     {
         Logger::Log(LogLevel::Error, exception.UnicodeWhat());
         _bitmap = nullptr;
-        _path.clear();
+        _bitmapPath.clear();
     }
 }
 
@@ -58,6 +58,10 @@ Vector BitmapScene::GetCenter() const
     return _center;
 }
 
+Vector BitmapScene::GetBitmapSize() const
+{
+    return _bitmap->GetSize();
+}
 
 void BitmapScene::UpdateTransform()
 {

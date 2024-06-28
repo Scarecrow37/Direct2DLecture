@@ -20,6 +20,8 @@ void D2DRenderer::Initialize()
 {
     Logger::Log(LogLevel::Trace, L"D2DRenderer initialize start.");
     COMManager::CreateD2DHwndRenderTarget(&_renderTarget);
+    COMManager::CreateDXGIAdapter(&_dxgiAdapter);
+    COMManager::CreateDWriteFactory(&_dWriteFactory);
     Logger::Log(LogLevel::Trace, L"D2DRenderer initialize end.");
 }
 
@@ -27,6 +29,8 @@ void D2DRenderer::Finalize()
 {
     Logger::Log(LogLevel::Trace, L"D2DRenderer finalize start.");
     COMManager::ReleaseD2DHwndRenderTarget();
+    COMManager::ReleaseDXGIAdapter();
+    COMManager::ReleaseDWriteFactory();
     Logger::Log(LogLevel::Trace, L"D2DRenderer finalize end.");
 }
 
@@ -68,7 +72,41 @@ void D2DRenderer::DrawBitmap(ID2D1Bitmap* bitmap, const Rect& destinationRect, c
     Logger::Log(LogLevel::Trace, L"D2DRenderer draw bitmap end.");
 }
 
+void D2DRenderer::DrawTextW(const std::wstring& text, const float fontSize, const Rect& destinationRect,
+                            const D2D1_COLOR_F color,
+                            const std::wstring& fontFamily, const DWRITE_FONT_WEIGHT weight,
+                            const DWRITE_FONT_STYLE style,
+                            const DWRITE_FONT_STRETCH stretch) const
+{
+    Logger::Log(LogLevel::Trace, L"D2DRenderer draw text start.");
+    std::wstring errorMessage{};
+    IDWriteTextFormat* format = nullptr;
+    ID2D1SolidColorBrush* brush = nullptr;
+    HRESULT resultHandle = _dWriteFactory->CreateTextFormat(fontFamily.c_str(), nullptr, weight, style, stretch,
+                                                            fontSize, L"", &format);
+    if (resultHandle == S_OK) resultHandle = _renderTarget->CreateSolidColorBrush(color, &brush);
+    else if (errorMessage.empty()) errorMessage = std::to_wstring(resultHandle).append(L", Create format fail.");
+    if (resultHandle == S_OK) _renderTarget->DrawTextW(text.c_str(), text.length(), format, destinationRect, brush);
+    else if (errorMessage.empty()) errorMessage = std::to_wstring(resultHandle).append(L", Create brush fail.");
+    if (brush != nullptr) brush->Release();
+    if (format != nullptr) format->Release();
+    if (resultHandle != S_OK) throw Exception(std::to_wstring(resultHandle).append(errorMessage));
+    Logger::Log(LogLevel::Trace, L"D2DRenderer draw text end.");
+}
+
 const Matrix& D2DRenderer::GetCameraMatrix() const
 {
     return _cameraMatrix;
+}
+
+size_t D2DRenderer::GetUsedVRAM() const
+{
+    Logger::Log(LogLevel::Trace, L"D2DRenderer get used VRAM start.");
+    DXGI_QUERY_VIDEO_MEMORY_INFO videoMemoryInfo;
+    const HRESULT resultHandle = _dxgiAdapter->QueryVideoMemoryInfo(0, DXGI_MEMORY_SEGMENT_GROUP_LOCAL,
+                                                                    &videoMemoryInfo);
+    if (resultHandle != S_OK)
+        throw Exception(std::to_wstring(resultHandle).append(L", D2DRenderer get used VRAM fail."));
+    Logger::Log(LogLevel::Trace, L"D2DRenderer get used VRAM end.");
+    return videoMemoryInfo.CurrentUsage / 1024;
 }

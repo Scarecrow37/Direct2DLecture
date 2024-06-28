@@ -15,6 +15,11 @@ Rect::Rect(const Vector& point, const Vector& size)
 {
 }
 
+Rect::Rect(const float left, const float top, const float right, const float bottom)
+    : D2D1_RECT_F({left, top, right, bottom})
+{
+}
+
 Vector Rect::GetSize() const
 {
     return {right - left, bottom - top};

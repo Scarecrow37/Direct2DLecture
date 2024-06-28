@@ -64,7 +64,11 @@ void ResourceManager::CreateD2D1Bitmap(const std::wstring& filePath, ID2D1Bitmap
         if (resultHandle != S_OK) throw Exception(std::to_wstring(resultHandle).append(errorMessage));
         bitmaps[filePath] = *bitmap;
     }
-    else bitmaps[filePath]->AddRef();
+    else
+    {
+        bitmaps[filePath]->AddRef();
+        *bitmap = bitmaps[filePath];
+    }
     Logger::Log(LogLevel::Trace, L"ResourceManager create sharing bitmap asset end.");
 }
 
@@ -88,7 +92,11 @@ void ResourceManager::CreateDSHAnimationAsset(const std::wstring& filePath, IDSH
         if (resultHandle != S_OK) throw Exception(std::to_wstring(resultHandle).append(L", Create animation from file fail."));
         animations[filePath] = *animation;
     }
-    else animations[filePath]->AddRef();
+    else
+    {
+        animations[filePath]->AddRef();
+        *animation = animations[filePath];
+    }
     Logger::Log(LogLevel::Trace, L"ResourceManager create sharing animation asset end.");
 }
 

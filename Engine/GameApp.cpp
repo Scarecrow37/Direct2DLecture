@@ -32,6 +32,7 @@ void GameApp::Initialize()
         _renderer->Initialize();
         ResourceManager::Initialize();
         Time::Initialize();
+        Input::Initialize(_window->GetHandle());
         OnInitialize();
         _isRun = true;
         Logger::Log(LogLevel::Trace, L"GameApp initialize end.");
@@ -74,8 +75,6 @@ void GameApp::Run()
             }
             else
             {
-                Time::Update();
-                // TODO Input
                 Update(Time::GetDeltaTime());
                 Render(_renderer);
             }
@@ -95,8 +94,11 @@ void GameApp::Update(const float deltaTime)
     try
     {
         Logger::Log(LogLevel::Trace, L"GameApp update start.");
+        Time::Update();
+        Input::Update();
         OnUpdate(deltaTime);
         // TODO UI
+        Input::Reset();
         Logger::Log(LogLevel::Trace, L"GameApp update end.");
     }
     catch (const Exception& exception)

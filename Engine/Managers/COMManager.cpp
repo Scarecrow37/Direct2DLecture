@@ -17,6 +17,9 @@ void COMManager::Initialize(const HWND windowHandle, const unsigned int width, c
     InitializeImagingFactory();
     InitializeAnimationFactory();
     InitializeHwndRenderTarget(windowHandle, width, height);
+    InitializeDXGIFactory();
+    InitializeDXGIAdapter();
+    InitializeDWriteFactory();
     Logger::Log(LogLevel::Trace, L"COMManager initialize end.");
 }
 
@@ -78,12 +81,50 @@ void COMManager::InitializeHwndRenderTarget(const HWND windowHandle, const unsig
     Logger::Log(LogLevel::Trace, L"COMManager initialize hwnd render target end.");
 }
 
+void COMManager::InitializeDXGIFactory()
+{
+    Logger::Log(LogLevel::Trace, L"COMManager initialize DXGI factory start.");
+    const HRESULT resultHandle = CreateDXGIFactory1(__uuidof(IDXGIFactory4),
+                                                    reinterpret_cast<void**>(&GetInstance()._dxgiFactory));
+    if (resultHandle != S_OK)
+        throw Exception(std::to_wstring(resultHandle).append(L", DXGI Factory initialize fail."));
+    Logger::Log(LogLevel::Trace, L"COMManager initialize DXGI factory end.");
+}
+
+void COMManager::InitializeDXGIAdapter()
+{
+    Logger::Log(LogLevel::Trace, L"COMManager initialize DXGI adapter start.");
+    const HRESULT resultHandle = GetInstance()._dxgiFactory->EnumAdapters(
+        0, reinterpret_cast<IDXGIAdapter**>(&GetInstance()._dxgiAdapter));
+    if (resultHandle != S_OK)
+        throw Exception(std::to_wstring(resultHandle).append(L", DXGI Adapter initialize fail."));
+    Logger::Log(LogLevel::Trace, L"COMManager initialize DXGI adapter end.");
+}
+
+void COMManager::InitializeDWriteFactory()
+{
+    Logger::Log(LogLevel::Trace, L"COMManager initialize DWrite factory start.");
+    const HRESULT resultHandle = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory),
+                                                     reinterpret_cast<IUnknown**>(&GetInstance()._writeFactory));
+    if (resultHandle != S_OK) throw Exception(
+        std::to_wstring(resultHandle).append(L", DWrite Factory initialize fail."));
+    Logger::Log(LogLevel::Trace, L"COMManager initialize DWrite factory end.");
+}
+
+
 void COMManager::Finalize()
 {
     Logger::Log(LogLevel::Trace, L"COMManager uninitialize COM start.");
     COMManager& comManager = GetInstance();
-    if (comManager._animationFactory->Release() != 0) throw Exception(
-        L"AnimationFactory is referenced by other objects.");
+    if (comManager._writeFactory->Release() != 0) throw Exception(L"Factory is referenced by other objects.");
+    comManager._writeFactory = nullptr;
+    if (comManager._dxgiAdapter->Release() != 0) throw Exception(L"Adapter is referenced by other objects.");
+    comManager._dxgiAdapter = nullptr;
+    if (comManager._dxgiFactory->Release() != 0) throw Exception(L"Factory is referenced by other objects.");
+    comManager._dxgiFactory = nullptr;
+    if (comManager._animationFactory->Release() != 0)
+        throw Exception(
+            L"AnimationFactory is referenced by other objects.");
     comManager._animationFactory = nullptr;
     if (comManager._imagingFactory->Release() != 0) throw Exception(L"ImagingFactory is referenced by other objects.");
     comManager._imagingFactory = nullptr;
@@ -139,6 +180,52 @@ void COMManager::ReleaseD2DHwndRenderTarget()
     GetInstance()._hwndRenderTarget->Release();
     Logger::Log(LogLevel::Trace, L"COMManager release D2D1 render target end.");
 }
+
+void COMManager::CreateDXGIFactory(IDXGIFactory4** dxgiFactory)
+{
+    Logger::Log(LogLevel::Trace, L"COMManager create DXGI factory start.");
+    *dxgiFactory = GetInstance()._dxgiFactory;
+    GetInstance()._dxgiFactory->AddRef();
+    Logger::Log(LogLevel::Trace, L"COMManager create DXGI factory end.");
+}
+
+void COMManager::ReleaseDXGIFactory()
+{
+    Logger::Log(LogLevel::Trace, L"COMManager release DXGI factory start.");
+    GetInstance()._dxgiFactory->Release();
+    Logger::Log(LogLevel::Trace, L"COMManager release DXGI factory end.");
+}
+
+void COMManager::CreateDXGIAdapter(IDXGIAdapter3** dxgiAdapter)
+{
+    Logger::Log(LogLevel::Trace, L"COMManager create DXGI adapter start.");
+    *dxgiAdapter = GetInstance()._dxgiAdapter;
+    GetInstance()._dxgiAdapter->AddRef();
+    Logger::Log(LogLevel::Trace, L"COMManager create DXGI adapter end.");
+}
+
+void COMManager::ReleaseDXGIAdapter()
+{
+    Logger::Log(LogLevel::Trace, L"COMManager release DXGI adapter start.");
+    GetInstance()._dxgiAdapter->Release();
+    Logger::Log(LogLevel::Trace, L"COMManager release DXGI adapter end.");
+}
+
+void COMManager::CreateDWriteFactory(IDWriteFactory** writeFactory)
+{
+    Logger::Log(LogLevel::Trace, L"COMManager create DWrite factory start.");
+    *writeFactory = GetInstance()._writeFactory;
+    GetInstance()._writeFactory->AddRef();
+    Logger::Log(LogLevel::Trace, L"COMManager create DWrite factory end.");
+}
+
+void COMManager::ReleaseDWriteFactory()
+{
+    Logger::Log(LogLevel::Trace, L"COMManager release DWrite factory start.");
+    GetInstance()._writeFactory->Release();
+    Logger::Log(LogLevel::Trace, L"COMManager release DWrite factory end.");
+}
+
 
 void COMManager::CreateDSHAnimationFactory(IDSHAnimationFactory** animationFactory)
 {

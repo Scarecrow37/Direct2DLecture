@@ -15,4 +15,8 @@ public:
 
 private:
     AnimationScene* _background;
+    std::vector<AnimationScene*> _characters;
+    std::wstring _vramString;
+    std::wstring _characterCountString;
+    size_t _vram;
 };

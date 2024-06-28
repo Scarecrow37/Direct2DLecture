@@ -4,6 +4,7 @@
 
 #include "Framework.h"
 #include <memory>
+#include <cassert>
 #include <vector>
 #include <map>
 #include <string>
@@ -14,7 +15,8 @@
 #include <dwrite.h>
 #include <wincodec.h>
 #include <comdef.h>
-#include <d2d1_1helper.h>
+#include <d2d1helper.h>
+#include <dxgi1_4.h>
 #include "../Exception/Exception.h"
 #include "../Logger/LogLevel.h"
 #include "../Logger/Interfaces/ILogger.h"
@@ -23,6 +25,7 @@
 #include "Math/Math.h"
 #include "COM/COM.h"
 #include "Time/Time.h"
+#include "Input/Input.h"
 #include "Managers/Managers.h"
 
 

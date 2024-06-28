@@ -24,6 +24,15 @@ public:
     static void CreateD2DHwndRenderTarget(ID2D1HwndRenderTarget** hwndRenderTarget);
     static void ReleaseD2DHwndRenderTarget();
 
+    static void CreateDXGIFactory(IDXGIFactory4** dxgiFactory);
+    static void ReleaseDXGIFactory();
+
+    static void CreateDXGIAdapter(IDXGIAdapter3** dxgiAdapter);
+    static void ReleaseDXGIAdapter();
+
+    static void CreateDWriteFactory(IDWriteFactory** writeFactory);
+    static void ReleaseDWriteFactory();
+
 private:
     COMManager();
     static COMManager& GetInstance();
@@ -33,9 +42,15 @@ private:
     static void InitializeImagingFactory();
     static void InitializeAnimationFactory();
     static void InitializeHwndRenderTarget(HWND windowHandle, unsigned int width, unsigned int height);
+    static void InitializeDXGIFactory();
+    static void InitializeDXGIAdapter();
+    static void InitializeDWriteFactory();
 
     ID2D1Factory* _factory;
     IWICImagingFactory* _imagingFactory;
     IDSHAnimationFactory* _animationFactory;
     ID2D1HwndRenderTarget* _hwndRenderTarget;
+    IDXGIFactory4* _dxgiFactory;
+    IDXGIAdapter3* _dxgiAdapter;
+    IDWriteFactory* _writeFactory;
 };
