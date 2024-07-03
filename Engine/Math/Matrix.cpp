@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
 #include "Matrix.h"
 
-Matrix::Matrix(D2D1_MATRIX_3X2_F matrix): D2D_MATRIX_3X2_F(matrix)
+Matrix::Matrix(Matrix3x2F matrix): Matrix3x2F{matrix}
 {
 }
 

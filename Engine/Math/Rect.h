@@ -8,4 +8,6 @@ struct Rect : D2D1_RECT_F
     Rect(float left, float top, float right, float bottom);
 
     Vector GetSize() const;
+    Vector GetCenter() const;
+    Vector GetExtend() const;
 };

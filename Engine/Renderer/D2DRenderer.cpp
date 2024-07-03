@@ -4,7 +4,7 @@
 #include "../Managers/COMManager.h"
 
 D2DRenderer::D2DRenderer()
-    : _renderTarget(nullptr), _cameraMatrix(Matrix::Identity())
+    : _renderTarget(nullptr), _dxgiAdapter(nullptr), _dWriteFactory(nullptr), _cameraMatrix(Matrix::Identity())
 {
     Logger::Log(LogLevel::Trace, L"D2DRenderer constructor start.");
     Logger::Log(LogLevel::Trace, L"D2DRenderer constructor end.");
@@ -32,6 +32,11 @@ void D2DRenderer::Finalize()
     COMManager::ReleaseDXGIAdapter();
     COMManager::ReleaseDWriteFactory();
     Logger::Log(LogLevel::Trace, L"D2DRenderer finalize end.");
+}
+
+void D2DRenderer::SetCameraMatrix(const Matrix& cameraMatrix)
+{
+    _cameraMatrix = cameraMatrix;
 }
 
 void D2DRenderer::BeginDraw() const
@@ -92,6 +97,32 @@ void D2DRenderer::DrawTextW(const std::wstring& text, const float fontSize, cons
     if (format != nullptr) format->Release();
     if (resultHandle != S_OK) throw Exception(std::to_wstring(resultHandle).append(errorMessage));
     Logger::Log(LogLevel::Trace, L"D2DRenderer draw text end.");
+}
+
+void D2DRenderer::DrawRectangle(const Rect& rect, const D2D1_COLOR_F color) const
+{
+    Logger::Log(LogLevel::Trace, L"D2DRenderer draw rectangle start.");
+    std::wstring errorMessage{};
+    ID2D1SolidColorBrush* brush = nullptr;
+    const HRESULT resultHandle = _renderTarget->CreateSolidColorBrush(color, &brush);
+    if (resultHandle != S_OK) errorMessage = std::to_wstring(resultHandle).append(L", Create brush fail.");
+    if (resultHandle == S_OK) _renderTarget->DrawRectangle(rect, brush);
+    if (brush != nullptr) brush->Release();
+    if (resultHandle != S_OK) throw Exception(std::to_wstring(resultHandle).append(errorMessage));
+    Logger::Log(LogLevel::Trace, L"D2DRenderer draw rectangle end.");
+}
+
+void D2DRenderer::FillRectangle(const Rect& rect, const D2D1_COLOR_F color) const
+{
+    Logger::Log(LogLevel::Trace, L"D2DRenderer fill rectangle start.");
+    std::wstring errorMessage{};
+    ID2D1SolidColorBrush* brush = nullptr;
+    const HRESULT resultHandle = _renderTarget->CreateSolidColorBrush(color, &brush);
+    if (resultHandle != S_OK) errorMessage = std::to_wstring(resultHandle).append(L", Create brush fail.");
+    if (resultHandle == S_OK) _renderTarget->FillRectangle(rect, brush);
+    if (brush != nullptr) brush->Release();
+    if (resultHandle != S_OK) throw Exception(std::to_wstring(resultHandle).append(errorMessage));
+    Logger::Log(LogLevel::Trace, L"D2DRenderer fill rectangle end.");
 }
 
 const Matrix& D2DRenderer::GetCameraMatrix() const

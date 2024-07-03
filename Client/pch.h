@@ -5,6 +5,8 @@
 #include "Framework.h"
 #include <memory>
 #include <vector>
+#include <unordered_map>
+#include <list>
 #include <map>
 #include <string>
 #include <fstream>

@@ -5,7 +5,9 @@
 #include "Framework.h"
 #include <memory>
 #include <cassert>
+#include <unordered_map>
 #include <vector>
+#include <list>
 #include <map>
 #include <string>
 #include <fstream>
@@ -17,9 +19,11 @@
 #include <comdef.h>
 #include <d2d1helper.h>
 #include <dxgi1_4.h>
+
 #include "../Exception/Exception.h"
 #include "../Logger/LogLevel.h"
 #include "../Logger/Interfaces/ILogger.h"
+
 #include "Logger/Logger.h"
 #include "Models/Models.h"
 #include "Math/Math.h"

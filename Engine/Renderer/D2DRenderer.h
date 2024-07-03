@@ -13,6 +13,7 @@ public:
     void Initialize();
     void Finalize();
 
+
     void BeginDraw() const;
     void EndDraw() const;
     void SetTransform(const D2D1_MATRIX_3X2_F& transform) const;
@@ -27,6 +28,11 @@ public:
                    DWRITE_FONT_STYLE style = DWRITE_FONT_STYLE_NORMAL,
                    DWRITE_FONT_STRETCH stretch = DWRITE_FONT_STRETCH_NORMAL) const;
 
+
+    void DrawRectangle(const Rect& rect, D2D1_COLOR_F color = D2D1::ColorF(D2D1::ColorF::Black)) const;
+    void FillRectangle(const Rect& rect, D2D1_COLOR_F color = D2D1::ColorF(D2D1::ColorF::Black)) const;
+
+    void SetCameraMatrix(const Matrix& cameraMatrix);
     const Matrix& GetCameraMatrix() const;
 
     size_t GetUsedVRAM() const;

@@ -5,11 +5,12 @@
 #include "Managers/ResourceManager.h"
 #include "Window/Window.h"
 #include "Renderer/D2DRenderer.h"
+#include "World/World.h"
 
 GameApp::GameApp(const HINSTANCE instanceHandle, const int showCommand, const LPCWSTR gameName):
     _window(new Window(instanceHandle, showCommand, gameName, {1920, 1080})),
     _renderer(new D2DRenderer),
-    _isRun(false)
+    _world(new World(Rect{0, 0, 1920, 1080})), _isRun(false)
 {
     Logger::Log(LogLevel::Trace, L"GameApp constructor start.");
     Logger::Log(LogLevel::Trace, L"GameApp constructor end.");
@@ -17,8 +18,12 @@ GameApp::GameApp(const HINSTANCE instanceHandle, const int showCommand, const LP
 
 GameApp::~GameApp()
 {
+    delete _world;
+    _world = nullptr;
     delete _renderer;
+    _renderer = nullptr;
     delete _window;
+    _window = nullptr;
 }
 
 void GameApp::Initialize()
@@ -30,10 +35,10 @@ void GameApp::Initialize()
         _window->Initialize();
         COMManager::Initialize(_window->GetHandle(), _window->GetWidth(), _window->GetHeight());
         _renderer->Initialize();
+        CameraManager::Initialize(_world, _renderer);
         ResourceManager::Initialize();
         Time::Initialize();
         Input::Initialize(_window->GetHandle());
-        OnInitialize();
         _isRun = true;
         Logger::Log(LogLevel::Trace, L"GameApp initialize end.");
     }
@@ -48,6 +53,7 @@ void GameApp::Initialize()
 void GameApp::Finalize()
 {
     Time::Finalize();
+    CameraManager::Finalize();
     ResourceManager::Finalize();
     _renderer->Finalize();
     COMManager::Finalize();
@@ -96,7 +102,9 @@ void GameApp::Update(const float deltaTime)
         Logger::Log(LogLevel::Trace, L"GameApp update start.");
         Time::Update();
         Input::Update();
+        _world->Update(deltaTime);
         OnUpdate(deltaTime);
+        CameraManager::Update();
         // TODO UI
         Input::Reset();
         Logger::Log(LogLevel::Trace, L"GameApp update end.");
@@ -115,7 +123,7 @@ void GameApp::Render(const D2DRenderer* renderer)
     {
         Logger::Log(LogLevel::Trace, L"GameApp render start.");
         renderer->BeginDraw();
-        OnRender(renderer);
+        _world->Render(renderer);
         // TODO UI
         renderer->EndDraw();
         Logger::Log(LogLevel::Trace, L"GameApp render end.");
@@ -126,16 +134,4 @@ void GameApp::Render(const D2DRenderer* renderer)
         Logger::Log(LogLevel::Fatal, L"GameApp render fail.");
         throw;
     }
-}
-
-void GameApp::OnInitialize()
-{
-}
-
-void GameApp::OnUpdate(float deltaTime)
-{
-}
-
-void GameApp::OnRender(const D2DRenderer* renderer)
-{
 }

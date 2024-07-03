@@ -24,3 +24,13 @@ Vector Rect::GetSize() const
 {
     return {right - left, bottom - top};
 }
+
+Vector Rect::GetCenter() const
+{
+    return {left + (right - left) / 2, top + (bottom - top) / 2};
+}
+
+Vector Rect::GetExtend() const
+{
+    return {GetSize().x / 2, GetSize().y / 2};
+}

@@ -2,6 +2,8 @@
 #include "Renderer/D2DRenderer.h"
 #include "Window/Window.h"
 
+class World;
+
 class GameApp
 {
 public:
@@ -20,12 +22,11 @@ protected:
    virtual void Update(float deltaTime);
    virtual void Render(const D2DRenderer* renderer);
 
-   virtual void OnInitialize();
-   virtual void OnUpdate(float deltaTime);
-   virtual void OnRender(const D2DRenderer* renderer);
+   virtual void OnUpdate(float deltaTime) = 0;
 
    Window* _window;
    D2DRenderer* _renderer;
+   World* _world;
 
 private:
    std::wstring _name;

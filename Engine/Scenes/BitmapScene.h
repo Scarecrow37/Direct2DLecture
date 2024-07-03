@@ -1,10 +1,11 @@
 ﻿#pragma once
 
 #include "Scene.h"
+#include "../Component/Component.h"
 
 class D2DRenderer;
 
-class BitmapScene : public Scene
+class BitmapScene : public Scene, public Component
 {
 public:
     BitmapScene();
@@ -20,16 +21,11 @@ public:
 
     void LoadBitmapFromFilename(const std::wstring& path);
 
-    void SetCenter(const Vector& center);
-    Vector GetCenter() const;
-
     Vector GetBitmapSize() const;
 
 protected:
-    void UpdateTransform() override;
+    void UpdateCenterTransform() override;
 
-    Vector _center;
-    Matrix _centerMatrix;
 
     std::wstring _bitmapPath;
     ID2D1Bitmap* _bitmap;

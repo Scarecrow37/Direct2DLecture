@@ -13,9 +13,6 @@ public:
     Scene& operator=(Scene&& other) noexcept = default;
     virtual ~Scene() = default;
 
-    virtual void Update(float deltaTime) abstract;
-    virtual void Render(const D2DRenderer* renderer) const abstract;
-
     void SetParentScene(const Scene* parentScene);
 
     Vector GetScale() const;
@@ -27,19 +24,26 @@ public:
     Vector GetTranslation() const;
     void SetTranslation(const Vector& translation);
 
+    void SetCenter(const Vector& center);
+    Vector GetCenter() const;
+    
     Matrix GetTransform() const;
 
     Matrix GetWorldTransform() const;
 
+    Vector GetWorldLocation() const;
 protected:
     virtual void UpdateTransform();
+    virtual void UpdateCenterTransform() = 0;
 
     const Scene* _parentScene;
 
     Vector _scale;
     float _rotation;
     Vector _translation;
+    Vector _center;
 
     Matrix _transform;
     Matrix _worldTransform;
+    Matrix _centerMatrix;
 };

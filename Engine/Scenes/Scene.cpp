@@ -9,8 +9,10 @@ Scene::Scene()
 }
 
 Scene::Scene(const Scene* parent)
-    : _parentScene(parent), _scale(1.f, 1.f), _rotation(0.f), _translation(0.f, 0.f),
-      _transform(D2D1::Matrix3x2F::Identity()), _worldTransform(D2D1::Matrix3x2F::Identity())
+    : _parentScene(parent),
+      _scale(1.f, 1.f), _rotation(0.f), _translation(0.f, 0.f), _center(0.f, 0.f),
+      _transform(D2D1::Matrix3x2F::Identity()), _worldTransform(D2D1::Matrix3x2F::Identity()),
+      _centerMatrix(D2D1::Matrix3x2F::Identity())
 {
     Logger::Log(LogLevel::Trace, L"Scene constructor start.");
     Logger::Log(LogLevel::Trace, L"Scene constructor end.");
@@ -59,6 +61,19 @@ void Scene::SetTranslation(const Vector& translation)
     Logger::Log(LogLevel::Trace, L"Scene set translation end.");
 }
 
+void Scene::SetCenter(const Vector& center)
+{
+    Logger::Log(LogLevel::Trace, L"BitmapScene set center start.");
+    _center = center;
+    Logger::Log(LogLevel::Trace, L"BitmapScene set center end.");
+}
+
+Vector Scene::GetCenter() const
+{
+    return _center;
+}
+
+
 Matrix Scene::GetTransform() const
 {
     return _transform;
@@ -69,6 +84,12 @@ Matrix Scene::GetWorldTransform() const
     return _worldTransform;
 }
 
+Vector Scene::GetWorldLocation() const
+{
+    return {_worldTransform._31, _worldTransform._32};
+}
+
+
 void Scene::UpdateTransform()
 {
     Logger::Log(LogLevel::Trace, L"Scene update transform start.");
@@ -78,5 +99,6 @@ void Scene::UpdateTransform()
     _transform = scaleMatrix * rotationMatrix * translationMatrix;
     if (_parentScene != nullptr) _worldTransform = _transform * _parentScene->_worldTransform;
     else _worldTransform = _transform;
+    UpdateCenterTransform();
     Logger::Log(LogLevel::Trace, L"Scene update transform end.");
 }
