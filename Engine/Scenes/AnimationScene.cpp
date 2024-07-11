@@ -55,7 +55,7 @@ void AnimationScene::LoadAnimationAssetFromFilename(const std::wstring& path)
     }
 }
 
-void AnimationScene::SetAnimation(const size_t index, const bool isMirror)
+void AnimationScene::SetAnimation(const size_t index)
 {
     Logger::Log(LogLevel::Trace, L"AnimationScene set animation start.");
     if (_animationAsset == nullptr)
@@ -65,11 +65,11 @@ void AnimationScene::SetAnimation(const size_t index, const bool isMirror)
     if (_currentAnimationInfo == nullptr)
         throw Exception(
             L"AnimationInfo is not found, AnimationScene set animation fail.");
-    ResetAnimation(isMirror);
+    ResetAnimation();
     Logger::Log(LogLevel::Trace, L"AnimationScene set animation end.");
 }
 
-void AnimationScene::SetAnimation(const std::wstring& animationName, const bool isMirror)
+void AnimationScene::SetAnimation(const std::wstring& animationName)
 {
     Logger::Log(LogLevel::Trace, L"AnimationScene set animation start.");
     if (_animationAsset == nullptr)
@@ -79,8 +79,12 @@ void AnimationScene::SetAnimation(const std::wstring& animationName, const bool 
     if (_currentAnimationInfo == nullptr)
         throw Exception(
             L"AnimationInfo is not found, AnimationScene set animation fail.");
-    ResetAnimation(isMirror);
+    ResetAnimation();
     Logger::Log(LogLevel::Trace, L"AnimationScene set animation end.");
+}
+
+void AnimationScene::Initialize()
+{
 }
 
 void AnimationScene::Update(const float deltaTime)
@@ -161,12 +165,8 @@ void AnimationScene::UpdateTransform()
     BitmapScene::UpdateTransform();
     if (_currentAnimationInfo != nullptr)
     {
-        const FrameInfo& currentFrame = _currentAnimationInfo->frames[_currentFrameIndex];
-        _mirrorMatrix = _isMirror
-                            ? Matrix::Scale({-1.f, 1.f})
-                            * Matrix::Translation(currentFrame.center)
-                            : Matrix::Scale({1.f, 1.f})
-                            * Matrix::Translation({-currentFrame.center.x, currentFrame.center.y});
+        const FrameInfo& currentFrame = GetCurrentFrame();
+        _mirrorMatrix = _isMirror ? Matrix::Scale({-1.f, 1.f}) : Matrix::Scale({1.f, 1.f});
     }
     Logger::Log(LogLevel::Trace, L"AnimationScene update transform end.");
 }
@@ -174,18 +174,29 @@ void AnimationScene::UpdateTransform()
 void AnimationScene::UpdateFrame()
 {
     Logger::Log(LogLevel::Trace, L"AnimationScene update frame start.");
-    const FrameInfo& currentFrame = _currentAnimationInfo->frames[_currentFrameIndex];
+    const FrameInfo& currentFrame = GetCurrentFrame();
     _sourceRect = currentFrame.source;
     if (!_isChangedDestinationRect) _destinationRect = Rect(Vector::Zero(), _sourceRect.GetSize());
     Logger::Log(LogLevel::Trace, L"AnimationScene update frame end.");
 }
 
-void AnimationScene::ResetAnimation(const bool isMirror)
+void AnimationScene::ResetAnimation()
 {
     Logger::Log(LogLevel::Trace, L"AnimationScene reset animation start.");
-    _isMirror = isMirror;
     _frameElapsedTime = 0.f;
     _currentFrameIndex = 0;
     UpdateFrame();
     Logger::Log(LogLevel::Trace, L"AnimationScene reset animation end.");
+}
+
+void AnimationScene::UpdateCenterTransform()
+{
+    Logger::Log(LogLevel::Trace, L"AnimationScene update center transform start.");
+    _centerMatrix = Matrix::Translation(-Vector(GetCurrentFrame().center));
+    Logger::Log(LogLevel::Trace, L"AnimationScene update center transform end.");
+}
+
+FrameInfo AnimationScene::GetCurrentFrame() const
+{
+    return _currentAnimationInfo->frames[_currentFrameIndex];
 }

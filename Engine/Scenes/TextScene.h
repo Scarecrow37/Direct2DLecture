@@ -6,6 +6,7 @@ class TextScene : public Scene, public Component
 {
 public:
     TextScene();
+    void Initialize() override;
     void Update(float deltaTime) override;
     void Render(const D2DRenderer* renderer) const override;
 

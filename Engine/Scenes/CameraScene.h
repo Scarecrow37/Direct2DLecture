@@ -6,6 +6,7 @@
 class CameraScene : public Scene, public Component, public Camera
 {
 public:
+    void Initialize() override;
     void Update(float deltaTime) override;
     void Render(const D2DRenderer* renderer) const override;
 

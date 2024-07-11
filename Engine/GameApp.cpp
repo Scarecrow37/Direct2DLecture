@@ -39,6 +39,7 @@ void GameApp::Initialize()
         ResourceManager::Initialize();
         Time::Initialize();
         Input::Initialize(_window->GetHandle());
+        _world->Initialize();
         _isRun = true;
         Logger::Log(LogLevel::Trace, L"GameApp initialize end.");
     }

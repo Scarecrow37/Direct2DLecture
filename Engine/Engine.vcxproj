@@ -28,7 +28,11 @@
     <ClInclude Include="COM\Animation\IDSHAnimationAsset.h" />
     <ClInclude Include="COM\COM.h" />
     <ClInclude Include="Framework.h" />
+    <ClInclude Include="FSM\FiniteState.h" />
+    <ClInclude Include="FSM\FiniteStateMachine.h" />
+    <ClInclude Include="FSM\Transition.h" />
     <ClInclude Include="GameApp.h" />
+    <ClInclude Include="GameObject\Character.h" />
     <ClInclude Include="GameObject\GameObject.h" />
     <ClInclude Include="Input\Controller\Controller.h" />
     <ClInclude Include="Input\Input.h" />
@@ -142,7 +146,11 @@
       <LibCompiled>true</LibCompiled>
     </ClCompile>
     <ClCompile Include="COM\Animation\IDSHAnimationAsset.cpp" />
+    <ClCompile Include="FSM\FiniteState.cpp" />
+    <ClCompile Include="FSM\FiniteStateMachine.cpp" />
+    <ClCompile Include="FSM\Transition.cpp" />
     <ClCompile Include="GameApp.cpp" />
+    <ClCompile Include="GameObject\Character.cpp" />
     <ClCompile Include="GameObject\GameObject.cpp" />
     <ClCompile Include="Input\Controller\Controller.cpp" />
     <ClCompile Include="Input\Input.cpp" />
@@ -431,7 +439,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>d2d1.lib;dwrite.lib;dxgi.lib;</AdditionalDependencies>
+      <AdditionalDependencies>d2d1.lib;dwrite.lib;dxgi.lib;d3d11.lib;dxguid.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

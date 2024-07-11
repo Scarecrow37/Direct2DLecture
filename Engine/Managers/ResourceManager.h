@@ -16,7 +16,9 @@ public:
     static void Finalize();
 
     static void CreateD2D1Bitmap(const std::wstring& filePath, ID2D1Bitmap** bitmap);
+    static void CreateD2D1Bitmap(const std::wstring& filePath, ID2D1Bitmap** bitmap, D2D1_VECTOR_4F color);
     static void ReleaseD2D1Bitmap(const std::wstring& filePath);
+    
     static void CreateDSHAnimationAsset(const std::wstring& filePath, IDSHAnimationAsset** animation);
     static void ReleaseDSHAnimationAsset(const std::wstring& filePath);
 
@@ -27,6 +29,7 @@ private:
     IDSHAnimationFactory* _animationFactory;
     IWICImagingFactory* _imagingFactory;
     ID2D1HwndRenderTarget* _renderTarget;
+    ID2D1DeviceContext1* _context;
 
     std::map<std::wstring, IDSHAnimationAsset*> _sharingAnimationAssets;
     std::map<std::wstring, ID2D1Bitmap*> _sharingBitmapAssets;

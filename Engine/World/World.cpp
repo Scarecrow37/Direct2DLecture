@@ -17,6 +17,14 @@ World::~World()
     _gameObjects.clear();
 }
 
+void World::Initialize() const
+{
+    for (const auto& gameObject : _gameObjects)
+    {
+        gameObject->Initialize();
+    }
+}
+
 void World::Update(const float deltaTime)
 {
     ResetRenderingObjectCount();

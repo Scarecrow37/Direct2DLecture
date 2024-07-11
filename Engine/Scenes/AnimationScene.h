@@ -13,9 +13,10 @@ public:
     ~AnimationScene() override;
 
     void LoadAnimationAssetFromFilename(const std::wstring& path);
-    void SetAnimation(size_t index, bool isMirror = false);
-    void SetAnimation(const std::wstring& animationName, bool isMirror = false);
+    void SetAnimation(size_t index);
+    void SetAnimation(const std::wstring& animationName);
 
+    void Initialize() override;
     void Update(float deltaTime) override;
     void Render(const D2DRenderer* renderer) const override;
 
@@ -34,9 +35,11 @@ protected:
     void UpdateAnimation(float deltaTime);
     void UpdateTransform() override;
     void UpdateFrame();
-    void ResetAnimation(bool isMirror);
+    void ResetAnimation();
+    void UpdateCenterTransform() override;
 
 private:
+    FrameInfo GetCurrentFrame()const;
     IDSHAnimationAsset* _animationAsset;
     std::wstring _animationAssetPath;
 

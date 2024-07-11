@@ -24,4 +24,10 @@ struct Vector : D2D1_VECTOR_2F
     Vector operator-() const;
     Vector& operator+=(const Vector& other);
     Vector operator+(const Vector& vector) const;
+    Vector operator-(const Vector& other) const;
+    bool operator==(const Vector& other) const;
+    bool operator!=(const Vector& other) const;
+
+    float Size() const;
+    Vector Normalize() const;
 };

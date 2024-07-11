@@ -18,6 +18,7 @@ void ResourceManager::Initialize()
     COMManager::CreateDSHAnimationFactory(&GetInstance()._animationFactory);
     COMManager::CreateWICImagingFactory(&GetInstance()._imagingFactory);
     COMManager::CreateD2DHwndRenderTarget(&GetInstance()._renderTarget);
+    COMManager::CreateD2DDeviceContext(&GetInstance()._context);
     Logger::Log(LogLevel::Trace, L"ResourceManager initialize end.");
 }
 
@@ -27,6 +28,7 @@ void ResourceManager::Finalize()
     COMManager::ReleaseDSHAnimationFactory();
     COMManager::ReleaseD2DHwndRenderTarget();
     COMManager::ReleaseWICImagingFactory();
+    COMManager::ReleaseD2DDeviceContext();
     Logger::Log(LogLevel::Trace, L"ResourceManager finalize end.");
 }
 
@@ -45,19 +47,24 @@ void ResourceManager::CreateD2D1Bitmap(const std::wstring& filePath, ID2D1Bitmap
         HRESULT resultHandle = resourceManager._imagingFactory->CreateDecoderFromFilename(
             filePath.c_str(), nullptr, GENERIC_READ, WICDecodeMetadataCacheOnLoad, &decoder);
         if (resultHandle == S_OK) resultHandle = decoder->GetFrame(0, &frame);
-        else if (errorMessage.empty()) errorMessage = std::to_wstring(resultHandle).append(
-            L", Create decoder from filename fail.");
+        else if (errorMessage.empty())
+            errorMessage = std::to_wstring(resultHandle).append(
+                L", Create decoder from filename fail.");
         if (resultHandle == S_OK) resultHandle = resourceManager._imagingFactory->CreateFormatConverter(&converter);
         else if (errorMessage.empty()) errorMessage = std::to_wstring(resultHandle).append(L", Get frame fail.");
-        if (resultHandle == S_OK) resultHandle = converter->Initialize(frame, GUID_WICPixelFormat32bppPBGRA,
-                                                                       WICBitmapDitherTypeNone, nullptr, 0.0f,
-                                                                       WICBitmapPaletteTypeMedianCut);
-        else if (errorMessage.empty()) errorMessage = std::to_wstring(resultHandle).append(
-            L", Create format converter fail.");
-        if (resultHandle == S_OK) resultHandle = resourceManager._renderTarget->CreateBitmapFromWicBitmap(
-            converter, bitmap);
-        else if (errorMessage.empty()) errorMessage = std::to_wstring(resultHandle).append(
-            L", Initialize converter fail.");
+        if (resultHandle == S_OK)
+            resultHandle = converter->Initialize(frame, GUID_WICPixelFormat32bppPBGRA,
+                                                 WICBitmapDitherTypeNone, nullptr, 0.0f,
+                                                 WICBitmapPaletteTypeMedianCut);
+        else if (errorMessage.empty())
+            errorMessage = std::to_wstring(resultHandle).append(
+                L", Create format converter fail.");
+        if (resultHandle == S_OK)
+            resultHandle = resourceManager._renderTarget->CreateBitmapFromWicBitmap(
+                converter, bitmap);
+        else if (errorMessage.empty())
+            errorMessage = std::to_wstring(resultHandle).append(
+                L", Initialize converter fail.");
         if (converter != nullptr) converter->Release();
         if (frame != nullptr) frame->Release();
         if (decoder != nullptr) decoder->Release();
@@ -69,6 +76,18 @@ void ResourceManager::CreateD2D1Bitmap(const std::wstring& filePath, ID2D1Bitmap
         bitmaps[filePath]->AddRef();
         *bitmap = bitmaps[filePath];
     }
+    Logger::Log(LogLevel::Trace, L"ResourceManager create sharing bitmap asset end.");
+}
+
+void ResourceManager::CreateD2D1Bitmap(const std::wstring& filePath, ID2D1Bitmap** bitmap, const D2D1_VECTOR_4F color)
+{
+    Logger::Log(LogLevel::Trace, L"ResourceManager create sharing bitmap asset start.");
+    CreateD2D1Bitmap(filePath, bitmap);
+    Microsoft::WRL::ComPtr<ID2D1Effect> chromakeyEffect;
+    DX::ThrowIfFailed(GetInstance()._context->CreateEffect(CLSID_D2D1ChromaKey, &chromakeyEffect));
+    chromakeyEffect->SetInput(0, *bitmap);
+    DX::ThrowIfFailed(chromakeyEffect->SetValue(D2D1_CHROMAKEY_PROP_COLOR, color));
+    chromakeyEffect->GetOutput(reinterpret_cast<ID2D1Image**>(bitmap));
     Logger::Log(LogLevel::Trace, L"ResourceManager create sharing bitmap asset end.");
 }
 
@@ -88,8 +107,11 @@ void ResourceManager::CreateDSHAnimationAsset(const std::wstring& filePath, IDSH
     auto& animations = resourceManager._sharingAnimationAssets;
     if (animations.find(filePath) == animations.end())
     {
-        const HRESULT resultHandle = resourceManager._animationFactory->CreateAnimationFromFile( filePath.c_str(), animation);
-        if (resultHandle != S_OK) throw Exception(std::to_wstring(resultHandle).append(L", Create animation from file fail."));
+        const HRESULT resultHandle = resourceManager._animationFactory->CreateAnimationFromFile(
+            filePath.c_str(), animation);
+        if (resultHandle != S_OK)
+            throw Exception(
+                std::to_wstring(resultHandle).append(L", Create animation from file fail."));
         animations[filePath] = *animation;
     }
     else

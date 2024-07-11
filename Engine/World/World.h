@@ -12,7 +12,8 @@ public:
     World& operator=(const World& other) = default;
     World& operator=(World&& other) noexcept = default;
     virtual ~World();
-    
+
+    void Initialize() const;
     void Update(float deltaTime) ;
     void Render(const D2DRenderer* renderer) ;
     void Clear();

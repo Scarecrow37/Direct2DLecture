@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "../FSM/FiniteStateMachine.h"
 
 class Component;
 class Scene;
@@ -21,6 +22,9 @@ public:
     void SetBoundBox(const AABB& boundBox);
     void AddComponent(Component* component);
 
+    Vector GetWorldLocation() const;
+
+    virtual void Initialize();
     virtual void Update(float deltaTime);
     void Render(const D2DRenderer* renderer) const;
 

@@ -17,6 +17,7 @@ public:
     void SetOwner(GameObject* owner);
     GameObject* GetOwner() const;
 
+    virtual void Initialize() = 0;
     virtual void Update(float deltaTime) = 0;
     virtual void Render(const D2DRenderer* renderer) const = 0;
 

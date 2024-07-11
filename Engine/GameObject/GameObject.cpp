@@ -43,6 +43,19 @@ void GameObject::AddComponent(Component* component)
     _ownedComponents.push_back(component);
 }
 
+Vector GameObject::GetWorldLocation() const
+{
+    return _rootScene->GetWorldLocation();
+}
+
+void GameObject::Initialize()
+{
+    for (const auto& component : _ownedComponents)
+    {
+        component->Initialize();
+    }
+}
+
 void GameObject::Update(const float deltaTime)
 {
     for (const auto& component : _ownedComponents)

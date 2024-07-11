@@ -14,6 +14,8 @@ void COMManager::Initialize(const HWND windowHandle, const unsigned int width, c
     Logger::Log(LogLevel::Trace, L"COMManager initialize start.");
     InitializeCOM();
     InitializeFactory();
+    InitializeDevice();
+    InitializeDeviceContext();
     InitializeImagingFactory();
     InitializeAnimationFactory();
     InitializeHwndRenderTarget(windowHandle, width, height);
@@ -42,6 +44,41 @@ void COMManager::InitializeFactory()
     if (resultHandle != S_OK)
         throw Exception(std::to_wstring(resultHandle).append(L", Factory initialize fail."));
     Logger::Log(LogLevel::Trace, L"COMManager initialize factory end.");
+}
+
+void COMManager::InitializeDevice()
+{
+    Logger::Log(LogLevel::Trace, L"COMManager initialize device start.");
+    constexpr UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
+    Microsoft::WRL::ComPtr<IDXGIDevice> dxgiDevice;
+    constexpr D3D_FEATURE_LEVEL featureLevels[] = {
+        D3D_FEATURE_LEVEL_11_1,
+        D3D_FEATURE_LEVEL_11_0,
+        D3D_FEATURE_LEVEL_10_1,
+        D3D_FEATURE_LEVEL_10_0,
+        D3D_FEATURE_LEVEL_9_3,
+        D3D_FEATURE_LEVEL_9_2,
+        D3D_FEATURE_LEVEL_9_1
+    };
+    Microsoft::WRL::ComPtr<ID3D11Device> device;
+    Microsoft::WRL::ComPtr<ID3D11DeviceContext> deviceContext;
+    D3D_FEATURE_LEVEL featureLevel;
+    DX::ThrowIfFailed(
+        D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, creationFlags, featureLevels,
+                          std::size(featureLevels),D3D11_SDK_VERSION, &device, &featureLevel, &deviceContext));
+    Microsoft::WRL::ComPtr<ID3D11Device2> device2;
+    DX::ThrowIfFailed(device.As(&device2));
+    DX::ThrowIfFailed(device2.As(&dxgiDevice));
+    DX::ThrowIfFailed(GetInstance()._factory->CreateDevice(dxgiDevice.Get(), &GetInstance()._device));
+    Logger::Log(LogLevel::Trace, L"COMManager initialize device end.");
+}
+
+void COMManager::InitializeDeviceContext()
+{
+    Logger::Log(LogLevel::Trace, L"COMManager initialize device context start.");
+    DX::ThrowIfFailed(
+        GetInstance()._device->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, &GetInstance()._deviceContext));
+    Logger::Log(LogLevel::Trace, L"COMManager initialize device context end.");
 }
 
 void COMManager::InitializeImagingFactory()
@@ -106,8 +143,9 @@ void COMManager::InitializeDWriteFactory()
     Logger::Log(LogLevel::Trace, L"COMManager initialize DWrite factory start.");
     const HRESULT resultHandle = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory),
                                                      reinterpret_cast<IUnknown**>(&GetInstance()._writeFactory));
-    if (resultHandle != S_OK) throw Exception(
-        std::to_wstring(resultHandle).append(L", DWrite Factory initialize fail."));
+    if (resultHandle != S_OK)
+        throw Exception(
+            std::to_wstring(resultHandle).append(L", DWrite Factory initialize fail."));
     Logger::Log(LogLevel::Trace, L"COMManager initialize DWrite factory end.");
 }
 
@@ -130,6 +168,10 @@ void COMManager::Finalize()
     comManager._imagingFactory = nullptr;
     if (comManager._hwndRenderTarget->Release() != 0) throw Exception(L"RenderTarget is referenced by other objects.");
     comManager._hwndRenderTarget = nullptr;
+    if (comManager._deviceContext->Release() != 0) throw Exception(L"DeviceContext is referenced by other objects.");
+    comManager._deviceContext = nullptr;
+    if (comManager._device->Release() != 0) throw Exception(L"Device is referenced by other objects.");
+    comManager._device = nullptr;
     if (comManager._factory->Release() != 0) throw Exception(L"Factory is referenced by other objects.");
     comManager._factory = nullptr;
     CoUninitialize();
@@ -149,6 +191,21 @@ void COMManager::ReleaseD2D1Factory()
     Logger::Log(LogLevel::Trace, L"COMManager release D2D1 factory start.");
     GetInstance()._factory->Release();
     Logger::Log(LogLevel::Trace, L"COMManager release D2D1 factory end.");
+}
+
+void COMManager::CreateD2DDeviceContext(ID2D1DeviceContext1** deviceContext)
+{
+    Logger::Log(LogLevel::Trace, L"COMManager create D2D1 device context start.");
+    *deviceContext = GetInstance()._deviceContext;
+    GetInstance()._deviceContext->AddRef();
+    Logger::Log(LogLevel::Trace, L"COMManager create D2D1 device context end.");
+}
+
+void COMManager::ReleaseD2DDeviceContext()
+{
+    Logger::Log(LogLevel::Trace, L"COMManager release D2D1 device context start.");
+    GetInstance()._deviceContext->Release();
+    Logger::Log(LogLevel::Trace, L"COMManager release D2D1 device context end.");
 }
 
 void COMManager::CreateWICImagingFactory(IWICImagingFactory** imagingFactory)

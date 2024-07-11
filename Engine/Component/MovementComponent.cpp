@@ -8,9 +8,13 @@ MovementComponent::MovementComponent()
 {
 }
 
+void MovementComponent::Initialize()
+{
+}
+
 void MovementComponent::Update(const float deltaTime)
 {
-    Vector newLocation = (_scene)->GetTranslation() + _direction * (_speed * deltaTime);
+    const Vector newLocation = (_scene)->GetTranslation() + _direction * (_speed * deltaTime);
     (_scene)->SetTranslation(newLocation);
 }
 
@@ -41,4 +45,9 @@ Vector MovementComponent::GetDirection() const
 void MovementComponent::SetDirection(const Vector& direction)
 {
     _direction = direction;
+}
+
+bool MovementComponent::IsMoving() const
+{
+    return _direction * _speed != Vector::Zero();
 }

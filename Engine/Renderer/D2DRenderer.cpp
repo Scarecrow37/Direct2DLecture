@@ -89,6 +89,7 @@ void D2DRenderer::DrawTextW(const std::wstring& text, const float fontSize, cons
     ID2D1SolidColorBrush* brush = nullptr;
     HRESULT resultHandle = _dWriteFactory->CreateTextFormat(fontFamily.c_str(), nullptr, weight, style, stretch,
                                                             fontSize, L"", &format);
+    format->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
     if (resultHandle == S_OK) resultHandle = _renderTarget->CreateSolidColorBrush(color, &brush);
     else if (errorMessage.empty()) errorMessage = std::to_wstring(resultHandle).append(L", Create format fail.");
     if (resultHandle == S_OK) _renderTarget->DrawTextW(text.c_str(), text.length(), format, destinationRect, brush);

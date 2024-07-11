@@ -7,6 +7,7 @@ class MovementComponent : public Component
 {
 public:
     MovementComponent();
+    void Initialize() override;
     void Update(float deltaTime) override;
     void Render(const D2DRenderer* renderer) const override;
 
@@ -17,6 +18,8 @@ public:
 
     Vector GetDirection() const;
     void SetDirection(const Vector& direction);
+
+    bool IsMoving() const;
 
 private:
     Scene* _scene;

@@ -8,6 +8,7 @@ public:
     BoxScene();
     explicit BoxScene(const Scene* parent);
 
+    void Initialize() override;
     void Update(float deltaTime) override;
 
     Rect GetRect() const;

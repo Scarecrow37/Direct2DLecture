@@ -1,7 +1,13 @@
 ﻿#include "pch.h"
 #include "CameraScene.h"
+
+#include "../Renderer/D2DRenderer.h"
 #include "../World/World.h"
 
+
+void CameraScene::Initialize()
+{
+}
 
 void CameraScene::Update(float deltaTime)
 {
@@ -12,7 +18,7 @@ void CameraScene::Update(float deltaTime)
 
 void CameraScene::UpdateCullingBound()
 {
-    _cullingBound.SetCenter(_worldTransform.TransformPoint(_center));
+    _cullingBound.SetCenter(GetWorldLocation());
 }
 
 Matrix CameraScene::GetCameraMatrix() const
@@ -27,4 +33,6 @@ void CameraScene::UpdateCenterTransform()
 
 void CameraScene::Render(const D2DRenderer* renderer) const
 {
+    renderer->SetTransform(_centerMatrix * _worldTransform * renderer->GetCameraMatrix());
+    // renderer->DrawRectangle(Rect{_cullingBound.GetMinX(), _cullingBound.GetMinY(), _cullingBound.GetMaxX(), _cullingBound.GetMaxY()});
 }

@@ -15,6 +15,9 @@ public:
     static void CreateD2D1Factory(ID2D1Factory** factory);
     static void ReleaseD2D1Factory();
 
+    static void CreateD2DDeviceContext(ID2D1DeviceContext1** deviceContext);
+    static void ReleaseD2DDeviceContext();
+
     static void CreateWICImagingFactory(IWICImagingFactory** imagingFactory);
     static void ReleaseWICImagingFactory();
 
@@ -39,6 +42,8 @@ private:
 
     static void InitializeCOM();
     static void InitializeFactory();
+    static void InitializeDevice();
+    static void InitializeDeviceContext();
     static void InitializeImagingFactory();
     static void InitializeAnimationFactory();
     static void InitializeHwndRenderTarget(HWND windowHandle, unsigned int width, unsigned int height);
@@ -46,11 +51,13 @@ private:
     static void InitializeDXGIAdapter();
     static void InitializeDWriteFactory();
 
-    ID2D1Factory* _factory;
+    ID2D1Factory2* _factory;
     IWICImagingFactory* _imagingFactory;
     IDSHAnimationFactory* _animationFactory;
     ID2D1HwndRenderTarget* _hwndRenderTarget;
     IDXGIFactory4* _dxgiFactory;
     IDXGIAdapter3* _dxgiAdapter;
     IDWriteFactory* _writeFactory;
+    ID2D1Device1* _device;
+    ID2D1DeviceContext1* _deviceContext;
 };

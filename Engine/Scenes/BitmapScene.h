@@ -16,12 +16,15 @@ public:
     BitmapScene& operator=(BitmapScene&& other) noexcept = default;
     ~BitmapScene() override;
 
+    void Initialize() override;
     void Update(float deltaTime) override;
     void Render(const D2DRenderer* renderer) const override;
 
     void LoadBitmapFromFilename(const std::wstring& path);
 
     Vector GetBitmapSize() const;
+
+    void MakeColorTransparent(const D2D1_COLOR_F& color) const;
 
 protected:
     void UpdateCenterTransform() override;

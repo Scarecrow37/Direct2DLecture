@@ -7,6 +7,10 @@ TextScene::TextScene(): _textBound(Rect::Zero())
 {
 }
 
+void TextScene::Initialize()
+{
+}
+
 void TextScene::Update(float deltaTime)
 {
     UpdateTransform();

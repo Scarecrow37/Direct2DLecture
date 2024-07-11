@@ -24,6 +24,10 @@ BitmapScene::~BitmapScene()
     Logger::Log(LogLevel::Trace, L"BitmapScene destructor end.");
 }
 
+void BitmapScene::Initialize()
+{
+}
+
 void BitmapScene::LoadBitmapFromFilename(const std::wstring& path)
 {
     if (_bitmap != nullptr)
@@ -51,6 +55,31 @@ Vector BitmapScene::GetBitmapSize() const
     return _bitmap->GetSize();
 }
 
+void BitmapScene::MakeColorTransparent(const D2D1_COLOR_F& color) const
+{
+    // ID2D1Effect* pEffect = nullptr;
+    // _renderTarget->CreateEffect(CLSID_D2D1ColorMatrix, &pEffect);
+    //
+    // if (pEffect) {
+    //     D2D1_VECTOR_4F transparentColor = D2D1::Vector4F(1.0f, 0.0f, 1.0f, 1.0f); // 투명하게 만들 색상 (RGB: 255, 0, 255)
+    //
+    //     D2D1_MATRIX_5X4_F colorMatrix = {
+    //         1, 0, 0, 0,
+    //         0, 1, 0, 0,
+    //         0, 0, 1, 0,
+    //         -transparentColor.x, -transparentColor.y, -transparentColor.z, transparentColor.w
+    //     };
+    //     
+    //     pEffect->SetInput(0, _bitmap);
+    //     pEffect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, colorMatrix);
+    //
+    //     pRenderTarget->BeginDraw();
+    //     pRenderTarget->DrawImage(pEffect);
+    //     pRenderTarget->EndDraw();
+    //
+    //     pEffect->Release();
+    // }
+}
 
 void BitmapScene::UpdateCenterTransform()
 {

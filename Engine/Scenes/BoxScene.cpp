@@ -9,6 +9,10 @@ BoxScene::BoxScene(const Scene* parent) : Scene(parent), _rect(Rect::Zero()), _c
 {
 }
 
+void BoxScene::Initialize()
+{
+}
+
 void BoxScene::Update(const float deltaTime)
 {
     Logger::Log(LogLevel::Trace, L"BoxScene update start.");

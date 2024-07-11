@@ -83,3 +83,29 @@ Vector Vector::operator+(const Vector& vector) const
     return Vector(*this) += vector;
 }
 
+Vector Vector::operator-(const Vector& other) const
+{
+    return *this + (-other);
+}
+
+bool Vector::operator==(const Vector& other) const
+{
+    return x == other.x && y == other.y;
+}
+
+bool Vector::operator!=(const Vector& other) const
+{
+    return !(*this == other);
+}
+
+float Vector::Size() const
+{
+    return sqrt(x * x + y * y);
+}
+
+Vector Vector::Normalize() const
+{
+    if (Size() == 0) return *this;
+    return *this / Size();
+}
+
