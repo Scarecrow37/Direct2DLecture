@@ -20,6 +20,10 @@ void BoxScene::Update(const float deltaTime)
     Logger::Log(LogLevel::Trace, L"BoxScene update end.");
 }
 
+void BoxScene::LazyUpdate(float deltaTime)
+{
+}
+
 Rect BoxScene::GetRect() const
 {
     return _rect;

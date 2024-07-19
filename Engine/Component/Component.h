@@ -19,6 +19,7 @@ public:
 
     virtual void Initialize() = 0;
     virtual void Update(float deltaTime) = 0;
+    virtual void LazyUpdate(float deltaTime) = 0;
     virtual void Render(const D2DRenderer* renderer) const = 0;
 
 private:

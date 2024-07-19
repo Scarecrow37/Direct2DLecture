@@ -20,6 +20,7 @@ public:
 
 protected:
    virtual void Update(float deltaTime);
+   virtual void LazyUpdate(float deltaTime);
    virtual void Render(const D2DRenderer* renderer);
 
    virtual void OnUpdate(float deltaTime) = 0;

@@ -10,6 +10,7 @@ public:
 
     void Initialize() override;
     void Update(float deltaTime) override;
+    void LazyUpdate(float deltaTime) override;
 
     Rect GetRect() const;
     void SetRect(const Rect& rect);

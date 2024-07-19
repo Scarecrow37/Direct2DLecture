@@ -16,6 +16,10 @@ void TextScene::Update(float deltaTime)
     UpdateTransform();
 }
 
+void TextScene::LazyUpdate(float deltaTime)
+{
+}
+
 void TextScene::Render(const D2DRenderer* renderer) const
 {
     renderer->SetTransform(_centerMatrix * _worldTransform * renderer->GetCameraMatrix());

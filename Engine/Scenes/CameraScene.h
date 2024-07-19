@@ -6,8 +6,10 @@
 class CameraScene : public Scene, public Component, public Camera
 {
 public:
+    CameraScene();
     void Initialize() override;
     void Update(float deltaTime) override;
+    void LazyUpdate(float deltaTime) override;
     void Render(const D2DRenderer* renderer) const override;
 
     void UpdateCullingBound() override;

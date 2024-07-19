@@ -86,19 +86,24 @@ Matrix Scene::GetWorldTransform() const
 
 Vector Scene::GetWorldLocation() const
 {
-    return {_worldTransform._31, _worldTransform._32};
+    return {_worldTransform.dx, _worldTransform.dy};
 }
 
 
 void Scene::UpdateTransform()
 {
     Logger::Log(LogLevel::Trace, L"Scene update transform start.");
+    UpdateCenterTransform();
+    UpdateWorldTransform();
+    Logger::Log(LogLevel::Trace, L"Scene update transform end.");
+}
+
+void Scene::UpdateWorldTransform()
+{
     const Matrix scaleMatrix = Matrix::Scale(_scale);
     const Matrix rotationMatrix = Matrix::Rotation(_rotation);
     const Matrix translationMatrix = Matrix::Translation(_translation);
     _transform = scaleMatrix * rotationMatrix * translationMatrix;
     if (_parentScene != nullptr) _worldTransform = _transform * _parentScene->_worldTransform;
     else _worldTransform = _transform;
-    UpdateCenterTransform();
-    Logger::Log(LogLevel::Trace, L"Scene update transform end.");
 }

@@ -8,6 +8,9 @@
 #include <cassert>
 #include <unordered_map>
 #include <vector>
+#include <stack>
+#include <deque>
+#include <set>
 #include <list>
 #include <map>
 #include <string>

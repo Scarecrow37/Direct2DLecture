@@ -6,6 +6,7 @@
 #include "../Engine/Scenes/CameraScene.h"
 #include "../Engine/World/World.h"
 #include "GameObjects/Monster/Monster.h"
+#include "GameObjects/Platform/Platform.h"
 #include "GameObjects/Player/Player.h"
 
 
@@ -20,6 +21,7 @@ ClientApp::ClientApp(const HINSTANCE instanceHandle, const int showCommand, cons
     _player->SetCameraScene(camera);
     Monster* monster = _world->CreateGameObject<Monster>();
     monster->SetChaseTarget(_player);
+    _world->CreateGameObject<Platform>();
 }
 
 void ClientApp::OnUpdate(float deltaTime)

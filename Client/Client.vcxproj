@@ -310,6 +310,7 @@
     <ClCompile Include="GameObjects\Monster\States\MonsterToWalk.cpp" />
     <ClCompile Include="GameObjects\Monster\States\MonsterToIdle.cpp" />
     <ClCompile Include="GameObjects\Monster\States\WaitState.cpp" />
+    <ClCompile Include="GameObjects\Platform\Platform.cpp" />
     <ClCompile Include="GameObjects\Player\Player.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -402,6 +403,7 @@
     <ClInclude Include="GameObjects\Monster\States\MonsterToWalk.h" />
     <ClInclude Include="GameObjects\Monster\States\MonsterToIdle.h" />
     <ClInclude Include="GameObjects\Monster\States\WaitState.h" />
+    <ClInclude Include="GameObjects\Platform\Platform.h" />
     <ClInclude Include="GameObjects\Player\Player.h" />
     <ClInclude Include="GameObjects\Player\States\PlayerIdleToWalk.h" />
     <ClInclude Include="GameObjects\Player\States\PlayerWalkToIdle.h" />

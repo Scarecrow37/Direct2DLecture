@@ -4,6 +4,10 @@
 #include "../Renderer/D2DRenderer.h"
 #include "../World/World.h"
 
+CameraScene::CameraScene()
+{
+    _center = Vector::HalfOne();
+}
 
 void CameraScene::Initialize()
 {
@@ -13,7 +17,10 @@ void CameraScene::Update(float deltaTime)
 {
     UpdateTransform();
     UpdateCullingBound();
-    UpdateCenterTransform();
+}
+
+void CameraScene::LazyUpdate(float deltaTime)
+{
 }
 
 void CameraScene::UpdateCullingBound()
@@ -33,6 +40,6 @@ void CameraScene::UpdateCenterTransform()
 
 void CameraScene::Render(const D2DRenderer* renderer) const
 {
-    renderer->SetTransform(_centerMatrix * _worldTransform * renderer->GetCameraMatrix());
-    // renderer->DrawRectangle(Rect{_cullingBound.GetMinX(), _cullingBound.GetMinY(), _cullingBound.GetMaxX(), _cullingBound.GetMaxY()});
+    renderer->SetTransform(renderer->GetCameraMatrix());
+    renderer->DrawRectangle(_cullingBound.GetRect());
 }

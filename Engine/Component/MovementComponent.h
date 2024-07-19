@@ -1,4 +1,5 @@
 ﻿#pragma once
+
 #include "Component.h"
 
 class Scene;
@@ -9,6 +10,7 @@ public:
     MovementComponent();
     void Initialize() override;
     void Update(float deltaTime) override;
+    void LazyUpdate(float deltaTime) override;
     void Render(const D2DRenderer* renderer) const override;
 
     void SetScene(Scene* scene);
@@ -17,13 +19,20 @@ public:
     float GetSpeed() const;
 
     Vector GetDirection() const;
-    void SetDirection(const Vector& direction);
+    virtual void SetDirection(const Vector& direction);
 
     bool IsMoving() const;
 
-private:
+    void CollectLocation(Vector location);
+
+protected:
     Scene* _scene;
 
-    float _speed;
     Vector _direction;
+    Vector _velocity;
+    float _speed;
+
+    Vector _newLocation;
+    Vector _collectedLocation;
+    bool _isCollectedLocation;
 };

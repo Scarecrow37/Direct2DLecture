@@ -8,6 +8,7 @@ public:
     TextScene();
     void Initialize() override;
     void Update(float deltaTime) override;
+    void LazyUpdate(float deltaTime) override;
     void Render(const D2DRenderer* renderer) const override;
 
     void SetText(const std::wstring& text);

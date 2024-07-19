@@ -10,6 +10,8 @@ struct Vector : D2D1_VECTOR_2F
     static Vector Down();
     static Vector Left();
     static Vector Right();
+    static Vector HalfOne();
+    Vector();
     Vector(float inX, float inY);
     Vector(D2D1_VECTOR_2F vector);
     Vector(D2D1_POINT_2F point);

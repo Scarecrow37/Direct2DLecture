@@ -1,7 +1,14 @@
 ﻿#pragma once
 #include "../../../Engine/GameObject/Character.h"
+#include "../../../Engine/Scenes/AnimationScene.h"
 
-class TextScene;class MovementComponent;class AnimationScene;class Monster : public Character
+class BoxColliderScene;
+class SideViewMovementComponent;
+class TextScene;
+class MovementComponent;
+class AnimationScene;
+
+class Monster : public Character, public IColliderNotify, public IAnimationNotify
 {
     enum State
     {
@@ -11,6 +18,7 @@ class TextScene;class MovementComponent;class AnimationScene;class Monster : pub
         Hurt,
         Death
     };
+
 public:
     Monster();
 
@@ -21,9 +29,22 @@ public:
 
     std::wstring GetStateString() const;
 
+protected:
+    void UpdateBoundBox() override;
+
+public:
+    void OnBlock(ColliderScene* ownedCollider, ColliderScene* otherCollider, Manifold manifold) override;
+    void OnBeginOverlap(ColliderScene* ownedCollider, ColliderScene* otherCollider, Manifold manifold) override;
+    void OnEndOverlap(ColliderScene* ownedCollider, ColliderScene* otherCollider, Manifold manifold) override;
+    void OnBeginAnimation(std::wstring animationName) override;
+    void OnEndAnimation(std::wstring animationName) override;
+    void OnBeginAnimationChanged(std::wstring animationName) override;
+    void OnEndAnimationChanged(std::wstring animationName) override;
+
 private:
     GameObject* _chaseTarget;
     AnimationScene* _animationScene;
-    MovementComponent* _movementComponent;
+    SideViewMovementComponent* _movementComponent;
+    BoxColliderScene* _colliderScene;
     TextScene* _textScene;
 };

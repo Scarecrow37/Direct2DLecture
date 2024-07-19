@@ -34,6 +34,7 @@ public:
     Vector GetWorldLocation() const;
 protected:
     virtual void UpdateTransform();
+    virtual void UpdateWorldTransform();
     virtual void UpdateCenterTransform() = 0;
 
     const Scene* _parentScene;

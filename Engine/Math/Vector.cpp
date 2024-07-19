@@ -26,6 +26,15 @@ Vector Vector::Right()
     return {D2D1::Vector2F(1, 0)};
 }
 
+Vector Vector::HalfOne()
+{
+    return {D2D1::Vector2F(0.5f, 0.5f)};
+}
+
+Vector::Vector() : D2D_VECTOR_2F()
+{
+}
+
 Vector::Vector(const float inX, const float inY): D2D_VECTOR_2F({inX, inY})
 {
 }

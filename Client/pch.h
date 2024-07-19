@@ -8,8 +8,11 @@
 #include <functional>
 #include <unordered_map>
 #include <vector>
+#include <stack>
+#include <deque>
 #include <list>
 #include <map>
+#include <set>
 #include <string>
 #include <fstream>
 #include <sstream>

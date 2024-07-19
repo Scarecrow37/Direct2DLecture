@@ -83,6 +83,7 @@ void GameApp::Run()
             else
             {
                 Update(Time::GetDeltaTime());
+                LazyUpdate(Time::GetDeltaTime());
                 Render(_renderer);
             }
         }
@@ -107,7 +108,6 @@ void GameApp::Update(const float deltaTime)
         OnUpdate(deltaTime);
         CameraManager::Update();
         // TODO UI
-        Input::Reset();
         Logger::Log(LogLevel::Trace, L"GameApp update end.");
     }
     catch (const Exception& exception)
@@ -116,6 +116,12 @@ void GameApp::Update(const float deltaTime)
         Logger::Log(LogLevel::Fatal, L"GameApp update fail.");
         throw;
     }
+}
+
+void GameApp::LazyUpdate(float deltaTime)
+{
+    _world->LazyUpdate(deltaTime);
+    Input::Reset();
 }
 
 void GameApp::Render(const D2DRenderer* renderer)

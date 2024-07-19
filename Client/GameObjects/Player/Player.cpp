@@ -2,27 +2,38 @@
 #include "Player.h"
 
 #include "../../../Engine/Component/MovementComponent.h"
+#include "../../../Engine/Component/SideViewMovementComponent.h"
 #include "../../../Engine/Scenes/CameraScene.h"
 #include "../../../Engine/Scenes/AnimationScene.h"
 #include "../../../Engine/Scenes/EmptyBoxScene.h"
 #include "States/PlayerIdleToWalk.h"
 #include "States/PlayerWalkToIdle.h"
 #include "../../FSM/States/AnimationState.h"
-
-class AnimationState;
+#include "../../../Engine/Scenes/BoxColliderScene.h"
+#include "../Platform/Platform.h"
 
 Player::Player()
 {
-    _animationScene = CreateComponent<AnimationScene>();
-    SetRootScene(_animationScene);
-    _emptyBoxScene = CreateComponent<EmptyBoxScene>();
-    _emptyBoxScene->SetParentScene(_animationScene);
-    _emptyBoxScene->SetColor(D2D1::ColorF::Blue);
-    _emptyBoxScene->SetRect({-1, -1, 1, 1});
+    _positionRenderBox = CreateComponent<EmptyBoxScene>();
+    SetRootScene(_positionRenderBox);
+    _positionRenderBox->SetColor(D2D1::ColorF::Blue);
+    _positionRenderBox->SetRect({0, 0, 2, 2});
+    _positionRenderBox->SetCenter(Vector::HalfOne());
 
-    _movementComponent = CreateComponent<MovementComponent>();
+    _animationScene = CreateComponent<AnimationScene>();
+    _animationScene->SetParentScene(_rootScene);
+
+
+    _movementComponent = CreateComponent<SideViewMovementComponent>();
     _movementComponent->SetScene(_rootScene);
     _movementComponent->SetSpeed(400.0f);
+
+    _colliderScene = CreateComponent<BoxColliderScene>();
+    _colliderScene->SetParentScene(_rootScene);
+    _colliderScene->SetNotify(this);
+    _colliderScene->SetCollisionType(CollisionType::Block);
+    _colliderScene->SetBound({30, 50});
+    _colliderScene->SetCenter({0.6f, 1.f});
 }
 
 void Player::Initialize()
@@ -44,14 +55,50 @@ void Player::SetCameraScene(CameraScene* camera)
 
 void Player::Update(const float deltaTime)
 {
-    SetBoundBox(Rect{{0, 0}, _animationScene->GetBitmapSize()});
+    Move();
+    Character::Update(deltaTime);
+}
+
+void Player::OnBlock(ColliderScene* ownedCollider, ColliderScene* otherCollider, const Manifold manifold)
+{
+    if ( dynamic_cast<Platform*>(otherCollider->GetOwner()))
+    {
+        _movementComponent->CollectLocation(manifold.normal * manifold.penetration);
+        _movementComponent->Land();
+    }
+}
+
+void Player::OnBeginOverlap(ColliderScene* ownedCollider, ColliderScene* otherCollider, Manifold manifold)
+{
+}
+
+void Player::OnEndOverlap(ColliderScene* ownedCollider, ColliderScene* otherCollider, Manifold manifold)
+{
+}
+
+void Player::Move() const
+{
     Vector direction = Vector::Zero();
     if (Input::IsKey(VK_UP)) direction += Vector::Up();
     if (Input::IsKey(VK_DOWN)) direction += Vector::Down();
     if (Input::IsKey(VK_LEFT)) direction += Vector::Left();
     if (Input::IsKey(VK_RIGHT)) direction += Vector::Right();
     _movementComponent->SetDirection(direction);
-    if (direction.x > 0) _animationScene->SetMirror(false);
-    else if (direction.x < 0) _animationScene->SetMirror(true);
-    Character::Update(deltaTime);
+    if (direction.x > 0)
+    {
+        _animationScene->SetMirror(false);
+        _colliderScene->SetCenter({0.6f, 1.f});
+    }
+    else if (direction.x < 0)
+    {
+        _animationScene->SetMirror(true);
+        _colliderScene->SetCenter({0.4f, 1.f});
+    }
+    if (Input::IsKeyDown(VK_SPACE)) _movementComponent->Jump();
+}
+
+void Player::UpdateBoundBox()
+{
+    _boundBox.SetExtend(_animationScene->GetDestinationRect().GetExtend());
+    _boundBox.SetCenter({GetWorldLocation().x, GetWorldLocation().y - _boundBox.GetExtend().y});
 }

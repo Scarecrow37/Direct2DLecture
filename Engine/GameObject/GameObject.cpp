@@ -43,6 +43,11 @@ void GameObject::AddComponent(Component* component)
     _ownedComponents.push_back(component);
 }
 
+std::vector<Component*> GameObject::GetOwnedComponents() const
+{
+    return _ownedComponents;
+}
+
 Vector GameObject::GetWorldLocation() const
 {
     return _rootScene->GetWorldLocation();
@@ -62,7 +67,15 @@ void GameObject::Update(const float deltaTime)
     {
         component->Update(deltaTime);
     }
-    if (_rootScene) _boundBox.SetCenter(_rootScene->GetWorldLocation());
+    UpdateBoundBox();
+}
+
+void GameObject::LazyUpdate(float deltaTime)
+{
+    for (const auto& component : _ownedComponents)
+    {
+        component->LazyUpdate(deltaTime);
+    }
 }
 
 void GameObject::Render(const D2DRenderer* renderer) const
@@ -71,4 +84,9 @@ void GameObject::Render(const D2DRenderer* renderer) const
     {
         component->Render(renderer);
     }
+}
+
+bool GameObject::IsCollisionable() const
+{
+    return _isCollisionable;
 }

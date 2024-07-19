@@ -1,5 +1,14 @@
 ﻿#pragma once
 
+struct Manifold
+{
+    unsigned int contactCount;
+    Vector contactPoints[2];
+    Vector normal;
+    float penetration;
+};
+
+
 class AABB
 {
 public:
@@ -14,11 +23,13 @@ public:
     Vector GetExtend() const;
 
     float GetMinX() const;
-    float GetMaxX() const;
     float GetMinY() const;
+    float GetMaxX() const;
     float GetMaxY() const;
 
-    bool CheckIntersect(const AABB& other) const;
+    bool CheckIntersect(const AABB& other, Manifold* manifold) const;
+
+    Rect GetRect() const;
 
 private:
     Vector _center;

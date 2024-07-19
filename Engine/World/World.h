@@ -14,8 +14,9 @@ public:
     virtual ~World();
 
     void Initialize() const;
-    void Update(float deltaTime) ;
-    void Render(const D2DRenderer* renderer) ;
+    void Update(float deltaTime);
+    void LazyUpdate(float deltaTime);
+    void Render(const D2DRenderer* renderer);
     void Clear();
     void SetCullingBound(AABB* bound);
 
@@ -33,7 +34,6 @@ public:
 
     size_t GetRenderingObjectCount() const;
 
-
 private:
     std::list<GameObject*> _gameObjects;
     AABB* _cullingBound;
@@ -44,4 +44,6 @@ private:
 
     size_t _renderingObjectCount;
     size_t _previousRenderingObjectCount;
+
+    void UpdateCollision() const;
 };

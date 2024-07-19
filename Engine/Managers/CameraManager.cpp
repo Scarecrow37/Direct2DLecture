@@ -10,6 +10,7 @@ CameraManager::~CameraManager()
 void CameraManager::SetActivatedCamera(const int index)
 {
     CameraManager& instance = GetInstance();
+    if (instance._cameras.find(index) == instance._cameras.end()) return;
     instance._activatedCamera = instance._cameras[index];
     SetWorldCullingBound();
 }

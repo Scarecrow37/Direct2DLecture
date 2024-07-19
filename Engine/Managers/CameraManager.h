@@ -24,6 +24,8 @@ public:
     {
         if (!std::is_base_of<Camera, T>::value) throw Exception(L"T is not derived from Camera");
         T* camera = new T();
+        auto& cameras = GetInstance()._cameras;
+        if (cameras.find(index) != cameras.end()) delete cameras[index];
         GetInstance()._cameras[index] = camera;
         return camera;
     }
