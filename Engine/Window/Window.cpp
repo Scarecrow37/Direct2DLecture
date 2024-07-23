@@ -1,7 +1,8 @@
 ﻿#include "pch.h"
 #include "Window.h"
 
-Window::Window(const HINSTANCE instanceHandle, const int showCommand, const LPCWSTR name, const SIZE size):
+Window::Window(const HINSTANCE instanceHandle, const int showCommand, const LPCWSTR name, const SIZE size)
+:
     _windowHandle(nullptr),
     _windowClass
     {
